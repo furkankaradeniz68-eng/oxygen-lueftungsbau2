@@ -186,53 +186,72 @@
      and so there is a clear band underneath it for the footer bar. */
   .finale {
     inset-inline: auto; right: var(--sc-gutter); left: var(--sc-gutter);
-    bottom: clamp(4.5rem, 11vh, 6.5rem);
+    bottom: clamp(7.5rem, 17vh, 10rem);
     max-width: min(28rem, 80vw);
     margin-inline: auto;
   }
-  .finale h2 { margin: 0 0 var(--sc-5); }
-  .finale__actions { display: flex; flex-wrap: wrap; gap: var(--sc-3); margin-bottom: var(--sc-6); }
-  .finale__facts {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
-    gap: var(--sc-4) var(--sc-6);
-    font-size: var(--sc-t-sm); color: var(--sc-ink-soft);
-    padding-top: var(--sc-5); border-top: 1px solid var(--sc-hairline);
+  .finale .sc-label { color: var(--sc-accent); display: block; margin-bottom: 0.5em; }
+  .finale h2 { margin: 0 0 var(--sc-4); }
+  .finale .sc-body { margin: 0 0 var(--sc-6); color: var(--sc-ink-soft); }
+  .finale__actions { display: flex; flex-wrap: wrap; gap: var(--sc-3); }
+  @media (max-width: 860px) {
+    .finale { bottom: calc(4.75rem + clamp(6.5rem, 15vh, 8.5rem)); }
   }
-  .finale__facts dt { font-family: var(--sc-font-mono); font-size: var(--sc-t-xs);
-    letter-spacing: var(--sc-track-wide); text-transform: uppercase; color: var(--sc-ink-soft); margin: 0 0 0.25em; }
-  .finale__facts dd { margin: 0; color: var(--sc-ink); }
-  .finale__facts a { color: var(--sc-ink); }
 
   /* -------------------------------------------- worldflight footer bar --
-     The subpage links, pulled out of the finale card into their own strip,
-     styled like the static pages' .site-footer so the whole site reads as
-     one footer pattern. Still a [data-sc-copy] sharing the finale window —
-     the worldflight spacer must stay the only thing in document flow. */
+     The world's fixed stage never releases (see the WORLDFLIGHT note in
+     scrollcraft.css), so this cannot be real document-flow HTML after
+     #flug — it would be permanently painted over. Instead it is a
+     [data-sc-copy] sharing the finale window, but laid out as a full-width
+     bottom bar — brand, link groups, contact, copyright + scroll-to-top —
+     clearly separated from the finale card above it so the two never
+     visually collide. */
   .sc-world-footer {
     inset-inline: auto;
-    left: calc(3.4rem + clamp(1.5rem, 5vw, 2.5rem));
-    right: calc(var(--rail-w) + clamp(1rem, 4vw, var(--sc-gutter)));
-    top: auto; bottom: clamp(0.85rem, 2.6vh, 1.4rem);
+    left: 0; right: var(--rail-w);
+    top: auto; bottom: 0;
     max-width: none;
-    display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
-    gap: var(--sc-3) var(--sc-6);
-    padding: 0.7rem clamp(1rem, 3vw, 1.6rem);
-    border-radius: var(--sc-r-pill);
+    background: color-mix(in oklab, var(--sc-canvas) 94%, transparent);
+    border-radius: 0;
+    border-width: 1px 0 0 0;
+    padding: clamp(1.1rem, 2.6vw, 1.6rem) clamp(1.5rem, 4vw, 2.5rem) clamp(0.9rem, 2vw, 1.2rem);
   }
-  .sc-world-footer__links { display: flex; flex-wrap: wrap; gap: var(--sc-2) var(--sc-5); justify-content: center; }
-  .sc-world-footer__links a {
+  .sc-world-footer__row {
+    display: flex; flex-wrap: wrap; align-items: center; gap: var(--sc-3) var(--sc-7);
+    padding-bottom: clamp(0.9rem, 2vw, 1.2rem);
+    border-bottom: 1px solid var(--sc-hairline);
+  }
+  .sc-world-footer__brand { line-height: 0; flex: none; }
+  .sc-world-footer__brand img { height: 1.7rem; width: auto; display: block; filter: brightness(0) invert(1); opacity: 0.92; }
+  .sc-world-footer__links { display: flex; flex-wrap: wrap; gap: var(--sc-2) var(--sc-5); }
+  .sc-world-footer__links a, .sc-world-footer__contact a {
     font-family: var(--sc-font-mono); font-size: var(--sc-t-xs); letter-spacing: var(--sc-track-wide);
     text-transform: uppercase; color: var(--sc-ink-soft); text-decoration: none;
   }
-  .sc-world-footer__links a:hover, .sc-world-footer__links a:focus-visible { color: var(--sc-accent); }
-  .sc-world-footer small { font-family: var(--sc-font-mono); font-size: var(--sc-t-xs); color: var(--sc-ink-soft); letter-spacing: var(--sc-track-wide); }
+  .sc-world-footer__links a:hover, .sc-world-footer__links a:focus-visible,
+  .sc-world-footer__contact a:hover, .sc-world-footer__contact a:focus-visible { color: var(--sc-accent); }
+  .sc-world-footer__contact { display: flex; flex-wrap: wrap; gap: var(--sc-2) var(--sc-5); margin-left: auto; }
+  .sc-world-footer__bottom {
+    display: flex; align-items: center; justify-content: space-between; gap: var(--sc-4);
+    padding-top: clamp(0.7rem, 1.6vw, 0.9rem);
+  }
+  .sc-world-footer__bottom small { font-family: var(--sc-font-mono); font-size: var(--sc-t-xs); color: var(--sc-ink-soft); letter-spacing: var(--sc-track-wide); }
+  .sc-world-footer__top-btn {
+    all: unset; cursor: pointer;
+    width: 2rem; height: 2rem; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; flex: none;
+    color: var(--sc-ink-soft); border: 1.5px solid var(--sc-hairline-strong);
+    transition: border-color var(--sc-d-base) var(--sc-ease-out), color var(--sc-d-base) var(--sc-ease-out);
+  }
+  .sc-world-footer__top-btn:hover, .sc-world-footer__top-btn:focus-visible { border-color: var(--sc-accent); color: var(--sc-accent); }
   @media (max-width: 860px) {
-    .finale { bottom: calc(4.75rem + clamp(3.5rem, 9vh, 5rem)); }
     .sc-world-footer {
-      left: var(--sc-gutter); right: var(--sc-gutter);
-      bottom: calc(4.75rem + clamp(0.6rem, 2vh, 1rem));
-      border-radius: var(--sc-r-md);
+      right: 0; bottom: 4.75rem;
+      padding: clamp(0.9rem, 3.5vw, 1.2rem) clamp(1rem, 4vw, 1.5rem) 0.8rem;
     }
+    .sc-world-footer__contact { display: none; }
+    .sc-world-footer__links { gap: 0.5em 0.9em; }
+    .sc-world-footer__bottom { padding-left: calc(3.4rem + clamp(1.25rem, 5vw, 1.75rem)); }
   }
 
   /* ============================================================== rail -- */
@@ -267,7 +286,7 @@
   .rail__node.is-done .rail__btn { color: var(--sc-accent); border-color: color-mix(in oklab, var(--sc-accent) 55%, var(--sc-hairline-strong)); }
   .rail__line { width: 2px; flex: 1; min-height: 1rem; position: relative;
     background: var(--sc-hairline-strong); margin-block: 0.3rem; }
-  .rail__line-fill { position: absolute; inset: auto 0 0 0; width: 100%; height: var(--fill, 0%);
+  .rail__line-fill { position: absolute; inset: 0 0 auto 0; width: 100%; height: var(--fill, 0%);
     background: var(--sc-accent); transition: height 90ms linear; }
   .rail__label {
     position: absolute; right: calc(var(--rail-w) + 0.75rem);
@@ -356,6 +375,7 @@
   </a>
   <nav class="topnav" aria-label="Hauptnavigation">
     <a class="topnav__link topnav__link--hide-sm" href="service.html">Leistungen</a>
+    <a class="topnav__link topnav__link--hide-sm" href="ueber-uns.html">Über uns</a>
     <a class="topnav__link" href="kontakt.html">Kontakt</a>
   </nav>
 </header>
@@ -444,30 +464,27 @@
       </a>
     </div>
 
-    <div class="sc-copy sc-copy--trail sc-stack" data-sc-copy data-sc-window="0.1744 0.3488 0.12 0.3">
+    <div class="sc-copy sc-copy--trail sc-stack" data-sc-copy data-sc-window="0.1744 0.3488 0.1 0.25">
       <span class="sc-label">Kanal- &amp; Rohrleitungsbau</span>
       <h2 class="sc-display sc-display--md">Kanäle und Rohrleitungen, fachgerecht verlegt.</h2>
       <p class="sc-body">Wir montieren Luft- und Rohrleitungen und bauen Brandschutzklappen normgerecht ein — die Grundlage jeder sicheren RLT-Anlage.</p>
     </div>
 
-    <div class="sc-copy sc-copy--lead-top sc-copy--chip" data-sc-copy data-sc-window="0.36 0.60 0.2 0.25">
+    <div class="sc-copy sc-copy--lead-top sc-copy--chip" data-sc-copy data-sc-window="0.3488 0.6279 0.08 0.2">
       <span class="sc-label">Herstellerunabhängig</span>
       <p class="sc-body">Wir montieren Lüftungs- und Klimageräte aller gängigen Hersteller und Fabrikate — unabhängig von Marke oder Modell.</p>
     </div>
 
-    <div class="sc-copy sc-copy--trail sc-stack" data-sc-copy data-sc-window="0.66 0.76 0.2 0.2">
-      <span class="sc-label">Verteilung</span>
-      <p class="sc-body">Montage von RLT-Anlagen, Klimageräten, Ventilatoren und Lüftungstürmen.</p>
-    </div>
-
-    <div class="sc-copy sc-copy--lead sc-stack" data-sc-copy data-sc-window="0.77 0.87 0.15 0.2">
+    <div class="sc-copy sc-copy--lead sc-stack" data-sc-copy data-sc-window="0.6279 0.8140 0.1 0.2">
       <span class="sc-label">Warum Oxygen</span>
       <h2 class="sc-display sc-display--md">Feste Teams. Flexibel, wenn der Bauablauf es verlangt.</h2>
       <p class="sc-body">Unsere Monteur-Teams übernehmen Ihre Baustelle zuverlässig von Anfang bis Ende. Bei Bedarf arbeiten wir in splitbaren Einsatzteams und reagieren so flexibel auf Planänderungen — mit modernem Werkzeug und gewissenhafter Ausführung. Zusätzlich vermitteln wir Fachpersonal für Heizung, Sanitär, Luft &amp; Klima, Anlagenbau und Isolation.</p>
     </div>
 
     <div class="sc-copy finale" data-sc-copy data-sc-window="finale">
-      <h2 class="sc-display sc-display--md">Am Ende funktioniert es einfach.</h2>
+      <span class="sc-label">Am Ziel</span>
+      <h2 class="sc-display sc-display--md">Wir freuen uns auf eure Nachricht.</h2>
+      <p class="sc-body">Kurz schreiben, was Sie brauchen — wir melden uns zeitnah zurück.</p>
       <div class="finale__actions">
         <a class="btn btn--accent" data-whatsapp-link href="https://wa.me/" target="_blank" rel="noopener">
           <svg aria-hidden="true"><use href="#ic-whatsapp"></use></svg>
@@ -475,38 +492,40 @@
         </a>
         <a class="btn btn--ghost" href="tel:+4963239129790">06323 9129790</a>
       </div>
-      <dl class="finale__facts">
-        <div>
-          <dt>Telefon</dt>
-          <dd><a href="tel:+4963239129790">06323 9129790</a></dd>
-        </div>
-        <div>
-          <dt>Mobil</dt>
-          <dd><a href="tel:+491725255842">0172 5255842</a></dd>
-        </div>
-        <div>
-          <dt>E-Mail</dt>
-          <dd><a href="mailto:info@oxygen-lueftungsbau.de">info@oxygen-lueftungsbau.de</a></dd>
-        </div>
-        <div>
-          <dt>Bürozeiten</dt>
-          <dd>Mo–Fr 08:00–16:30</dd>
-        </div>
-        <div>
-          <dt>Adresse</dt>
-          <dd>In den Seewiesen 6, 67480 Edenkoben</dd>
-        </div>
-      </dl>
     </div>
 
+    <!-- The world's own fixed stage never releases (see scrollcraft.css's
+         WORLDFLIGHT note: ".sc-world"/".sc-world__copy" stay position:fixed
+         for the life of the page, by design, so nothing placed after #flug
+         in document flow can ever be seen — it is permanently painted over).
+         A "real" footer therefore has to live here, as a [data-sc-copy]
+         sharing the finale window, styled as a full-width bottom bar rather
+         than another floating card — so it reads as a proper site footer
+         without colliding with the finale card sitting above it. -->
     <div class="sc-copy sc-world-footer" data-sc-copy data-sc-window="finale">
-      <nav class="sc-world-footer__links" aria-label="Weitere Seiten">
-        <a href="service.html">Leistungen</a>
-        <a href="kontakt.html">Kontakt</a>
-        <a href="impressum.html">Impressum</a>
-        <a href="datenschutz.html">Datenschutz</a>
-      </nav>
-      <small>OXYGEN Lüftungsbau GmbH &amp; Co. KG · In den Seewiesen 6 · 67480 Edenkoben</small>
+      <div class="sc-world-footer__row">
+        <a class="sc-world-footer__brand" href="/" aria-label="OXYGEN Lüftungsbau — Startseite">
+          <img src="assets/brand/logo.png" width="221" height="51" alt="OXYGEN Lüftungsbau GmbH &amp; Co. KG">
+        </a>
+        <nav class="sc-world-footer__links" aria-label="Weitere Seiten">
+          <a href="/">Startseite</a>
+          <a href="service.html">Leistungen</a>
+          <a href="ueber-uns.html">Über uns</a>
+          <a href="kontakt.html">Kontakt</a>
+          <a href="impressum.html">Impressum</a>
+          <a href="datenschutz.html">Datenschutz</a>
+        </nav>
+        <div class="sc-world-footer__contact">
+          <a href="tel:+4963239129790">06323 9129790</a>
+          <a href="mailto:info@oxygen-lueftungsbau.de">info@oxygen-lueftungsbau.de</a>
+        </div>
+      </div>
+      <div class="sc-world-footer__bottom">
+        <small>© 2026 OXYGEN Lüftungsbau GmbH &amp; Co. KG</small>
+        <button type="button" class="sc-world-footer__top-btn" data-scroll-top aria-label="Nach oben scrollen">
+          <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+        </button>
+      </div>
     </div>
 
   </div>

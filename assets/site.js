@@ -24,6 +24,20 @@
   }
   wireWhatsApp();
 
+  // ------------------------------------------------------- scroll-to-top --
+  // Footer control, present on every page (worldflight + static subpages),
+  // so it is wired here rather than inside the worldflight-only geometry
+  // block below, which bails out early on pages with no [data-sc-mode].
+  (function wireScrollTop() {
+    var btns = document.querySelectorAll('[data-scroll-top]');
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].addEventListener('click', function () {
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        window.scrollTo({ top: 0, left: 0, behavior: reduce ? 'auto' : 'smooth' });
+      });
+    }
+  })();
+
   // ---------------------------------------------------- resize/font guard --
   // If innerHeight reads 0 at mount (some mobile browsers mid-chrome-resize),
   // the worldflight spacer computes to 0 and the whole flight is unreachable.
