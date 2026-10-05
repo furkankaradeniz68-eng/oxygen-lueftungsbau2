@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>OXYGEN Lüftungsbau — Montagepartner für TGA-Firmen &amp; Generalunternehmer</title>
+<meta name="description" content="OXYGEN Lüftungsbau GmbH &amp; Co. KG — Montage raumlufttechnischer Anlagen als Werkvertragspartner für TGA-Firmen, Bauleiter und Generalunternehmer. Feste Teams, splitbare Einsatzteams, Personaldienstleistungen.">
+<link rel="icon" href="assets/brand/logo.png">
+<link rel="stylesheet" href="scrollcraft.css">
+<style>
+  :root {
+    /* --- brand tokens, derived from the logo (OXYGEN red stays in the mark only) --- */
+    --sc-canvas:      #0a0b0d;
+    --sc-surface:     #14161b;
+    --sc-ink:         #f2efe9;
+    --sc-ink-soft:    #9b9ea6;
+    --sc-accent:      #35e6e6;
+    --sc-accent-ink:  #07191a;
+
+    --oxy-red:        #e10e13;
+    --oxy-chip:       #f4efe6;
+    --oxy-chip-ink:   #141414;
+
+    /* system-first stack: no runtime webfont connection of any kind */
+    --sc-font-display: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    --sc-font-text:    -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    --sc-font-mono:    ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+
+    --rail-w: 4.75rem;
+  }
+
+  /* ----------------------------------------------------------- top bar -- */
+  .topbar {
+    position: fixed; inset: 0 0 auto 0; z-index: var(--sc-z-chrome);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: var(--sc-4);
+    padding: clamp(0.75rem, 2vw, 1.25rem) clamp(1rem, 4vw, var(--sc-gutter));
+    padding-right: calc(var(--rail-w) + clamp(1rem, 4vw, var(--sc-gutter)));
+  }
+  .brand {
+    display: inline-flex; align-items: center;
+    background: var(--oxy-chip); color: var(--oxy-chip-ink);
+    border-radius: var(--sc-r-md);
+    padding: 0.4rem 0.7rem;
+    box-shadow: var(--sc-e2);
+    line-height: 0;
+  }
+  .brand img { height: clamp(1.6rem, 3.4vw, 2rem); width: auto; display: block; }
+  .topnav { display: flex; align-items: center; gap: clamp(0.9rem, 2.4vw, 1.6rem); }
+  .topnav__link {
+    font-family: var(--sc-font-mono);
+    font-size: var(--sc-t-xs);
+    letter-spacing: var(--sc-track-wide);
+    text-transform: uppercase;
+    color: var(--sc-ink);
+    text-decoration: none;
+    padding: 0.3rem 0;
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--sc-d-base) var(--sc-ease-out);
+  }
+  .topnav__link:hover, .topnav__link:focus-visible { border-color: var(--sc-accent); }
+  @media (max-width: 560px) { .topnav__link--hide-sm { display: none; } }
+
+  /* --------------------------------------------------------------- btn -- */
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.55em;
+    font-family: var(--sc-font-mono);
+    font-size: var(--sc-t-sm);
+    letter-spacing: var(--sc-track-wide);
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.85em 1.4em;
+    border-radius: var(--sc-r-pill);
+    border: 1px solid var(--sc-hairline-strong);
+    color: var(--sc-ink);
+    white-space: nowrap;
+    transition: background var(--sc-d-base) var(--sc-ease-out),
+                color var(--sc-d-base) var(--sc-ease-out),
+                border-color var(--sc-d-base) var(--sc-ease-out),
+                transform var(--sc-d-fast) var(--sc-ease-out);
+  }
+  .btn:hover, .btn:focus-visible { transform: translateY(-1px); border-color: var(--sc-accent); }
+  .btn--accent {
+    background: var(--sc-accent); color: var(--sc-accent-ink); border-color: transparent;
+    box-shadow: var(--sc-e2);
+  }
+  .btn--accent:hover, .btn--accent:focus-visible {
+    background: color-mix(in oklab, var(--sc-accent) 88%, white);
+  }
+  .btn--ghost { background: color-mix(in oklab, var(--sc-canvas) 40%, transparent); }
+  .btn svg { width: 1.1em; height: 1.1em; flex: none; }
+
+  /* ---------------------------------------------------------- copy panel --
+     Background lives on [data-sc-copy] itself, not on a nested wrapper. The
+     verify harness grades a copy block's own computed background to decide
+     whether it has an opaque fill of its own (graded as "own-fill") or needs
+     to be checked against the stage behind it; a bg only on a child is
+     invisible to that check and the block gets graded against the bare,
+     unbacked clip, which is a false contrast failure on every bright scene. */
+  .sc-copy {
+    background: color-mix(in oklab, var(--sc-canvas) 86%, transparent);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid var(--sc-hairline);
+    border-radius: var(--sc-r-lg);
+    padding: clamp(1.4rem, 3vw, var(--sc-7)) clamp(1.5rem, 3.4vw, var(--sc-8));
+    box-shadow: var(--sc-e2);
+  }
+  .sc-copy--peak { padding: 0.9rem 1.5rem; border-radius: var(--sc-r-pill); text-align: center; }
+
+  /* --------------------------------------------------------- hero copy -- */
+  #hero-copy .sc-label { color: var(--sc-accent); margin-bottom: var(--sc-2); display: block; }
+  #hero-copy h1 { margin: 0 0 var(--sc-4); }
+  #hero-copy .sc-lede { margin-bottom: var(--sc-6); }
+
+  /* kinetic line reveal, reusing engine's .sc-split markup/CSS, driven by
+     our own rAF loop reading the same opacity the engine already writes on
+     the parent [data-sc-copy]. */
+  #hero-copy h1 .sc-split__i { opacity: 0; transform: translate3d(0,100%,0); }
+  @media (prefers-reduced-motion: reduce) {
+    #hero-copy h1 .sc-split__i { transform: none !important; opacity: 1 !important; }
+  }
+
+  /* ------------------------------------------------------- finale panel -- */
+  .finale {
+    inset-inline: auto; right: var(--sc-gutter); left: var(--sc-gutter);
+    bottom: clamp(1.5rem, 6vh, 4rem);
+    max-width: min(40rem, 86vw);
+    margin-inline: auto;
+  }
+  .finale h2 { margin: 0 0 var(--sc-5); }
+  .finale__actions { display: flex; flex-wrap: wrap; gap: var(--sc-3); margin-bottom: var(--sc-6); }
+  .finale__facts {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: var(--sc-4) var(--sc-6);
+    font-size: var(--sc-t-sm); color: var(--sc-ink-soft);
+    padding-top: var(--sc-5); border-top: 1px solid var(--sc-hairline);
+  }
+  .finale__facts dt { font-family: var(--sc-font-mono); font-size: var(--sc-t-xs);
+    letter-spacing: var(--sc-track-wide); text-transform: uppercase; color: var(--sc-ink-soft); margin: 0 0 0.25em; }
+  .finale__facts dd { margin: 0; color: var(--sc-ink); }
+  .finale__facts a { color: var(--sc-ink); }
+  .finale__links { display: flex; flex-wrap: wrap; gap: var(--sc-2) var(--sc-5); margin-top: var(--sc-6); }
+  .finale__links a {
+    font-family: var(--sc-font-mono); font-size: var(--sc-t-xs); letter-spacing: var(--sc-track-wide);
+    text-transform: uppercase; color: var(--sc-ink-soft); text-decoration: none;
+  }
+  .finale__links a:hover, .finale__links a:focus-visible { color: var(--sc-accent); }
+
+  /* ============================================================== rail -- */
+  .rail {
+    position: fixed; z-index: var(--sc-z-chrome);
+    top: 0; right: 0; bottom: 0; width: var(--rail-w);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 0;
+    padding-block: clamp(1rem, 6vh, 3rem);
+    background: linear-gradient(to left, color-mix(in oklab, var(--sc-canvas) 55%, transparent), transparent);
+  }
+  .rail__list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; height: 100%; }
+  .rail__node { display: flex; flex-direction: column; align-items: center; flex: 1; min-height: 0; }
+  .rail__node:last-child { flex: 0 0 auto; }
+  .rail__btn {
+    all: unset; cursor: pointer;
+    width: 2.1rem; height: 2.1rem; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--sc-ink-soft);
+    border: 1.5px solid var(--sc-hairline-strong);
+    background: color-mix(in oklab, var(--sc-canvas) 60%, transparent);
+    transition: color var(--sc-d-base) var(--sc-ease-out),
+                border-color var(--sc-d-base) var(--sc-ease-out),
+                box-shadow var(--sc-d-base) var(--sc-ease-out);
+    flex: none;
+  }
+  .rail__btn svg { width: 1.15rem; height: 1.15rem; }
+  .rail__node.is-active .rail__btn {
+    color: var(--sc-accent-ink); background: var(--sc-accent); border-color: var(--sc-accent);
+    box-shadow: 0 0 0 5px color-mix(in oklab, var(--sc-accent) 24%, transparent);
+  }
+  .rail__node.is-done .rail__btn { color: var(--sc-accent); border-color: color-mix(in oklab, var(--sc-accent) 55%, var(--sc-hairline-strong)); }
+  .rail__line { width: 2px; flex: 1; min-height: 1rem; position: relative;
+    background: var(--sc-hairline-strong); margin-block: 0.3rem; }
+  .rail__line-fill { position: absolute; inset: auto 0 0 0; width: 100%; height: var(--fill, 0%);
+    background: var(--sc-accent); transition: height 90ms linear; }
+  .rail__label {
+    position: absolute; right: calc(var(--rail-w) + 0.75rem);
+    font-family: var(--sc-font-mono); font-size: var(--sc-t-xs); letter-spacing: var(--sc-track-wide);
+    text-transform: uppercase; white-space: nowrap; color: var(--sc-ink-soft);
+    opacity: 0; transform: translateX(6px);
+    transition: opacity var(--sc-d-base) var(--sc-ease-out), transform var(--sc-d-base) var(--sc-ease-out);
+    pointer-events: none;
+    background: color-mix(in oklab, var(--sc-canvas) 78%, transparent);
+    padding: 0.3em 0.6em; border-radius: var(--sc-r-sm);
+  }
+  .rail__node.is-active .rail__label { opacity: 1; transform: translateX(0); color: var(--sc-ink); }
+  @media (prefers-reduced-motion: reduce) {
+    .rail__label { transition: opacity var(--sc-d-fast) linear; transform: none; }
+    .rail__line-fill { transition: none; }
+  }
+
+  /* mobile: bottom horizontal strip */
+  @media (max-width: 860px) {
+    .rail {
+      top: auto; left: 0; right: 0; bottom: 0; height: 4.75rem; width: auto;
+      flex-direction: row; padding-inline: clamp(1rem, 5vw, 2rem); padding-block: 0;
+      background: linear-gradient(to top, color-mix(in oklab, var(--sc-canvas) 70%, transparent), transparent);
+    }
+    .rail__list { flex-direction: row; width: 100%; height: auto; }
+    .rail__node { flex-direction: row; }
+    .rail__line { width: auto; height: 2px; flex: 1; min-height: 0; min-width: 0.75rem; margin-block: 0; margin-inline: 0.3rem; }
+    .rail__line-fill { inset: 0 auto 0 0; width: var(--fill, 0%); height: 100%; transition: width 90ms linear; }
+    .rail__label {
+      right: auto; left: 50%; bottom: calc(100% + 0.5rem); top: auto;
+      transform: translate(-50%, 6px);
+    }
+    .rail__node.is-active .rail__label { transform: translate(-50%, 0); }
+    .topbar { padding-right: clamp(1rem, 4vw, var(--sc-gutter)); }
+    .finale { bottom: calc(4.75rem + clamp(1rem, 4vh, 2rem)); }
+  }
+  @media (max-width: 860px) and (prefers-reduced-motion: reduce) {
+    .rail__label { transform: translate(-50%, 0); }
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="ic-ansaugung" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5">
+    <rect x="4" y="7" width="20" height="14" rx="1.5"/>
+    <path d="M6 11h16M6 14.5h16M6 18h16"/>
+  </symbol>
+  <symbol id="ic-kanal" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5">
+    <rect x="3" y="11" width="22" height="6" rx="0.5"/>
+    <path d="M3 14h22"/>
+  </symbol>
+  <symbol id="ic-klappe" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5">
+    <rect x="5" y="5" width="18" height="18" rx="1.5"/>
+    <path d="M7 9l14 10M21 9L7 19"/>
+  </symbol>
+  <symbol id="ic-geraet" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5">
+    <rect x="3" y="5" width="22" height="18" rx="2"/>
+    <circle cx="14" cy="14" r="5.4"/>
+    <path d="M14 8.6V14l4 2.4"/>
+  </symbol>
+  <symbol id="ic-verteilung" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5">
+    <path d="M14 4v8M14 12L6 24M14 12l8 12"/>
+  </symbol>
+  <symbol id="ic-auslass" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5">
+    <rect x="4" y="4" width="20" height="20" rx="1.5"/>
+    <path d="M4 10h20M4 15h20M4 20h20M10 4v20M15.3 4v20M20.6 4v20"/>
+  </symbol>
+  <symbol id="ic-whatsapp" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M17.472 14.382c-.297-.149-1.758-.868-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+    <path d="M12.01 2C6.486 2 2 6.486 2 12.01c0 1.98.57 3.828 1.555 5.39L2 22l4.72-1.527A9.95 9.95 0 0 0 12.01 22C17.534 22 22 17.514 22 11.99 22 6.486 17.534 2 12.01 2zm0 18.2a8.16 8.16 0 0 1-4.17-1.14l-.3-.178-3.096 1.002 1.017-3.02-.197-.31a8.17 8.17 0 0 1-1.254-4.364c0-4.52 3.68-8.2 8.2-8.2 4.52 0 8.19 3.68 8.19 8.2 0 4.52-3.67 8.01-8.19 8.01z"/>
+  </symbol>
+</svg>
+
+<div data-sc-progress></div>
+<div class="sc-grain" aria-hidden="true"></div>
+
+<header class="topbar">
+  <a class="brand" href="/" aria-label="OXYGEN Lüftungsbau — Startseite">
+    <img src="assets/brand/logo.png" width="221" height="51" alt="OXYGEN Lüftungsbau GmbH &amp; Co. KG">
+  </a>
+  <nav class="topnav" aria-label="Hauptnavigation">
+    <a class="topnav__link topnav__link--hide-sm" href="service.html">Leistungen</a>
+    <a class="topnav__link" href="kontakt.html">Kontakt</a>
+    <a class="btn btn--ghost" data-whatsapp-link href="https://wa.me/" target="_blank" rel="noopener">
+      <svg aria-hidden="true"><use href="#ic-whatsapp"></use></svg>
+      <span class="topnav__link--hide-sm">WhatsApp</span>
+    </a>
+  </nav>
+</header>
+
+<nav class="rail" aria-label="Luftweg: Ansaugung bis Auslass" id="rail">
+  <ol class="rail__list" id="rail-list">
+    <li class="rail__node" data-key="ansaugung">
+      <button class="rail__btn" type="button" data-jump="ansaugung" aria-current="false">
+        <svg aria-hidden="true"><use href="#ic-ansaugung"></use></svg>
+      </button>
+      <span class="rail__label">Ansaugung</span>
+      <span class="rail__line" aria-hidden="true"><span class="rail__line-fill"></span></span>
+    </li>
+    <li class="rail__node" data-key="kanal">
+      <button class="rail__btn" type="button" data-jump="kanal" aria-current="false">
+        <svg aria-hidden="true"><use href="#ic-kanal"></use></svg>
+      </button>
+      <span class="rail__label">Kanal</span>
+      <span class="rail__line" aria-hidden="true"><span class="rail__line-fill"></span></span>
+    </li>
+    <li class="rail__node" data-key="klappe">
+      <button class="rail__btn" type="button" data-jump="klappe" aria-current="false">
+        <svg aria-hidden="true"><use href="#ic-klappe"></use></svg>
+      </button>
+      <span class="rail__label">Brandschutzklappe</span>
+      <span class="rail__line" aria-hidden="true"><span class="rail__line-fill"></span></span>
+    </li>
+    <li class="rail__node" data-key="geraet">
+      <button class="rail__btn" type="button" data-jump="geraet" aria-current="false">
+        <svg aria-hidden="true"><use href="#ic-geraet"></use></svg>
+      </button>
+      <span class="rail__label">Gerät</span>
+      <span class="rail__line" aria-hidden="true"><span class="rail__line-fill"></span></span>
+    </li>
+    <li class="rail__node" data-key="verteilung">
+      <button class="rail__btn" type="button" data-jump="verteilung" aria-current="false">
+        <svg aria-hidden="true"><use href="#ic-verteilung"></use></svg>
+      </button>
+      <span class="rail__label">Verteilung</span>
+      <span class="rail__line" aria-hidden="true"><span class="rail__line-fill"></span></span>
+    </li>
+    <li class="rail__node" data-key="auslass">
+      <button class="rail__btn" type="button" data-jump="auslass" aria-current="false">
+        <svg aria-hidden="true"><use href="#ic-auslass"></use></svg>
+      </button>
+      <span class="rail__label">Auslass</span>
+    </li>
+  </ol>
+</nav>
+
+<div id="flug" role="main" data-sc-mode="worldflight" data-sc-seam="0.16" data-sc-lerp="0.12">
+  <div data-sc-world>
+
+    <div data-sc-segment data-sc-w="1.5" data-sc-linger="0.2" data-sc-waypoint="Ansaugung">
+      <img class="sc-world__poster" src="assets/00-still.webp" alt="Außenansicht eines modernen Gewerbegebäudes mit Lüftungs-Ansauggitter an der Fassade">
+      <video data-sc-src="assets/01.mp4" data-sc-src-mobile="assets/01-m.mp4" muted playsinline preload="none"></video>
+    </div>
+
+    <div data-sc-segment data-sc-w="1.5" data-sc-linger="0.35" data-sc-waypoint="Kanal">
+      <img class="sc-world__poster" src="assets/02-poster.webp" alt="">
+      <video data-sc-src="assets/02.mp4" data-sc-src-mobile="assets/02-m.mp4" muted playsinline preload="none"></video>
+    </div>
+
+    <div data-sc-segment data-sc-w="2.4" data-sc-linger="0.5" data-sc-waypoint="Technikzentrale">
+      <img class="sc-world__poster" src="assets/03-poster.webp" alt="">
+      <video data-sc-src="assets/03.mp4" data-sc-src-mobile="assets/03-m.mp4" muted playsinline preload="none"></video>
+    </div>
+
+    <div data-sc-segment data-sc-w="1.6" data-sc-linger="0.3" data-sc-waypoint="Deckenhohlraum">
+      <img class="sc-world__poster" src="assets/04-poster.webp" alt="">
+      <video data-sc-src="assets/04.mp4" data-sc-src-mobile="assets/04-m.mp4" muted playsinline preload="none"></video>
+    </div>
+
+    <div data-sc-segment data-sc-w="1.6" data-sc-linger="0.38" data-sc-waypoint="Austritt">
+      <img class="sc-world__poster" src="assets/05-poster.webp" alt="">
+      <video data-sc-src="assets/05.mp4" data-sc-src-mobile="assets/05-m.mp4" muted playsinline preload="none"></video>
+    </div>
+
+  </div>
+
+  <div data-sc-world-copy>
+
+    <div class="sc-copy sc-copy--lead" id="hero-copy" data-sc-copy data-sc-window="hero">
+      <span class="sc-label">Oxygen Lüftungsbau GmbH &amp; Co. KG</span>
+      <h1 class="sc-display sc-display--xl" id="hero-h1">Lüftungsbau,<br>der funktioniert.</h1>
+      <p class="sc-lede">Montagepartner für TGA-Firmen und Generalunternehmer.</p>
+      <a class="btn btn--accent" data-whatsapp-link href="https://wa.me/" target="_blank" rel="noopener">
+        <svg aria-hidden="true"><use href="#ic-whatsapp"></use></svg>
+        Per WhatsApp anfragen
+      </a>
+    </div>
+
+    <div class="sc-copy sc-copy--trail sc-stack" data-sc-copy data-sc-window="0.19 0.33">
+      <span class="sc-label">Kanal- &amp; Rohrleitungsbau</span>
+      <h2 class="sc-display sc-display--md">Kanäle und Rohrleitungen, fachgerecht verlegt.</h2>
+      <p class="sc-body">Wir montieren Luft- und Rohrleitungen und bauen Brandschutzklappen normgerecht ein — die Grundlage jeder sicheren RLT-Anlage.</p>
+    </div>
+
+    <div class="sc-copy sc-copy--center sc-copy--peak" data-sc-copy data-sc-window="0.54 0.60 0.15 0.15">
+      <span class="sc-label">Technikzentrale</span>
+      <p class="sc-lede" style="margin-top:0.3em">Montage von RLT-Anlagen, Klimageräten, Ventilatoren und Lüftungstürmen.</p>
+    </div>
+
+    <div class="sc-copy sc-copy--lead sc-stack" data-sc-copy data-sc-window="0.65 0.79">
+      <span class="sc-label">Warum Oxygen</span>
+      <h2 class="sc-display sc-display--md">Feste Teams. Flexibel, wenn der Bauablauf es verlangt.</h2>
+      <p class="sc-body">Unsere Monteur-Teams übernehmen Ihre Baustelle zuverlässig von Anfang bis Ende. Bei Bedarf arbeiten wir in splitbaren Einsatzteams und reagieren so flexibel auf Planänderungen — mit modernem Werkzeug und gewissenhafter Ausführung. Zusätzlich vermitteln wir Fachpersonal für Heizung, Sanitär, Luft &amp; Klima, Anlagenbau und Isolation.</p>
+    </div>
+
+    <div class="sc-copy finale" data-sc-copy data-sc-window="finale">
+      <h2 class="sc-display sc-display--md">Am Ende funktioniert es einfach.</h2>
+      <div class="finale__actions">
+        <a class="btn btn--accent" data-whatsapp-link href="https://wa.me/" target="_blank" rel="noopener">
+          <svg aria-hidden="true"><use href="#ic-whatsapp"></use></svg>
+          Per WhatsApp anfragen
+        </a>
+        <a class="btn btn--ghost" href="tel:+4963239129790">06323 9129790</a>
+      </div>
+      <dl class="finale__facts">
+        <div>
+          <dt>Telefon</dt>
+          <dd><a href="tel:+4963239129790">06323 9129790</a></dd>
+        </div>
+        <div>
+          <dt>Mobil</dt>
+          <dd><a href="tel:+491725255842">0172 5255842</a></dd>
+        </div>
+        <div>
+          <dt>E-Mail</dt>
+          <dd><a href="mailto:info@oxygen-lueftungsbau.de">info@oxygen-lueftungsbau.de</a></dd>
+        </div>
+        <div>
+          <dt>Bürozeiten</dt>
+          <dd>Mo–Fr 08:00–16:30</dd>
+        </div>
+      </dl>
+      <nav class="finale__links" aria-label="Weitere Seiten">
+        <a href="service.html">Leistungen</a>
+        <a href="kontakt.html">Kontakt</a>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+      </nav>
+    </div>
+
+  </div>
+
+  <div data-sc-spacer aria-hidden="true"></div>
+</div>
+
+<script src="scrollcraft.js"></script>
+<script src="assets/site.js"></script>
+<script>ScrollCraft.mount(document.body);</script>
+</body>
+</html>
