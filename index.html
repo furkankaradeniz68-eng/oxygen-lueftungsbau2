@@ -4,27 +4,45 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark">
-<title>OXYGEN Lüftungsbau — Montagepartner für TGA-Firmen &amp; Generalunternehmer</title>
-<meta name="description" content="OXYGEN Lüftungsbau GmbH &amp; Co. KG — Montage raumlufttechnischer Anlagen als Werkvertragspartner für TGA-Firmen, Bauleiter und Generalunternehmer. Feste Teams, splitbare Einsatzteams, Personaldienstleistungen.">
+<title>Lüftungsbau Montage &amp; RLT-Anlagen | OXYGEN Lüftungsbau GmbH &amp; Co. KG</title>
+<meta name="description" content="OXYGEN Lüftungsbau: Montage von RLT-Anlagen, Klimageräten, Kanal- und Rohrleitungsbau als Subunternehmer im Werkvertrag für TGA-Firmen und Generalunternehmer in der Pfalz. Plus Personaldienstleistung für Heizung, Sanitär, Luft &amp; Klima, Anlagenbau und Isolierung.">
 <link rel="icon" href="assets/brand/logo.png">
 <link rel="stylesheet" href="scrollcraft.css">
 <style>
+  /* self-hosted Arimo — variable weight axis, no runtime Google Fonts connection */
+  @font-face {
+    font-family: "Arimo";
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url("assets/fonts/arimo-latin.woff2") format("woff2");
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: "Arimo";
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url("assets/fonts/arimo-latin-ext.woff2") format("woff2");
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
   :root {
-    /* --- brand tokens, derived from the logo (OXYGEN red stays in the mark only) --- */
+    /* --- brand tokens: Primär Weiß, Sekundär #585857, Akzent #CF2F25 --- */
     --sc-canvas:      #0a0b0d;
     --sc-surface:     #14161b;
     --sc-ink:         #f2efe9;
     --sc-ink-soft:    #9b9ea6;
-    --sc-accent:      #35e6e6;
-    --sc-accent-ink:  #07191a;
+    --sc-accent:      #CF2F25;
+    --sc-accent-ink:  #ffffff;
 
-    --oxy-red:        #e10e13;
-    --oxy-chip:       #f4efe6;
+    --oxy-red:        #CF2F25;
+    --oxy-chip:       #ffffff;
     --oxy-chip-ink:   #141414;
+    --oxy-ink-2:      #585857;
 
-    /* system-first stack: no runtime webfont connection of any kind */
-    --sc-font-display: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-    --sc-font-text:    -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    --sc-font-display: "Arimo", -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    --sc-font-text:    "Arimo", -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
     --sc-font-mono:    ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
 
     --rail-w: 4.75rem;
@@ -33,17 +51,18 @@
   /* ----------------------------------------------------------- top bar -- */
   .topbar {
     position: fixed; inset: 0 0 auto 0; z-index: var(--sc-z-chrome);
-    display: flex; align-items: center; justify-content: space-between;
-    gap: var(--sc-4);
+    display: flex; align-items: center; justify-content: center;
+    gap: clamp(1.5rem, 4vw, 3rem);
     padding: clamp(0.75rem, 2vw, 1.25rem) clamp(1rem, 4vw, var(--sc-gutter));
     padding-right: calc(var(--rail-w) + clamp(1rem, 4vw, var(--sc-gutter)));
+    background: #ffffff;
+    box-shadow: var(--sc-e2);
   }
   .brand {
     display: inline-flex; align-items: center;
-    background: var(--oxy-chip); color: var(--oxy-chip-ink);
+    background: transparent; color: var(--oxy-chip-ink);
     border-radius: var(--sc-r-md);
     padding: 0.4rem 0.7rem;
-    box-shadow: var(--sc-e2);
     line-height: 0;
   }
   .brand img { height: clamp(1.6rem, 3.4vw, 2rem); width: auto; display: block; }
@@ -53,7 +72,7 @@
     font-size: var(--sc-t-xs);
     letter-spacing: var(--sc-track-wide);
     text-transform: uppercase;
-    color: var(--sc-ink);
+    color: #141414;
     text-decoration: none;
     padding: 0.3rem 0;
     border-bottom: 1px solid transparent;
@@ -91,6 +110,21 @@
   .btn--ghost { background: color-mix(in oklab, var(--sc-canvas) 40%, transparent); }
   .btn svg { width: 1.1em; height: 1.1em; flex: none; }
 
+  /* --------------------------------------------------- floating whatsapp --
+     Overlay on every page, bottom-left, above everything else. */
+  .wa-float {
+    position: fixed; z-index: var(--sc-z-chrome);
+    left: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem);
+    width: 3.4rem; height: 3.4rem; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: #25D366; color: #ffffff;
+    box-shadow: var(--sc-e2);
+    transition: transform var(--sc-d-fast) var(--sc-ease-out);
+  }
+  .wa-float:hover, .wa-float:focus-visible { transform: translateY(-2px) scale(1.05); }
+  .wa-float svg { width: 1.7rem; height: 1.7rem; }
+  @media (max-width: 860px) { .wa-float { bottom: calc(4.75rem + clamp(0.75rem, 3vw, 1.25rem)); } }
+
   /* ---------------------------------------------------------- copy panel --
      Background lives on [data-sc-copy] itself, not on a nested wrapper. The
      verify harness grades a copy block's own computed background to decide
@@ -109,9 +143,33 @@
   }
   .sc-copy--peak { padding: 0.9rem 1.5rem; border-radius: var(--sc-r-pill); text-align: center; }
 
-  /* --------------------------------------------------------- hero copy -- */
-  #hero-copy .sc-label { color: var(--sc-accent); margin-bottom: var(--sc-2); display: block; }
-  #hero-copy h1 { margin: 0 0 var(--sc-4); }
+  /* extra corner anchors — the engine only ships bottom-left/bottom-right/
+     center (.sc-copy--lead/--trail/--center); these two top anchors are
+     project-local, built the same way (position only, the engine's own
+     opacity/translateY write is anchor-agnostic). */
+  .sc-copy--lead-top {
+    inset-inline: auto; left: var(--sc-gutter); top: clamp(5.5rem, 14vh, 8rem); bottom: auto;
+  }
+  .sc-copy--trail-top {
+    inset-inline: auto; right: var(--sc-gutter); top: clamp(5.5rem, 14vh, 8rem); bottom: auto;
+    text-align: right;
+  }
+  /* small confirmation chip, e.g. "herstellerunabhängig" during the Gerät leg */
+  .sc-copy--chip { max-width: min(19rem, 70vw); padding: clamp(1rem, 2.2vw, 1.4rem) clamp(1.2rem, 2.6vw, 1.6rem); }
+  .sc-copy--chip .sc-label { color: var(--sc-accent); margin-bottom: 0.4em; display: block; }
+  .sc-copy--chip .sc-body { margin: 0; font-size: var(--sc-t-sm); }
+
+  /* --------------------------------------------------------- hero copy --
+     Narrower and top-right so the card never sits over the house in the
+     background photo; heading drops from --xl to --lg to match the
+     tighter column instead of overflowing it. */
+  #hero-copy { max-width: min(28rem, 82vw); }
+  #hero-copy h1 {
+    margin: 0 0 var(--sc-4);
+    font-size: clamp(2.1rem, 1.5rem + 2.6vw, 3rem);
+    line-height: 1.08;
+    overflow-wrap: break-word;
+  }
   #hero-copy .sc-lede { margin-bottom: var(--sc-6); }
 
   /* kinetic line reveal, reusing engine's .sc-split markup/CSS, driven by
@@ -122,11 +180,14 @@
     #hero-copy h1 .sc-split__i { transform: none !important; opacity: 1 !important; }
   }
 
-  /* ------------------------------------------------------- finale panel -- */
+  /* ------------------------------------------------------- finale panel --
+     Narrower and pushed further up off the floor than the other copy cards
+     so it never sits over the ceiling diffuser in the Auslass background,
+     and so there is a clear band underneath it for the footer bar. */
   .finale {
     inset-inline: auto; right: var(--sc-gutter); left: var(--sc-gutter);
-    bottom: clamp(1.5rem, 6vh, 4rem);
-    max-width: min(40rem, 86vw);
+    bottom: clamp(4.5rem, 11vh, 6.5rem);
+    max-width: min(28rem, 80vw);
     margin-inline: auto;
   }
   .finale h2 { margin: 0 0 var(--sc-5); }
@@ -141,12 +202,38 @@
     letter-spacing: var(--sc-track-wide); text-transform: uppercase; color: var(--sc-ink-soft); margin: 0 0 0.25em; }
   .finale__facts dd { margin: 0; color: var(--sc-ink); }
   .finale__facts a { color: var(--sc-ink); }
-  .finale__links { display: flex; flex-wrap: wrap; gap: var(--sc-2) var(--sc-5); margin-top: var(--sc-6); }
-  .finale__links a {
+
+  /* -------------------------------------------- worldflight footer bar --
+     The subpage links, pulled out of the finale card into their own strip,
+     styled like the static pages' .site-footer so the whole site reads as
+     one footer pattern. Still a [data-sc-copy] sharing the finale window —
+     the worldflight spacer must stay the only thing in document flow. */
+  .sc-world-footer {
+    inset-inline: auto;
+    left: calc(3.4rem + clamp(1.5rem, 5vw, 2.5rem));
+    right: calc(var(--rail-w) + clamp(1rem, 4vw, var(--sc-gutter)));
+    top: auto; bottom: clamp(0.85rem, 2.6vh, 1.4rem);
+    max-width: none;
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+    gap: var(--sc-3) var(--sc-6);
+    padding: 0.7rem clamp(1rem, 3vw, 1.6rem);
+    border-radius: var(--sc-r-pill);
+  }
+  .sc-world-footer__links { display: flex; flex-wrap: wrap; gap: var(--sc-2) var(--sc-5); justify-content: center; }
+  .sc-world-footer__links a {
     font-family: var(--sc-font-mono); font-size: var(--sc-t-xs); letter-spacing: var(--sc-track-wide);
     text-transform: uppercase; color: var(--sc-ink-soft); text-decoration: none;
   }
-  .finale__links a:hover, .finale__links a:focus-visible { color: var(--sc-accent); }
+  .sc-world-footer__links a:hover, .sc-world-footer__links a:focus-visible { color: var(--sc-accent); }
+  .sc-world-footer small { font-family: var(--sc-font-mono); font-size: var(--sc-t-xs); color: var(--sc-ink-soft); letter-spacing: var(--sc-track-wide); }
+  @media (max-width: 860px) {
+    .finale { bottom: calc(4.75rem + clamp(3.5rem, 9vh, 5rem)); }
+    .sc-world-footer {
+      left: var(--sc-gutter); right: var(--sc-gutter);
+      bottom: calc(4.75rem + clamp(0.6rem, 2vh, 1rem));
+      border-radius: var(--sc-r-md);
+    }
+  }
 
   /* ============================================================== rail -- */
   .rail {
@@ -214,8 +301,13 @@
       transform: translate(-50%, 6px);
     }
     .rail__node.is-active .rail__label { transform: translate(-50%, 0); }
-    .topbar { padding-right: clamp(1rem, 4vw, var(--sc-gutter)); }
+    .topbar { padding-right: clamp(1rem, 4vw, var(--sc-gutter)); justify-content: space-between; }
     .finale { bottom: calc(4.75rem + clamp(1rem, 4vh, 2rem)); }
+    .sc-copy--trail-top, .sc-copy--lead-top { text-align: left; }
+    /* bottom-anchored cards must clear both the horizontal rail strip and the
+       floating WhatsApp button that sits just above it — engine default
+       (clamp(3rem,12vh,9rem)) lands right in the button's vertical span. */
+    .sc-copy--trail, .sc-copy--lead { bottom: calc(4.75rem + clamp(4.5rem, 12vh, 6rem)); }
   }
   @media (max-width: 860px) and (prefers-reduced-motion: reduce) {
     .rail__label { transform: translate(-50%, 0); }
@@ -265,12 +357,12 @@
   <nav class="topnav" aria-label="Hauptnavigation">
     <a class="topnav__link topnav__link--hide-sm" href="service.html">Leistungen</a>
     <a class="topnav__link" href="kontakt.html">Kontakt</a>
-    <a class="btn btn--ghost" data-whatsapp-link href="https://wa.me/" target="_blank" rel="noopener">
-      <svg aria-hidden="true"><use href="#ic-whatsapp"></use></svg>
-      <span class="topnav__link--hide-sm">WhatsApp</span>
-    </a>
   </nav>
 </header>
+
+<a class="wa-float" data-whatsapp-link href="https://wa.me/" target="_blank" rel="noopener" aria-label="Per WhatsApp anfragen">
+  <svg aria-hidden="true"><use href="#ic-whatsapp"></use></svg>
+</a>
 
 <nav class="rail" aria-label="Luftweg: Ansaugung bis Auslass" id="rail">
   <ol class="rail__list" id="rail-list">
@@ -286,13 +378,6 @@
         <svg aria-hidden="true"><use href="#ic-kanal"></use></svg>
       </button>
       <span class="rail__label">Kanal</span>
-      <span class="rail__line" aria-hidden="true"><span class="rail__line-fill"></span></span>
-    </li>
-    <li class="rail__node" data-key="klappe">
-      <button class="rail__btn" type="button" data-jump="klappe" aria-current="false">
-        <svg aria-hidden="true"><use href="#ic-klappe"></use></svg>
-      </button>
-      <span class="rail__label">Brandschutzklappe</span>
       <span class="rail__line" aria-hidden="true"><span class="rail__line-fill"></span></span>
     </li>
     <li class="rail__node" data-key="geraet">
@@ -350,28 +435,32 @@
 
   <div data-sc-world-copy>
 
-    <div class="sc-copy sc-copy--lead" id="hero-copy" data-sc-copy data-sc-window="hero">
-      <span class="sc-label">Oxygen Lüftungsbau GmbH &amp; Co. KG</span>
+    <div class="sc-copy sc-copy--trail-top" id="hero-copy" data-sc-copy data-sc-window="hero">
       <h1 class="sc-display sc-display--xl" id="hero-h1">Lüftungsbau,<br>der funktioniert.</h1>
-      <p class="sc-lede">Montagepartner für TGA-Firmen und Generalunternehmer.</p>
+      <p class="sc-lede">Montage von RLT-Anlagen als Subunternehmer im Werkvertrag — für TGA-Firmen und Generalunternehmer in der Pfalz.</p>
       <a class="btn btn--accent" data-whatsapp-link href="https://wa.me/" target="_blank" rel="noopener">
         <svg aria-hidden="true"><use href="#ic-whatsapp"></use></svg>
         Per WhatsApp anfragen
       </a>
     </div>
 
-    <div class="sc-copy sc-copy--trail sc-stack" data-sc-copy data-sc-window="0.19 0.33">
+    <div class="sc-copy sc-copy--trail sc-stack" data-sc-copy data-sc-window="0.1744 0.3488 0.12 0.3">
       <span class="sc-label">Kanal- &amp; Rohrleitungsbau</span>
       <h2 class="sc-display sc-display--md">Kanäle und Rohrleitungen, fachgerecht verlegt.</h2>
       <p class="sc-body">Wir montieren Luft- und Rohrleitungen und bauen Brandschutzklappen normgerecht ein — die Grundlage jeder sicheren RLT-Anlage.</p>
     </div>
 
-    <div class="sc-copy sc-copy--center sc-copy--peak" data-sc-copy data-sc-window="0.54 0.60 0.15 0.15">
-      <span class="sc-label">Technikzentrale</span>
-      <p class="sc-lede" style="margin-top:0.3em">Montage von RLT-Anlagen, Klimageräten, Ventilatoren und Lüftungstürmen.</p>
+    <div class="sc-copy sc-copy--lead-top sc-copy--chip" data-sc-copy data-sc-window="0.36 0.60 0.2 0.25">
+      <span class="sc-label">Herstellerunabhängig</span>
+      <p class="sc-body">Wir montieren Lüftungs- und Klimageräte aller gängigen Hersteller und Fabrikate — unabhängig von Marke oder Modell.</p>
     </div>
 
-    <div class="sc-copy sc-copy--lead sc-stack" data-sc-copy data-sc-window="0.65 0.79">
+    <div class="sc-copy sc-copy--trail sc-stack" data-sc-copy data-sc-window="0.66 0.76 0.2 0.2">
+      <span class="sc-label">Verteilung</span>
+      <p class="sc-body">Montage von RLT-Anlagen, Klimageräten, Ventilatoren und Lüftungstürmen.</p>
+    </div>
+
+    <div class="sc-copy sc-copy--lead sc-stack" data-sc-copy data-sc-window="0.77 0.87 0.15 0.2">
       <span class="sc-label">Warum Oxygen</span>
       <h2 class="sc-display sc-display--md">Feste Teams. Flexibel, wenn der Bauablauf es verlangt.</h2>
       <p class="sc-body">Unsere Monteur-Teams übernehmen Ihre Baustelle zuverlässig von Anfang bis Ende. Bei Bedarf arbeiten wir in splitbaren Einsatzteams und reagieren so flexibel auf Planänderungen — mit modernem Werkzeug und gewissenhafter Ausführung. Zusätzlich vermitteln wir Fachpersonal für Heizung, Sanitär, Luft &amp; Klima, Anlagenbau und Isolation.</p>
@@ -403,13 +492,21 @@
           <dt>Bürozeiten</dt>
           <dd>Mo–Fr 08:00–16:30</dd>
         </div>
+        <div>
+          <dt>Adresse</dt>
+          <dd>In den Seewiesen 6, 67480 Edenkoben</dd>
+        </div>
       </dl>
-      <nav class="finale__links" aria-label="Weitere Seiten">
+    </div>
+
+    <div class="sc-copy sc-world-footer" data-sc-copy data-sc-window="finale">
+      <nav class="sc-world-footer__links" aria-label="Weitere Seiten">
         <a href="service.html">Leistungen</a>
         <a href="kontakt.html">Kontakt</a>
         <a href="impressum.html">Impressum</a>
         <a href="datenschutz.html">Datenschutz</a>
       </nav>
+      <small>OXYGEN Lüftungsbau GmbH &amp; Co. KG · In den Seewiesen 6 · 67480 Edenkoben</small>
     </div>
 
   </div>

@@ -46,10 +46,9 @@
   var heroH1 = document.getElementById('hero-h1');
   if (!flightEl) return;
 
-  // Six rail nodes map onto the five flight legs; leg 2 ("Kanal + Klappe")
-  // splits at its own midpoint into two nodes. Read weights straight off the
-  // markup rather than hard-coding them again, so the rail can never drift
-  // out of sync with the flight it is supposed to describe.
+  // Five rail nodes map 1:1 onto the five flight legs. Read weights straight
+  // off the markup rather than hard-coding them again, so the rail can never
+  // drift out of sync with the flight it is supposed to describe.
   var segEls = flightEl.querySelectorAll('[data-sc-segment]');
   var weights = [];
   for (var i = 0; i < segEls.length; i++) {
@@ -60,16 +59,8 @@
   for (var j = 0; j < weights.length; j++) cum.push(cum[j] + weights[j]);
   // cum = [0, leg1End, leg2End, leg3End, leg4End, leg5End] in vh-weight units
 
-  var NODE_KEYS = ['ansaugung', 'kanal', 'klappe', 'geraet', 'verteilung', 'auslass'];
-  var bounds = [
-    cum[0],
-    cum[1],
-    (cum[1] + cum[2]) / 2,
-    cum[2],
-    cum[3],
-    cum[4],
-    cum[5]
-  ].map(function (v) { return v / total; });
+  var NODE_KEYS = ['ansaugung', 'kanal', 'geraet', 'verteilung', 'auslass'];
+  var bounds = cum.map(function (v) { return v / total; });
 
   var nodeEls = {};
   var fillEls = {};
