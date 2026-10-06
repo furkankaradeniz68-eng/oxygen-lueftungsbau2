@@ -172,12 +172,20 @@
   .sc-copy--chip { max-width: min(19rem, 70vw); padding: clamp(1rem, 2.2vw, 1.4rem) clamp(1.2rem, 2.6vw, 1.6rem); }
   .sc-copy--chip .sc-label { color: var(--sc-accent); margin-bottom: 0.4em; display: block; }
   .sc-copy--chip .sc-body { margin: 0; font-size: var(--sc-t-sm); }
+  /* larger size variant, used for the Hersteller chip bottom-right in the
+     Gerät leg — scaled up and given more breathing room than the default
+     confirmation-chip size above. */
+  .sc-copy--chip-lg { max-width: min(27rem, 80vw); padding: clamp(1.5rem, 3vw, 2.1rem) clamp(1.7rem, 3.4vw, 2.3rem); }
+  .sc-copy--chip-lg .sc-body { font-size: var(--sc-t-base); }
 
   /* --------------------------------------------------------- hero copy --
-     Narrower and top-right so the card never sits over the house in the
-     background photo; heading drops from --xl to --lg to match the
-     tighter column instead of overflowing it. */
-  #hero-copy { max-width: min(28rem, 82vw); }
+     Top-right, wide enough to just clear the halfway mark on desktop (client
+     call: covering the building up to roughly where "ÜBER UNS" sits in the
+     header is fine) so the bold 800-weight headline has room to breathe —
+     at the old 28rem cap, "funktioniert." at the --xl size was wider than
+     its own line box and got cut by the kinetic-split mask's overflow:hidden
+     instead of wrapping. */
+  #hero-copy { max-width: min(38rem, 47vw); }
   #hero-copy h1 {
     margin: 0 0 var(--sc-4);
     font-size: clamp(2.5rem, 1.6rem + 3.4vw, 3.6rem);
@@ -193,6 +201,15 @@
   @media (prefers-reduced-motion: reduce) {
     #hero-copy h1 .sc-split__i { transform: none !important; opacity: 1 !important; }
   }
+
+  /* belt-and-braces guard against the same clipping class of bug anywhere
+     else a heading goes through the kinetic line-split: .sc-split__i
+     (engine CSS) is an unconstrained inline-block, so a single long German
+     compound word wider than its line box would overflow the split mask's
+     overflow:hidden and lose its tail instead of wrapping. Giving it a
+     max-width to shrink against, plus a last-resort mid-word break, makes
+     that physically impossible regardless of how a card gets sized. */
+  .sc-copy .sc-split__i { max-width: 100%; overflow-wrap: anywhere; }
 
   /* ------------------------------------------------------- finale panel --
      Wide and flat, not another tall narrow copy card: text block and the
@@ -215,11 +232,24 @@
   .finale .sc-label { color: var(--sc-accent); display: block; margin-bottom: 0.5em; }
   .finale h2 { margin: 0 0 0.3em; font-size: clamp(1.4rem, 1.15rem + 1.3vw, 1.9rem); }
   .finale .sc-body { margin: 0; color: var(--sc-ink-soft); }
-  .finale__actions { display: flex; flex-wrap: wrap; flex: none; gap: var(--sc-3); justify-content: flex-end; }
+  /* .finale__actions is a column: the button row, then the hours caption
+     beneath it. Deliberately NOT a single wrapping flex row with a
+     flex-basis:100% break element — a percentage flex-basis inside a
+     flex:none (shrink-to-fit) container resolves unpredictably and can
+     inflate the container's own measured width, starving .finale__text
+     of its share of the row. A plain column avoids that class of bug. */
+  .finale__actions { display: flex; flex-direction: column; align-items: flex-end; flex: none; gap: 0.6rem; }
+  .finale__buttons { display: flex; flex-wrap: wrap; gap: var(--sc-3); justify-content: flex-end; }
+  .finale__hours {
+    text-align: right;
+    font-size: var(--sc-t-sm); color: var(--sc-ink-soft);
+  }
   @media (max-width: 860px) {
     .finale { bottom: calc(4.75rem + clamp(1.5rem, 5vh, 2.5rem)); padding: clamp(1.4rem, 5vw, 1.8rem); }
     .finale__row { flex-direction: column; align-items: stretch; text-align: center; gap: var(--sc-4); }
-    .finale__actions { justify-content: center; }
+    .finale__actions { align-items: center; }
+    .finale__buttons { justify-content: center; }
+    .finale__hours { text-align: center; }
   }
 
   /* ---------------------------------------------- pinned-stage release --
@@ -527,7 +557,7 @@
       <p class="sc-body">Wir montieren Luft- und Rohrleitungen und bauen Brandschutzklappen normgerecht ein — die Grundlage jeder sicheren RLT-Anlage.</p>
     </div>
 
-    <div class="sc-copy sc-copy--lead-top sc-copy--chip" data-sc-copy data-sc-window="0.3488 0.6279 0.08 0.2">
+    <div class="sc-copy sc-copy--trail sc-copy--chip sc-copy--chip-lg" data-sc-copy data-sc-window="0.3488 0.6279 0.08 0.2">
       <span class="sc-label">Herstellerunabhängig</span>
       <p class="sc-body">Wir montieren Lüftungs- und Klimageräte aller gängigen Hersteller und Fabrikate — unabhängig von Marke oder Modell.</p>
     </div>
@@ -546,11 +576,14 @@
           <p class="sc-body">Kurz schreiben, was Sie brauchen — als Subunternehmer im Lüftungsbau melden wir uns zeitnah mit einem Termin zurück.</p>
         </div>
         <div class="finale__actions">
-          <a class="btn btn--accent" data-whatsapp-link href="https://wa.me/" target="_blank" rel="noopener">
-            <svg aria-hidden="true"><use href="#ic-whatsapp"></use></svg>
-            Per WhatsApp anfragen
-          </a>
-          <a class="btn btn--ghost" href="tel:+4963239129790">06323 9129790</a>
+          <div class="finale__buttons">
+            <a class="btn btn--accent" data-whatsapp-link href="https://wa.me/" target="_blank" rel="noopener">
+              <svg aria-hidden="true"><use href="#ic-whatsapp"></use></svg>
+              Per WhatsApp anfragen
+            </a>
+            <a class="btn btn--ghost" href="tel:+4963239129790">06323 9129790</a>
+          </div>
+          <span class="finale__hours">Bürozeiten: Mo–Fr 08:00–16:30 Uhr</span>
         </div>
       </div>
     </div>
