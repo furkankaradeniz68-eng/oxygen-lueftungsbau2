@@ -95,6 +95,49 @@
   .topnav__link:hover, .topnav__link:focus-visible { border-color: var(--sc-accent); }
   @media (max-width: 560px) { .topnav__link--hide-sm { display: none; } }
 
+  /* ----------------------------------------------------- mobile nav burger --
+     Below 560px the topnav links (Leistungen, Über uns, Kontakt) had no
+     visible home at all — .topnav__link--hide-sm hid everything but
+     Kontakt, and Kontakt alone isn't real site navigation. This swaps the
+     link row for a burger button that drops down the full link list,
+     wrapping onto a second row inside the same fixed .topbar rather than a
+     separately positioned overlay, so it never needs to guess the topbar's
+     own height. */
+  .nav-burger {
+    display: none;
+    align-items: center; justify-content: center;
+    width: 2.4rem; height: 2.4rem; flex: none;
+    background: transparent; border: none; color: #141414; cursor: pointer; padding: 0;
+  }
+  .nav-burger svg { width: 1.6rem; height: 1.6rem; }
+  .nav-burger svg .nav-burger__cross { display: none; }
+  .nav-burger[aria-expanded="true"] .nav-burger__bars { display: none; }
+  .nav-burger[aria-expanded="true"] .nav-burger__cross { display: block; }
+  .mobile-nav { display: none; }
+  @media (max-width: 560px) {
+    .topbar { flex-wrap: wrap; }
+    .topnav { display: none; }
+    .nav-burger { display: flex; }
+    .mobile-nav.is-open {
+      display: flex; flex-direction: column;
+      flex-basis: 100%; width: 100%;
+      margin-top: clamp(0.75rem, 2vw, 1.25rem);
+      padding-top: clamp(0.75rem, 2vw, 1.25rem);
+      border-top: 1px solid rgba(20, 20, 20, 0.12);
+    }
+    .mobile-nav a {
+      font-family: var(--sc-font-mono);
+      font-size: var(--sc-t-sm);
+      letter-spacing: var(--sc-track-wide);
+      text-transform: uppercase;
+      color: #141414;
+      text-decoration: none;
+      padding: 0.85rem 0;
+      border-bottom: 1px solid rgba(20, 20, 20, 0.1);
+    }
+    .mobile-nav a:last-child { border-bottom: none; }
+  }
+
   /* --------------------------------------------------------------- btn -- */
   .btn {
     display: inline-flex; align-items: center; gap: 0.55em;
@@ -404,6 +447,23 @@
        floating WhatsApp button that sits just above it — engine default
        (clamp(3rem,12vh,9rem)) lands right in the button's vertical span. */
     .sc-copy--trail, .sc-copy--lead { bottom: calc(4.75rem + clamp(4.5rem, 12vh, 6rem)); }
+
+    /* every in-world card to one consistent width on mobile — the
+       Herstellerunabhängig chip was already the right size, the others
+       (Kanal, Warum Oxygen, and especially the hero) were falling back to
+       much wider or, for the hero's own ID-level override, much narrower
+       values, so they read as mismatched card sizes. The finale panel is
+       intentionally excluded: it is a full-width closing bar, not a card. */
+    .sc-copy:not(.finale) { max-width: min(27rem, 80vw); }
+
+    /* the hero heading carries its own larger desktop-only font-size
+       (clamp up to 3.6rem) sized for a ~47vw-wide card on desktop; at the
+       mobile card width above that size forced single words wider than
+       the card itself, so overflow-wrap broke them mid-word. Matching the
+       same --sc-t-2xl scale every other card's heading already uses on
+       mobile keeps it readable and visually consistent with the rest. */
+    #hero-copy { max-width: min(27rem, 80vw); }
+    #hero-copy h1 { font-size: var(--sc-t-2xl); letter-spacing: var(--sc-track-snug); }
   }
 </style>
 </head>
@@ -458,6 +518,17 @@
     <a class="topnav__link topnav__link--hide-sm" href="service.html">Leistungen</a>
     <a class="topnav__link topnav__link--hide-sm" href="ueber-uns.html">Über uns</a>
     <a class="topnav__link" href="kontakt.html">Kontakt</a>
+  </nav>
+  <button type="button" class="nav-burger" id="nav-burger" aria-expanded="false" aria-controls="mobile-nav" aria-label="Menü öffnen">
+    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <g class="nav-burger__bars"><path d="M4 7h16M4 12h16M4 17h16"/></g>
+      <g class="nav-burger__cross"><path d="M6 6l12 12M18 6L6 18"/></g>
+    </svg>
+  </button>
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile Navigation">
+    <a href="service.html">Leistungen</a>
+    <a href="ueber-uns.html">Über uns</a>
+    <a href="kontakt.html">Kontakt</a>
   </nav>
 </header>
 
@@ -630,5 +701,31 @@
 <script src="scrollcraft.js"></script>
 <script src="assets/site.js"></script>
 <script>ScrollCraft.mount(document.body);</script>
+<script>
+(function () {
+  var burger = document.getElementById('nav-burger');
+  var panel = document.getElementById('mobile-nav');
+  if (!burger || !panel) return;
+  function closeMenu() {
+    panel.classList.remove('is-open');
+    burger.setAttribute('aria-expanded', 'false');
+    burger.setAttribute('aria-label', 'Menü öffnen');
+  }
+  function openMenu() {
+    panel.classList.add('is-open');
+    burger.setAttribute('aria-expanded', 'true');
+    burger.setAttribute('aria-label', 'Menü schließen');
+  }
+  burger.addEventListener('click', function () {
+    if (panel.classList.contains('is-open')) closeMenu(); else openMenu();
+  });
+  panel.addEventListener('click', function (e) {
+    if (e.target.closest('a')) closeMenu();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && panel.classList.contains('is-open')) closeMenu();
+  });
+})();
+</script>
 </body>
 </html>
