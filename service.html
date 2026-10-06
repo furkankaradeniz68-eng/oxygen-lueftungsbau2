@@ -129,7 +129,7 @@
     <svg class="section-divider__arrow" viewBox="0 0 48 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4 L24 20 L44 4"/></svg>
   </div>
 
-  <div class="sc-wrap sc-section" style="padding-top:0">
+  <div class="sc-wrap sc-section" style="padding-block:0">
     <h2 class="sc-display sc-display--md">Personaldienstleistung</h2>
     <p class="sc-body">Zusätzlich zur eigenen Montage vermitteln wir Fachpersonal für angrenzende Gewerke in der Pfalz und darüber hinaus — wenn Ihre Baustelle mehr braucht als Lüftungsbau allein.</p>
     <div class="values-row">
@@ -141,12 +141,8 @@
     </div>
 
     <!--
-      Auto-scrolling trade strip. Two of the five cards use generated
-      photography (out/phase4/*.png -> assets/phase4/*.webp); the other
-      three are icon cards until KIE-credit budget allows generating
-      matching photos for Luft & Klima / Anlagenbau / Isolierung — at
-      that point swap .trade-card--icon for .trade-card--photo with the
-      same markup shape as the Heizung/Sanitär cards below.
+      Auto-scrolling trade strip, all five cards generated photography
+      (out/phase4|phase7/*.png -> assets/phase4|phase7/*.webp).
       The track is the 5 cards duplicated once so the CSS animation can
       translate exactly -50% and loop with no visible seam. The second
       copy is aria-hidden so screen readers only see the real list once.
@@ -162,18 +158,18 @@
             <img src="assets/phase4/sanitaer.webp" alt="Sanitärinstallation: Kupfer- und Verteilerleitungen in einem Technikraum" loading="lazy" width="1000" height="750">
             <figcaption>Sanitär</figcaption>
           </figure>
-          <div class="trade-card trade-card--icon">
-            <svg aria-hidden="true"><use href="#ic-trade-klima"></use></svg>
-            <span>Luft &amp; Klima</span>
-          </div>
-          <div class="trade-card trade-card--icon">
-            <svg aria-hidden="true"><use href="#ic-trade-anlagenbau"></use></svg>
-            <span>Anlagenbau</span>
-          </div>
-          <div class="trade-card trade-card--icon">
-            <svg aria-hidden="true"><use href="#ic-trade-isolierung"></use></svg>
-            <span>Isolierung</span>
-          </div>
+          <figure class="trade-card trade-card--photo">
+            <img src="assets/phase7/klima.webp" alt="Lüftungs- und Klimatechnik: Luftauslass eines Klimageräts mit Kanalanschluss" loading="lazy" width="1000" height="750">
+            <figcaption>Luft &amp; Klima</figcaption>
+          </figure>
+          <figure class="trade-card trade-card--photo">
+            <img src="assets/phase7/anlagenbau.webp" alt="Anlagenbau: verzinkte Rohrleitungen mit Flanschverbindungen und Manometern" loading="lazy" width="1000" height="750">
+            <figcaption>Anlagenbau</figcaption>
+          </figure>
+          <figure class="trade-card trade-card--photo">
+            <img src="assets/phase7/isolierung.webp" alt="Isolierung: gedämmte Rohrleitung mit Aluminiumkaschierung im Technikraum" loading="lazy" width="1000" height="750">
+            <figcaption>Isolierung</figcaption>
+          </figure>
         </div>
         <div class="trade-slider__group" aria-hidden="true">
           <figure class="trade-card trade-card--photo">
@@ -184,21 +180,25 @@
             <img src="assets/phase4/sanitaer.webp" alt="" loading="lazy" width="1000" height="750">
             <figcaption>Sanitär</figcaption>
           </figure>
-          <div class="trade-card trade-card--icon">
-            <svg aria-hidden="true"><use href="#ic-trade-klima"></use></svg>
-            <span>Luft &amp; Klima</span>
-          </div>
-          <div class="trade-card trade-card--icon">
-            <svg aria-hidden="true"><use href="#ic-trade-anlagenbau"></use></svg>
-            <span>Anlagenbau</span>
-          </div>
-          <div class="trade-card trade-card--icon">
-            <svg aria-hidden="true"><use href="#ic-trade-isolierung"></use></svg>
-            <span>Isolierung</span>
-          </div>
+          <figure class="trade-card trade-card--photo">
+            <img src="assets/phase7/klima.webp" alt="" loading="lazy" width="1000" height="750">
+            <figcaption>Luft &amp; Klima</figcaption>
+          </figure>
+          <figure class="trade-card trade-card--photo">
+            <img src="assets/phase7/anlagenbau.webp" alt="" loading="lazy" width="1000" height="750">
+            <figcaption>Anlagenbau</figcaption>
+          </figure>
+          <figure class="trade-card trade-card--photo">
+            <img src="assets/phase7/isolierung.webp" alt="" loading="lazy" width="1000" height="750">
+            <figcaption>Isolierung</figcaption>
+          </figure>
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="section-divider">
+    <svg class="section-divider__arrow" viewBox="0 0 48 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4 L24 20 L44 4"/></svg>
   </div>
 
   <div class="sc-wrap sc-section" style="padding-top:0">
