@@ -7,22 +7,22 @@
    worldflight-specific rules (.sc-copy, .rail, .finale) that only apply there.
    ========================================================================== */
 
-/* self-hosted Arimo — variable weight axis, no runtime Google Fonts connection */
+/* self-hosted Montserrat — variable weight axis, no runtime Google Fonts connection */
 @font-face {
-  font-family: "Arimo";
+  font-family: "Montserrat";
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;
-  src: url("fonts/arimo-latin.woff2") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  src: url("fonts/montserrat-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
-  font-family: "Arimo";
+  font-family: "Montserrat";
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;
-  src: url("fonts/arimo-latin-ext.woff2") format("woff2");
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  src: url("fonts/montserrat-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
 :root {
@@ -38,13 +38,26 @@
   --oxy-chip:       #ffffff;
   --oxy-chip-ink:   #141414;
 
-  --sc-font-display: "Arimo", -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-  --sc-font-text:    "Arimo", -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-  --sc-font-mono:    ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+  --sc-font-display: "Montserrat", -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --sc-font-text:    "Montserrat", -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  /* nav/label treatment also rides on Montserrat now — kept as its own
+     token (rather than merged into --sc-font-display) so the uppercase,
+     tracked-out, bold label styling it carries stays easy to retarget. */
+  --sc-font-mono:    "Montserrat", -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
 }
 
 /* headings read as near-black for contrast; body copy stays on --sc-ink (#585857) */
 h1, h2, h3, h4 { color: #141414; }
+
+/* ---------------------------------------------- bold-by-default type --
+   Montserrat at the engine's default weight (500) reads thin at display
+   sizes, and the nav/label layer was leaning on a monospace face's extra
+   visual weight that is gone now too — so headings, nav and labels all
+   move to a heavier weight to read as intentionally bold rather than
+   accidentally light. */
+.sc-display { font-weight: 800; }
+.topnav__link, .sc-label, .site-footer__heading,
+.contact-facts dt, .legal dt, .form-field label { font-weight: 700; }
 
 /* ------------------------------------------------------------- top bar -- */
 .topbar {
@@ -153,7 +166,15 @@ h1, h2, h3, h4 { color: #141414; }
   border-radius: var(--sc-r-lg);
   padding: var(--sc-6);
 }
-.card h3 { font-family: var(--sc-font-display); font-size: var(--sc-t-lg); margin: 0 0 var(--sc-3); font-weight: 500; }
+.card__icon {
+  width: 2.75rem; height: 2.75rem; border-radius: var(--sc-r-md);
+  display: flex; align-items: center; justify-content: center;
+  background: color-mix(in oklab, var(--sc-accent) 12%, transparent);
+  color: var(--sc-accent);
+  margin-bottom: var(--sc-4);
+}
+.card__icon svg { width: 1.5rem; height: 1.5rem; }
+.card h3 { font-family: var(--sc-font-display); font-size: var(--sc-t-lg); margin: 0 0 var(--sc-3); font-weight: 700; }
 .card ul { margin: 0; padding-left: 1.1em; color: var(--sc-ink-soft); }
 .card li + li { margin-top: 0.4em; }
 
@@ -202,26 +223,62 @@ h1, h2, h3, h4 { color: #141414; }
 .legal dt:first-child { margin-top: 0; }
 .legal dd { margin: 0 0 0.2em; color: var(--sc-ink); }
 
-/* ------------------------------------------------------------- footer -- */
+/* ============================================================ site footer --
+   Shared structure with index.html's worldflight page: logo + tagline,
+   three nav columns, contact column with icon-prefixed phone/email,
+   divider, bottom bar with copyright and scroll-to-top. Explicit dark
+   tokens (not the light-theme --sc-canvas/--sc-ink this stylesheet sets
+   above) so the footer reads identically here and on the dark homepage. */
 .site-footer {
-  border-top: 1px solid var(--sc-hairline);
-  padding-block: var(--sc-7);
-  /* extra bottom clearance: the floating WhatsApp button is fixed
-     bottom-left and reaches ~5.15rem up from the viewport edge, sitting
-     directly over the first footer nav link ("Startseite") whenever a page
-     is short enough to scroll to its true bottom. Reserving space here
-     keeps the footer's last row above the button at any viewport width. */
-  padding-bottom: calc(var(--sc-7) + 4.5rem);
+  background: #111316; color: #f2efe9;
   margin-top: var(--sc-9);
+  /* extra bottom clearance: the floating WhatsApp button is fixed
+     bottom-left and reaches ~5.15rem up from the viewport edge (~8.9rem on
+     the ≤860px layout, where it rides higher to clear mobile chrome), so it
+     sits directly over the footer's bottom row whenever a page is short
+     enough to scroll to its true bottom. */
+  padding-bottom: 6.5rem;
 }
-.site-footer__row {
-  display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--sc-5);
-  align-items: flex-start;
+@media (max-width: 860px) {
+  .site-footer { padding-bottom: 10.5rem; }
 }
-.site-footer nav { display: flex; flex-wrap: wrap; gap: var(--sc-2) var(--sc-5); }
-.site-footer nav a {
-  font-family: var(--sc-font-mono); font-size: var(--sc-t-xs); letter-spacing: var(--sc-track-wide);
-  text-transform: uppercase; color: var(--sc-ink-soft); text-decoration: none;
+.site-footer__top {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1.3fr;
+  gap: var(--sc-7) var(--sc-6);
+  padding-block: clamp(2.5rem, 6vw, 4rem) clamp(2rem, 5vw, 3rem);
+  border-bottom: 1px solid rgba(255,255,255,0.12);
 }
-.site-footer nav a:hover, .site-footer nav a:focus-visible { color: var(--sc-accent); }
-.site-footer small { color: var(--sc-ink-soft); font-size: var(--sc-t-xs); }
+.site-footer__brand img { height: 1.9rem; width: auto; display: block; filter: brightness(0) invert(1); margin-bottom: var(--sc-3); }
+.site-footer__brand p { margin: 0; color: #9ba0ab; font-size: var(--sc-t-sm); max-width: 20rem; line-height: 1.5; }
+.site-footer__heading {
+  display: block; font-family: var(--sc-font-mono); font-size: var(--sc-t-xs);
+  letter-spacing: var(--sc-track-wide); text-transform: uppercase; color: #8a8f99;
+  margin-bottom: var(--sc-3);
+}
+.site-footer__col nav, .site-footer__contact { display: flex; flex-direction: column; gap: 0.65em; }
+.site-footer__col nav a, .site-footer__contact a, .site-footer__contact span {
+  color: #f2efe9; text-decoration: none; font-size: var(--sc-t-sm);
+  display: inline-flex; align-items: center; gap: 0.55em;
+}
+.site-footer__col nav a:hover, .site-footer__col nav a:focus-visible,
+.site-footer__contact a:hover, .site-footer__contact a:focus-visible { color: var(--sc-accent); }
+.site-footer__contact svg { width: 1rem; height: 1rem; flex: none; color: var(--sc-accent); }
+.site-footer__contact span { color: #9ba0ab; }
+.site-footer__bottom {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--sc-4);
+  padding-block: clamp(1.1rem, 2.5vw, 1.5rem);
+}
+.site-footer__bottom small { color: #8a8f99; font-size: var(--sc-t-xs); letter-spacing: var(--sc-track-wide); }
+.site-footer__top-btn {
+  all: unset; cursor: pointer;
+  width: 2.25rem; height: 2.25rem; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; flex: none;
+  color: #8a8f99; border: 1.5px solid rgba(255,255,255,0.18);
+  transition: border-color var(--sc-d-base) var(--sc-ease-out), color var(--sc-d-base) var(--sc-ease-out);
+}
+.site-footer__top-btn:hover, .site-footer__top-btn:focus-visible { border-color: var(--sc-accent); color: var(--sc-accent); }
+@media (max-width: 760px) {
+  .site-footer__top { grid-template-columns: 1fr 1fr; }
+  .site-footer__brand { grid-column: 1 / -1; }
+}

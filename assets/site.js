@@ -167,6 +167,14 @@
     var t = Math.min(Math.max((y - top) / Math.max(vh, 1), 0), total);
     var pr = t / total;
 
+    // release — flip the pinned stage from fixed to absolute the instant
+    // progress first reaches 100% (y >= top + total*vh), so the real
+    // <footer> after #flug can scroll into view. See the CSS note on
+    // body.sc-flight-released in index.html for why this is absolute+
+    // bottom-anchored rather than inset:0.
+    var released = y >= top + total * vh;
+    document.body.classList.toggle('sc-flight-released', released);
+
     // rail
     for (var k = 0; k < NODE_KEYS.length; k++) {
       var key = NODE_KEYS[k];
