@@ -277,15 +277,18 @@ h1, h2, h3, h4 { color: #141414; }
 }
 
 /* ----------------------------------------------------- section divider --
-   Thin red rule marking a hard transition between two sections, with a
+   Bold red rule marking a hard transition between two sections, with a
    wide downward chevron centered on it. The chevron sits on a canvas-
    colored patch so the rule appears to break around it rather than
-   running underneath. Shared between service.html (Montage ->
-   Personaldienstleistung) and ueber-uns.html (Hero -> Unser Unternehmen). */
+   running underneath. Full-bleed (not wrapped in .sc-wrap) so it runs
+   edge to edge regardless of the page's content max-width. Shared between
+   service.html (Montage -> Personaldienstleistung) and ueber-uns.html
+   (Hero -> Unser Unternehmen). */
 .section-divider {
   position: relative;
-  height: 1px;
-  background: color-mix(in oklab, var(--sc-accent) 45%, transparent);
+  width: 100%;
+  height: 4px;
+  background: var(--sc-accent);
   margin: clamp(2.5rem, 6vw, 4.5rem) 0;
 }
 .section-divider__arrow {

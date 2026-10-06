@@ -377,17 +377,10 @@
     background: var(--sc-hairline-strong); margin-block: 0.3rem; }
   .rail__line-fill { position: absolute; inset: 0 0 auto 0; width: 100%; height: var(--fill, 0%);
     background: var(--sc-accent); transition: height 90ms linear; }
-  .rail__label {
-    position: absolute; right: calc(var(--rail-w) + 0.75rem);
-    font-family: var(--sc-font-mono); font-size: var(--sc-t-xs); letter-spacing: var(--sc-track-wide);
-    text-transform: uppercase; white-space: nowrap; color: var(--sc-ink-soft);
-    opacity: 0; transform: translateX(6px);
-    transition: opacity var(--sc-d-base) var(--sc-ease-out), transform var(--sc-d-base) var(--sc-ease-out);
-    pointer-events: none;
-    background: color-mix(in oklab, var(--sc-canvas) 78%, transparent);
-    padding: 0.3em 0.6em; border-radius: var(--sc-r-sm);
-  }
-  .rail__node.is-active .rail__label { opacity: 1; transform: translateX(0); color: var(--sc-ink); }
+  /* labels overlapped the in-world copy cards on the right edge at several
+     scroll positions, so the rail stays icon-only; the dots/fill already
+     communicate progress without the text repeating it. */
+  .rail__label { display: none; }
   @media (prefers-reduced-motion: reduce) {
     .rail__label { transition: opacity var(--sc-d-fast) linear; transform: none; }
     .rail__line-fill { transition: none; }
@@ -404,11 +397,6 @@
     .rail__node { flex-direction: row; }
     .rail__line { width: auto; height: 2px; flex: 1; min-height: 0; min-width: 0.75rem; margin-block: 0; margin-inline: 0.3rem; }
     .rail__line-fill { inset: 0 auto 0 0; width: var(--fill, 0%); height: 100%; transition: width 90ms linear; }
-    .rail__label {
-      right: auto; left: 50%; bottom: calc(100% + 0.5rem); top: auto;
-      transform: translate(-50%, 6px);
-    }
-    .rail__node.is-active .rail__label { transform: translate(-50%, 0); }
     .topbar { padding-right: clamp(1rem, 4vw, var(--sc-gutter)); justify-content: space-between; }
     .finale { bottom: calc(4.75rem + clamp(1rem, 4vh, 2rem)); }
     .sc-copy--trail-top, .sc-copy--lead-top { text-align: left; }
@@ -416,9 +404,6 @@
        floating WhatsApp button that sits just above it — engine default
        (clamp(3rem,12vh,9rem)) lands right in the button's vertical span. */
     .sc-copy--trail, .sc-copy--lead { bottom: calc(4.75rem + clamp(4.5rem, 12vh, 6rem)); }
-  }
-  @media (max-width: 860px) and (prefers-reduced-motion: reduce) {
-    .rail__label { transform: translate(-50%, 0); }
   }
 </style>
 </head>
@@ -483,35 +468,35 @@
 <nav class="rail" aria-label="Luftweg: Ansaugung bis Auslass" id="rail">
   <ol class="rail__list" id="rail-list">
     <li class="rail__node" data-key="ansaugung">
-      <button class="rail__btn" type="button" data-jump="ansaugung" aria-current="false">
+      <button class="rail__btn" type="button" data-jump="ansaugung" aria-current="false" aria-label="Ansaugung">
         <svg aria-hidden="true"><use href="#ic-ansaugung"></use></svg>
       </button>
       <span class="rail__label">Ansaugung</span>
       <span class="rail__line" aria-hidden="true"><span class="rail__line-fill"></span></span>
     </li>
     <li class="rail__node" data-key="kanal">
-      <button class="rail__btn" type="button" data-jump="kanal" aria-current="false">
+      <button class="rail__btn" type="button" data-jump="kanal" aria-current="false" aria-label="Kanal">
         <svg aria-hidden="true"><use href="#ic-kanal"></use></svg>
       </button>
       <span class="rail__label">Kanal</span>
       <span class="rail__line" aria-hidden="true"><span class="rail__line-fill"></span></span>
     </li>
     <li class="rail__node" data-key="geraet">
-      <button class="rail__btn" type="button" data-jump="geraet" aria-current="false">
+      <button class="rail__btn" type="button" data-jump="geraet" aria-current="false" aria-label="Gerät">
         <svg aria-hidden="true"><use href="#ic-geraet"></use></svg>
       </button>
       <span class="rail__label">Gerät</span>
       <span class="rail__line" aria-hidden="true"><span class="rail__line-fill"></span></span>
     </li>
     <li class="rail__node" data-key="verteilung">
-      <button class="rail__btn" type="button" data-jump="verteilung" aria-current="false">
+      <button class="rail__btn" type="button" data-jump="verteilung" aria-current="false" aria-label="Verteilung">
         <svg aria-hidden="true"><use href="#ic-verteilung"></use></svg>
       </button>
       <span class="rail__label">Verteilung</span>
       <span class="rail__line" aria-hidden="true"><span class="rail__line-fill"></span></span>
     </li>
     <li class="rail__node" data-key="auslass">
-      <button class="rail__btn" type="button" data-jump="auslass" aria-current="false">
+      <button class="rail__btn" type="button" data-jump="auslass" aria-current="false" aria-label="Auslass">
         <svg aria-hidden="true"><use href="#ic-auslass"></use></svg>
       </button>
       <span class="rail__label">Auslass</span>
