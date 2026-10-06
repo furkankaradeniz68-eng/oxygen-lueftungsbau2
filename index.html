@@ -429,6 +429,10 @@
     .rail__line-fill { transition: none; }
   }
 
+  /* short mobile-only stand-in for the Warum-Oxygen paragraph, see the
+     media query below — hidden by default so desktop keeps the full text. */
+  .sc-body--short { display: none; }
+
   /* mobile: bottom horizontal strip */
   @media (max-width: 860px) {
     .rail {
@@ -464,6 +468,15 @@
        mobile keeps it readable and visually consistent with the rest. */
     #hero-copy { max-width: min(27rem, 80vw); }
     #hero-copy h1 { font-size: var(--sc-t-2xl); letter-spacing: var(--sc-track-snug); }
+
+    /* Warum-Oxygen card: swap to the shorter paragraph and tighten the
+       heading/body size a touch — the full paragraph plus default sizing
+       pushed this card's own height past the viewport, cutting its heading
+       off above the fold. */
+    .sc-body--full { display: none; }
+    .sc-body--short { display: block; }
+    .sc-copy--lead.sc-copy--accent h2 { font-size: var(--sc-t-xl); }
+    .sc-copy--lead.sc-copy--accent .sc-body { font-size: var(--sc-t-sm); }
   }
 </style>
 </head>
@@ -631,7 +644,8 @@
     <div class="sc-copy sc-copy--lead sc-stack sc-copy--accent" data-sc-copy data-sc-window="0.6279 0.8140 0.1 0.2">
       <span class="sc-label">Warum Oxygen</span>
       <h2 class="sc-display sc-display--md">Feste Teams. Flexibel, wenn der Bauablauf es verlangt.</h2>
-      <p class="sc-body">Unsere Monteur-Teams übernehmen Ihre Baustelle zuverlässig von Anfang bis Ende. Bei Bedarf arbeiten wir in splitbaren Einsatzteams und reagieren so flexibel auf Planänderungen — mit modernem Werkzeug und gewissenhafter Ausführung. Zusätzlich vermitteln wir Fachpersonal für Heizung, Sanitär, Luft &amp; Klima, Anlagenbau und Isolierung.</p>
+      <p class="sc-body sc-body--full">Unsere Monteur-Teams übernehmen Ihre Baustelle zuverlässig von Anfang bis Ende. Bei Bedarf arbeiten wir in splitbaren Einsatzteams und reagieren so flexibel auf Planänderungen — mit modernem Werkzeug und gewissenhafter Ausführung. Zusätzlich vermitteln wir Fachpersonal für Heizung, Sanitär, Luft &amp; Klima, Anlagenbau und Isolierung.</p>
+      <p class="sc-body sc-body--short">Unsere Monteur-Teams übernehmen Ihre Baustelle zuverlässig von Anfang bis Ende — flexibel, mit modernem Werkzeug. Zusätzlich vermitteln wir Fachpersonal für Heizung, Sanitär, Luft &amp; Klima, Anlagenbau und Isolierung.</p>
     </div>
 
     <div class="sc-copy finale" data-sc-copy data-sc-window="finale">
@@ -701,31 +715,5 @@
 <script src="scrollcraft.js"></script>
 <script src="assets/site.js"></script>
 <script>ScrollCraft.mount(document.body);</script>
-<script>
-(function () {
-  var burger = document.getElementById('nav-burger');
-  var panel = document.getElementById('mobile-nav');
-  if (!burger || !panel) return;
-  function closeMenu() {
-    panel.classList.remove('is-open');
-    burger.setAttribute('aria-expanded', 'false');
-    burger.setAttribute('aria-label', 'Menü öffnen');
-  }
-  function openMenu() {
-    panel.classList.add('is-open');
-    burger.setAttribute('aria-expanded', 'true');
-    burger.setAttribute('aria-label', 'Menü schließen');
-  }
-  burger.addEventListener('click', function () {
-    if (panel.classList.contains('is-open')) closeMenu(); else openMenu();
-  });
-  panel.addEventListener('click', function (e) {
-    if (e.target.closest('a')) closeMenu();
-  });
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && panel.classList.contains('is-open')) closeMenu();
-  });
-})();
-</script>
 </body>
 </html>

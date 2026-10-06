@@ -38,6 +38,36 @@
     }
   })();
 
+  // ------------------------------------------------------------ mobile nav --
+  // Burger toggle for the header, present on every page (worldflight +
+  // static subpages) so — like wireScrollTop above — it is wired here,
+  // ahead of the worldflight-only early return below, rather than inside
+  // the geometry block that bails out on pages with no [data-sc-mode].
+  (function wireMobileNav() {
+    var burger = document.getElementById('nav-burger');
+    var panel = document.getElementById('mobile-nav');
+    if (!burger || !panel) return;
+    function closeMenu() {
+      panel.classList.remove('is-open');
+      burger.setAttribute('aria-expanded', 'false');
+      burger.setAttribute('aria-label', 'Menü öffnen');
+    }
+    function openMenu() {
+      panel.classList.add('is-open');
+      burger.setAttribute('aria-expanded', 'true');
+      burger.setAttribute('aria-label', 'Menü schließen');
+    }
+    burger.addEventListener('click', function () {
+      if (panel.classList.contains('is-open')) closeMenu(); else openMenu();
+    });
+    panel.addEventListener('click', function (e) {
+      if (e.target.closest('a')) closeMenu();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && panel.classList.contains('is-open')) closeMenu();
+    });
+  })();
+
   // ---------------------------------------------------- resize/font guard --
   // If innerHeight reads 0 at mount (some mobile browsers mid-chrome-resize),
   // the worldflight spacer computes to 0 and the whole flight is unreachable.
@@ -59,6 +89,7 @@
   var railList = document.getElementById('rail-list');
   var heroH1 = document.getElementById('hero-h1');
   if (!flightEl) return;
+  var spacerEl = flightEl.querySelector('[data-sc-spacer]');
 
   // Five rail nodes map 1:1 onto the five flight legs. Read weights straight
   // off the markup rather than hard-coding them again, so the rail can never
@@ -168,11 +199,25 @@
     var pr = t / total;
 
     // release — flip the pinned stage from fixed to absolute the instant
-    // progress first reaches 100% (y >= top + total*vh), so the real
-    // <footer> after #flug can scroll into view. See the CSS note on
-    // body.sc-flight-released in index.html for why this is absolute+
-    // bottom-anchored rather than inset:0.
-    var released = y >= top + total * vh;
+    // the spacer's own bottom edge has scrolled up to the bottom of the
+    // viewport, so the real <footer> after #flug can scroll into view. See
+    // the CSS note on body.sc-flight-released in index.html for why this is
+    // absolute+bottom-anchored rather than inset:0.
+    //
+    // Measured against live getBoundingClientRect, not a vh-multiplied
+    // threshold (y >= top + total*vh): mobile Safari grows window.innerHeight
+    // by the address-bar height once it auto-hides mid-scroll, but the
+    // engine deliberately freezes the spacer's own pixel height against that
+    // same class of resize (scrollcraft.js's "ignore URL-bar-only height
+    // changes" guard) so the page does not jump under the reader's thumb. A
+    // vh-multiplied threshold computed with the new, larger vh could then
+    // exceed what the frozen-height spacer can ever satisfy, so the release
+    // condition was never met and the reader hit the real end of the
+    // document while the stage was still pinned fixed over it — scrolling
+    // further did nothing, which read as the page being stuck right at the
+    // closing card. Comparing two live rects instead of a rect to a
+    // recomputed vh guarantees they are always measured on the same ruler.
+    var released = spacerEl ? spacerEl.getBoundingClientRect().bottom <= vh : y >= top + total * vh;
     document.body.classList.toggle('sc-flight-released', released);
 
     // rail

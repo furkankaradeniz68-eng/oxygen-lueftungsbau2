@@ -101,6 +101,49 @@ h1, h2, h3, h4 { color: #141414; }
 .topnav__link[aria-current="page"] { color: var(--sc-accent); }
 @media (max-width: 560px) { .topnav__link--hide-sm { display: none; } }
 
+/* ----------------------------------------------------- mobile nav burger --
+   Same pattern as index.html's inline copy (that page carries its own
+   tokens/topbar block and cannot reach this stylesheet) — kept in sync by
+   hand since the two pages are deliberately separate stylesheets. Below
+   560px the topnav links had no visible home at all; this swaps the link
+   row for a burger button that drops the full link list onto a second row
+   inside the same sticky .topbar. */
+.nav-burger {
+  display: none;
+  align-items: center; justify-content: center;
+  width: 2.4rem; height: 2.4rem; flex: none;
+  background: transparent; border: none; color: #141414; cursor: pointer; padding: 0;
+}
+.nav-burger svg { width: 1.6rem; height: 1.6rem; }
+.nav-burger svg .nav-burger__cross { display: none; }
+.nav-burger[aria-expanded="true"] .nav-burger__bars { display: none; }
+.nav-burger[aria-expanded="true"] .nav-burger__cross { display: block; }
+.mobile-nav { display: none; }
+@media (max-width: 560px) {
+  .topbar { flex-wrap: wrap; }
+  .topnav { display: none; }
+  .nav-burger { display: flex; }
+  .mobile-nav.is-open {
+    display: flex; flex-direction: column;
+    flex-basis: 100%; width: 100%;
+    margin-top: clamp(0.75rem, 2vw, 1.25rem);
+    padding-top: clamp(0.75rem, 2vw, 1.25rem);
+    border-top: 1px solid rgba(20, 20, 20, 0.12);
+  }
+  .mobile-nav a {
+    font-family: var(--sc-font-mono);
+    font-size: var(--sc-t-sm);
+    letter-spacing: var(--sc-track-wide);
+    text-transform: uppercase;
+    color: #141414;
+    text-decoration: none;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid rgba(20, 20, 20, 0.1);
+  }
+  .mobile-nav a:last-child { border-bottom: none; }
+  .mobile-nav a[aria-current="page"] { color: var(--sc-accent); }
+}
+
 /* --------------------------------------------------- floating whatsapp -- */
 .wa-float {
   position: fixed; z-index: var(--sc-z-chrome);
