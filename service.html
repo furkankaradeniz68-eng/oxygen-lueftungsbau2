@@ -51,9 +51,21 @@
     <path d="M14 5 4 10.5 14 16l10-5.5L14 5z"/>
     <path d="M4 15l10 5.5L24 15"/>
   </symbol>
-  <symbol id="ic-partnership" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5">
-    <circle cx="11" cy="14" r="7.5"/>
-    <circle cx="17" cy="14" r="7.5"/>
+  <symbol id="ic-step-anfrage" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5">
+    <path d="M5 6h18v13H11l-6 4.5V19H5z"/>
+  </symbol>
+  <symbol id="ic-step-angebot" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5">
+    <rect x="6" y="4" width="16" height="20" rx="1.5"/>
+    <path d="M9.5 9.5h9M9.5 13.5h9M9.5 17.5h5.5"/>
+  </symbol>
+  <symbol id="ic-step-montage" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5">
+    <path d="M16.5 4.5l7 7-3.1 3.1-7-7z"/>
+    <path d="M13.6 7.4L5 16v3.5L8.5 23l8.6-8.6"/>
+    <path d="M5 19.5l3.5 3.5"/>
+  </symbol>
+  <symbol id="ic-step-abnahme" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5">
+    <path d="M14 3l9 3.4v6.2c0 6-4 10-9 12-5-2-9-6-9-12V6.4z"/>
+    <path d="M10 14l3 3 5.5-6"/>
   </symbol>
 </svg>
 
@@ -110,6 +122,12 @@
           <li>Flexible Teamgrößen je nach Bauablauf</li>
         </ul>
       </div>
+    </div>
+  </div>
+
+  <div class="sc-wrap">
+    <div class="section-divider">
+      <svg class="section-divider__arrow" viewBox="0 0 48 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4 L24 20 L44 4"/></svg>
     </div>
   </div>
 
@@ -187,33 +205,57 @@
 
   <div class="sc-wrap sc-section" style="padding-top:0">
     <h2 class="sc-display sc-display--md">Wie wir arbeiten</h2>
-    <div class="work-split">
-      <div class="work-split__text">
-        <p class="sc-body">Feste Teams begleiten Ihre Baustelle von Anfang bis Ende. Bei Bedarf arbeiten wir in splitbaren Einsatzteams und reagieren so flexibel auf Planänderungen im Bauablauf.</p>
-        <div class="values-row">
-          <span>Flexibel</span>
-          <span>Zuverlässig</span>
-          <span>Kompetent</span>
-          <span>Gewissenhaft</span>
-        </div>
-        <div class="contact-actions">
-          <a class="btn btn--accent" data-whatsapp-link href="https://wa.me/" target="_blank" rel="noopener">
-            <svg aria-hidden="true"><use href="#ic-whatsapp"></use></svg>
-            Per WhatsApp anfragen
-          </a>
-          <a class="btn btn--ghost" href="kontakt.html">Zum Kontaktformular</a>
-        </div>
+    <p class="sc-body">Feste Teams begleiten Ihre Baustelle von Anfang bis Ende. Bei Bedarf arbeiten wir in splitbaren Einsatzteams und reagieren so flexibel auf Planänderungen im Bauablauf.</p>
+    <div class="values-row">
+      <span>Flexibel</span>
+      <span>Zuverlässig</span>
+      <span>Kompetent</span>
+      <span>Gewissenhaft</span>
+    </div>
+    <div class="contact-actions">
+      <a class="btn btn--accent" data-whatsapp-link href="https://wa.me/" target="_blank" rel="noopener">
+        <svg aria-hidden="true"><use href="#ic-whatsapp"></use></svg>
+        Per WhatsApp anfragen
+      </a>
+      <a class="btn btn--ghost" href="kontakt.html">Zum Kontaktformular</a>
+    </div>
+  </div>
+
+  <div class="sc-wrap sc-section" style="padding-top:0">
+    <h2 class="sc-display sc-display--md">So läuft eine Anfrage ab</h2>
+    <p class="sc-body">Vom ersten Kontakt bis zur Abnahme vor Ort — in vier klaren Schritten.</p>
+    <div class="card-grid process-steps">
+      <div class="card">
+        <div class="card__icon"><svg aria-hidden="true"><use href="#ic-step-anfrage"></use></svg></div>
+        <span class="process-steps__num">Schritt 01</span>
+        <h3>Anfrage</h3>
+        <ul>
+          <li>Sie schildern kurz den Bauablauf — per WhatsApp, Telefon oder Formular.</li>
+        </ul>
       </div>
-      <!--
-        Branded graphic panel standing in for a real partnership/handshake
-        photo (blocked on KIE credits — see trade-slider comment above).
-        Once a photo is generated, add it as `<img class="work-split__photo">`
-        inside .work-split__visual and drop the background gradient; the
-        grid sizing stays the same either way.
-      -->
-      <div class="work-split__visual">
-        <svg aria-hidden="true"><use href="#ic-partnership"></use></svg>
-        <strong>Persönlich.<br>Zuverlässig.<br>Vor Ort.</strong>
+      <div class="card">
+        <div class="card__icon"><svg aria-hidden="true"><use href="#ic-step-angebot"></use></svg></div>
+        <span class="process-steps__num">Schritt 02</span>
+        <h3>Besichtigung &amp; Angebot</h3>
+        <ul>
+          <li>Wir sichten die Baustelle und legen Leistungsumfang und Termin fest.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card__icon"><svg aria-hidden="true"><use href="#ic-step-montage"></use></svg></div>
+        <span class="process-steps__num">Schritt 03</span>
+        <h3>Montage</h3>
+        <ul>
+          <li>Feste oder splitbare Einsatzteams übernehmen die Montage im Werkvertrag.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card__icon"><svg aria-hidden="true"><use href="#ic-step-abnahme"></use></svg></div>
+        <span class="process-steps__num">Schritt 04</span>
+        <h3>Abnahme</h3>
+        <ul>
+          <li>Gemeinsame Abnahme vor Ort — sauber übergeben, dokumentiert.</li>
+        </ul>
       </div>
     </div>
   </div>
