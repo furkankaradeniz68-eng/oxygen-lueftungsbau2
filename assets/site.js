@@ -1,12 +1,14 @@
 /* ============================================================================
    OXYGEN Lüftungsbau — site script (not part of the scroll-craft engine)
    ----------------------------------------------------------------------------
-   Three independent jobs:
+   Four independent jobs:
      1. WHATSAPP_NUMBER — the one constant every wa.me link on every page
         reads. Change the number here, nowhere else.
      2. The worldflight resize/spacer-zero guard (worldflight.md §7b).
      3. The signature move: the filling strand-drawing rail + the hero's
         kinetic line reveal, both driven by the same scroll read.
+     4. The lead-capture chat widget (wireChatWidget) — a few questions,
+        then a mailto: summary. No backend, see its own comment below.
    ========================================================================== */
 (function () {
   'use strict';
@@ -65,6 +67,158 @@
     });
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && panel.classList.contains('is-open')) closeMenu();
+    });
+  })();
+
+  // --------------------------------------------------------- chat widget --
+  // A handful of qualifying questions, then a mailto: summary — no backend,
+  // no third-party chat service, nothing that can break or cost money. The
+  // trade-off is explicit: the visitor's own mail client opens with the
+  // message drafted, and they still have to hit send themselves. Present on
+  // every page (worldflight + static subpages), so — like wireMobileNav
+  // above — it is wired here, ahead of the worldflight-only early return.
+  (function wireChatWidget() {
+    var toggle = document.getElementById('chat-toggle');
+    var panel = document.getElementById('chat-panel');
+    var closeBtn = document.getElementById('chat-close');
+    var messagesEl = document.getElementById('chat-messages');
+    var form = document.getElementById('chat-input-area');
+    var input = document.getElementById('chat-text-input');
+    if (!toggle || !panel || !messagesEl || !form || !input) return;
+
+    var RECIPIENT = 'info@oxygen-lueftungsbau.de';
+    var QUESTIONS = [
+      {
+        id: 'art',
+        label: 'Worum geht es bei Ihrer Anfrage?',
+        type: 'choice',
+        options: ['Montage RLT-Anlage', 'Kanal- & Rohrleitungsbau', 'Personaldienstleistung', 'Sonstiges']
+      },
+      { id: 'ort', label: 'Wo befindet sich das Projekt bzw. die Baustelle?', placeholder: 'z. B. Edenkoben' },
+      { id: 'termin', label: 'Wann soll es losgehen?', placeholder: 'z. B. ab sofort, in 4 Wochen …' },
+      { id: 'name', label: 'Wie dürfen wir Sie nennen? Name und/oder Firma.', placeholder: 'Ihr Name oder Firma' },
+      { id: 'kontakt', label: 'Wie erreichen wir Sie am besten — Telefon oder E-Mail?', placeholder: 'Telefonnummer oder E-Mail' }
+    ];
+
+    var started = false;
+    var step = 0;
+    var answers = {};
+
+    function scrollToEnd() {
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    function addMessage(text, who) {
+      var el = document.createElement('div');
+      el.className = 'chat-msg chat-msg--' + who;
+      el.textContent = text;
+      messagesEl.appendChild(el);
+      scrollToEnd();
+      return el;
+    }
+
+    function addChoices(options, onPick) {
+      var wrap = document.createElement('div');
+      wrap.className = 'chat-choices';
+      options.forEach(function (opt) {
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'chat-choice';
+        btn.textContent = opt;
+        btn.addEventListener('click', function () {
+          wrap.remove();
+          onPick(opt);
+        });
+        wrap.appendChild(btn);
+      });
+      messagesEl.appendChild(wrap);
+      scrollToEnd();
+    }
+
+    function buildMailto() {
+      var subject = 'Neue Anfrage über die Website';
+      var lines = QUESTIONS.map(function (q) {
+        return q.label + '\n' + (answers[q.id] || '-');
+      });
+      var body = lines.join('\n\n');
+      return 'mailto:' + RECIPIENT + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    }
+
+    function showSummary() {
+      form.hidden = true;
+      addMessage('Danke! Hier die Zusammenfassung — einmal auf „Per E-Mail senden" tippen, kurz prüfen und abschicken.', 'bot');
+      var box = document.createElement('div');
+      box.className = 'chat-msg chat-msg--bot chat-summary';
+      var dl = document.createElement('dl');
+      QUESTIONS.forEach(function (q) {
+        var dt = document.createElement('dt');
+        dt.textContent = q.label;
+        var dd = document.createElement('dd');
+        dd.textContent = answers[q.id] || '-';
+        dl.appendChild(dt);
+        dl.appendChild(dd);
+      });
+      box.appendChild(dl);
+      var send = document.createElement('a');
+      send.className = 'btn btn--accent';
+      send.href = buildMailto();
+      send.textContent = 'Per E-Mail senden';
+      box.appendChild(send);
+      messagesEl.appendChild(box);
+      scrollToEnd();
+    }
+
+    function askStep() {
+      var q = QUESTIONS[step];
+      if (!q) { showSummary(); return; }
+      addMessage(q.label, 'bot');
+      if (q.type === 'choice') {
+        form.hidden = true;
+        addChoices(q.options, function (opt) { handleAnswer(opt); });
+      } else {
+        form.hidden = false;
+        input.placeholder = q.placeholder || 'Ihre Antwort …';
+        input.value = '';
+        input.focus();
+      }
+    }
+
+    function handleAnswer(value) {
+      answers[QUESTIONS[step].id] = value;
+      addMessage(value, 'user');
+      step += 1;
+      askStep();
+    }
+
+    function startConversation() {
+      if (started) return;
+      started = true;
+      addMessage('Hallo! Ein paar kurze Fragen, dann haben Sie eine fertige Anfrage, die Sie uns direkt per E-Mail schicken können.', 'bot');
+      askStep();
+    }
+
+    function openChat() {
+      panel.hidden = false;
+      toggle.setAttribute('aria-expanded', 'true');
+      startConversation();
+      scrollToEnd();
+    }
+    function closeChat() {
+      panel.hidden = true;
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.focus();
+    }
+
+    toggle.addEventListener('click', openChat);
+    if (closeBtn) closeBtn.addEventListener('click', closeChat);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !panel.hidden) closeChat();
+    });
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var val = input.value.trim();
+      if (!val) return;
+      handleAnswer(val);
     });
   })();
 
