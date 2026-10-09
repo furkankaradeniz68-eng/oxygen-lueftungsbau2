@@ -104,7 +104,7 @@
   for (var j = 0; j < weights.length; j++) cum.push(cum[j] + weights[j]);
   // cum = [0, leg1End, leg2End, leg3End, leg4End, leg5End] in vh-weight units
 
-  var NODE_KEYS = ['ansaugung', 'kanal', 'geraet', 'verteilung', 'auslass'];
+  var NODE_KEYS = ['ansaugung', 'kanal', 'geraet', 'verteilung', 'auslass', 'team'];
   var bounds = cum.map(function (v) { return v / total; });
 
   var nodeEls = {};
