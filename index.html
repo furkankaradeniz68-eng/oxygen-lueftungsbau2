@@ -792,36 +792,36 @@
       <video data-sc-src="assets/04.mp4" data-sc-src-mobile="assets/04-m.mp4" muted playsinline preload="none"></video>
     </div>
 
-    <!-- 05.mp4/05-m.mp4 are no longer just the duct reveal: the back half of
-         the clip is a generated continuation, pinned at BOTH ends (kling's
-         head+tail image-to-video) rather than generated forward from one
-         anchor like the two earlier attempts at this. The head pin is a
-         real extracted frame from partway through the original duct
-         reveal (while only ducts are on screen, before the office is wide
-         enough to show anyone), so the splice back onto the untouched
-         first portion of the original clip is frame-exact. The tail pin
-         is the Team segment's own approved poster image, so the clip ends
-         on exactly that frame too. What the model fills in between is the
-         reveal itself playing out with the team already standing there
-         the moment the room is wide enough to see them — never an empty
-         office, never a fade-in. This is also why Austritt's own weight
-         below is heavier than its real-world duct-reveal footage alone
-         would need: it now carries that whole continuation. -->
-    <div data-sc-segment data-sc-w="2.1" data-sc-linger="0.38" data-sc-waypoint="Austritt">
+    <div data-sc-segment data-sc-w="1.6" data-sc-linger="0.38" data-sc-waypoint="Austritt">
       <img class="sc-world__poster" src="assets/05-poster.webp" alt="">
       <video data-sc-src="assets/05.mp4" data-sc-src-mobile="assets/05-m.mp4" muted playsinline preload="none"></video>
     </div>
 
-    <!-- Team no longer needs its own video: Austritt's extended clip above
-         already ends on this exact frame, so this segment is just a dwell
-         for the "Über uns" card to be read against — the poster below
-         matches the last frame the reader already saw, so there is
-         nothing left to crossfade. -->
+    <!-- Desktop gets a real clip for its own dwell here: a few seconds of
+         idle settle motion, not a camera move — the team is already fully
+         present and smiling from the clip's own first frame, so the only
+         fade the reader ever sees is the engine's ordinary cross-segment
+         dissolve from Austritt's empty office into this one. An earlier
+         attempt spliced a matching "people already there" tail onto the
+         end of Austritt's own clip instead, to make that dissolve
+         blend two near-identical frames and hide it entirely — but every
+         generated tail frame came out a little off in camera framing from
+         Austritt's true last frame (close in a still-image comparison,
+         visibly a small zoom/pan jump once actually played), and
+         regenerating a tail from Austritt's *exact* extracted last frame
+         produced a different group of people entirely, since the model had
+         no anchor to this specific cast once the frame had nobody in it.
+         Reverted in favour of the plain, short cross-segment dissolve,
+         which is the same mechanism every other segment boundary on this
+         page already uses. Mobile drops the clip entirely — assets/site.js's
+         stripTeamClipOnMobile() removes the <video> below before the engine
+         ever scans for it — and relies on the <picture> below instead. -->
     <div data-sc-segment data-sc-w="1.2" data-sc-linger="0.4" data-sc-waypoint="Team">
       <picture>
         <source media="(max-width: 860px)" srcset="assets/06-poster-m.webp">
         <img class="sc-world__poster" id="team-poster" src="assets/06-poster.webp" alt="Fünfköpfiges OXYGEN-Team — zwei Frauen und drei Männer in Büro- und Arbeitskleidung — steht lächelnd im selben Büro, in das die Lüftungskanäle münden">
       </picture>
+      <video data-sc-src="assets/06.mp4" muted playsinline preload="none"></video>
     </div>
 
   </div>
@@ -837,26 +837,26 @@
       </button>
     </div>
 
-    <div class="sc-copy sc-copy--trail sc-stack sc-copy--accent" data-sc-copy data-sc-window="0.1456 0.2913 0.1 0.25">
+    <div class="sc-copy sc-copy--trail sc-stack sc-copy--accent" data-sc-copy data-sc-window="0.1531 0.3061 0.1 0.25">
       <span class="sc-label">Kanal- &amp; Rohrleitungsbau</span>
       <h2 class="sc-display sc-display--md">Kanäle und Rohrleitungen, fachgerecht verlegt.</h2>
       <p class="sc-body">Wir montieren Luft- und Rohrleitungen und bauen Brandschutzklappen normgerecht ein — die Grundlage jeder sicheren RLT-Anlage.</p>
     </div>
 
-    <div class="sc-copy sc-copy--trail sc-copy--chip sc-copy--chip-lg sc-copy--accent" data-sc-copy data-sc-window="0.2913 0.5243 0.08 0.2">
+    <div class="sc-copy sc-copy--trail sc-copy--chip sc-copy--chip-lg sc-copy--accent" data-sc-copy data-sc-window="0.3061 0.5510 0.08 0.2">
       <span class="sc-label">Herstellerunabhängig</span>
       <h2 class="sc-display sc-display--md">Jedes Fabrikat, ein Team.</h2>
       <p class="sc-body">Wir montieren Lüftungs- und Klimageräte aller gängigen Hersteller und Fabrikate — unabhängig von Marke oder Modell.</p>
     </div>
 
-    <div class="sc-copy sc-copy--lead sc-stack sc-copy--accent" data-sc-copy data-sc-window="0.5243 0.6796 0.1 0.2">
+    <div class="sc-copy sc-copy--lead sc-stack sc-copy--accent" data-sc-copy data-sc-window="0.5510 0.7143 0.1 0.2">
       <span class="sc-label">Warum Oxygen</span>
       <h2 class="sc-display sc-display--md">Feste Teams. Flexibel, wenn der Bauablauf es verlangt.</h2>
       <p class="sc-body sc-body--full">Unsere Monteur-Teams übernehmen Ihre Baustelle zuverlässig von Anfang bis Ende. Bei Bedarf arbeiten wir in splitbaren Einsatzteams und reagieren so flexibel auf Planänderungen — mit modernem Werkzeug und gewissenhafter Ausführung. Zusätzlich vermitteln wir Fachpersonal für Heizung, Sanitär, Luft &amp; Klima, Anlagenbau und Isolierung.</p>
       <p class="sc-body sc-body--short">Unsere Monteur-Teams übernehmen Ihre Baustelle zuverlässig von Anfang bis Ende — flexibel, mit modernem Werkzeug. Zusätzlich vermitteln wir Fachpersonal für Heizung, Sanitär, Luft &amp; Klima, Anlagenbau und Isolierung.</p>
     </div>
 
-    <div class="sc-copy sc-copy--team-bar sc-copy--accent" data-sc-copy data-sc-window="0.9010 1.0 0.15 0">
+    <div class="sc-copy sc-copy--team-bar sc-copy--accent" data-sc-copy data-sc-window="0.8959 1.0 0.15 0">
       <div class="team-row">
         <div class="team-row__text">
           <span class="sc-label">Das Team dahinter</span>
