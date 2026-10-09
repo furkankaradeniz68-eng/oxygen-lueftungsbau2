@@ -1,30 +1,17 @@
 /* ============================================================================
    OXYGEN Lüftungsbau — site script (not part of the scroll-craft engine)
    ----------------------------------------------------------------------------
-   Four independent jobs:
-     1. WHATSAPP_NUMBER — the one constant every wa.me link on every page
-        reads. Change the number here, nowhere else.
-     2. The worldflight resize/spacer-zero guard (worldflight.md §7b).
-     3. The signature move: the filling strand-drawing rail + the hero's
+   Three independent jobs:
+     1. The worldflight resize/spacer-zero guard (worldflight.md §7b).
+     2. The signature move: the filling strand-drawing rail + the hero's
         kinetic line reveal, both driven by the same scroll read.
-     4. The lead-capture chat widget (wireChatWidget) — a few questions,
+     3. The lead-capture chat widget (wireChatWidget) — a few questions,
         then a mailto: summary. No backend, see its own comment below.
+        Every [data-chat-trigger] button on the page (hero/CTA buttons,
+        not just the floating one) opens the same chat.
    ========================================================================== */
 (function () {
   'use strict';
-
-  // ------------------------------------------------------------- WhatsApp --
-  // Placeholder until the client supplies their real WhatsApp Business
-  // number. German format, no leading zero, no "+", e.g. "4917XXXXXXXX".
-  var WHATSAPP_NUMBER = '49XXXXXXXXXX';
-  var WHATSAPP_TEXT = 'Hallo OXYGEN Lüftungsbau, ich interessiere mich für ...';
-
-  function wireWhatsApp() {
-    var href = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(WHATSAPP_TEXT);
-    var links = document.querySelectorAll('[data-whatsapp-link]');
-    for (var i = 0; i < links.length; i++) links[i].setAttribute('href', href);
-  }
-  wireWhatsApp();
 
   // ------------------------------------------------------- scroll-to-top --
   // Footer control, present on every page (worldflight + static subpages),
@@ -211,6 +198,11 @@
 
     toggle.addEventListener('click', openChat);
     if (closeBtn) closeBtn.addEventListener('click', closeChat);
+    // Every CTA on the page that used to be a wa.me link (hero, close-cta,
+    // kontakt actions, ...) is now a [data-chat-trigger] button instead,
+    // opening the same chat the floating button does.
+    var triggers = document.querySelectorAll('[data-chat-trigger]');
+    for (var t = 0; t < triggers.length; t++) triggers[t].addEventListener('click', openChat);
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && !panel.hidden) closeChat();
     });

@@ -144,34 +144,21 @@ h1, h2, h3, h4 { color: #141414; }
   .mobile-nav a[aria-current="page"] { color: var(--sc-accent); }
 }
 
-/* --------------------------------------------------- floating whatsapp -- */
-.wa-float {
-  position: fixed; z-index: var(--sc-z-chrome);
-  left: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem);
-  width: 3.4rem; height: 3.4rem; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  background: #25D366; color: #ffffff;
-  box-shadow: var(--sc-e2);
-  transition: transform var(--sc-d-fast) var(--sc-ease-out);
-}
-.wa-float:hover, .wa-float:focus-visible { transform: translateY(-2px) scale(1.05); }
-.wa-float svg { width: 1.7rem; height: 1.7rem; }
-
 /* -------------------------------------------------------- chat widget --
    Floating lead-capture chat: a handful of quick questions, then a
    client-side mailto: summary — no backend, no third-party service,
-   nothing that can break or cost money. Stacked directly above the
-   WhatsApp button so both float buttons live in one predictable corner on
-   every page. See assets/site.js wireChatWidget() for the behaviour; this
-   is the light-theme repeat of index.html's own inline copy (that page
-   carries its own tokens/topbar block and cannot reach this stylesheet) —
-   kept in sync by hand since the two pages are deliberately separate
-   stylesheets. Unlike index.html this page has no bottom worldflight rail
-   bar, so none of its mobile rules need the extra rail clearance. */
+   nothing that can break or cost money. Sits in the bottom-left corner on
+   every page — the WhatsApp float button used to live here; it was
+   retired once this chat widget covered the same job. See
+   assets/site.js wireChatWidget() for the behaviour; this is the
+   light-theme repeat of index.html's own inline copy (that page carries
+   its own tokens/topbar block and cannot reach this stylesheet) — kept
+   in sync by hand since the two pages are deliberately separate
+   stylesheets. Unlike index.html this page has no bottom worldflight
+   rail bar, so none of its mobile rules need extra rail clearance. */
 .chat-float {
   position: fixed; z-index: var(--sc-z-chrome);
-  left: clamp(1rem, 4vw, 1.75rem);
-  bottom: calc(3.4rem + clamp(1rem, 4vw, 1.75rem) + 0.85rem);
+  left: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem);
   width: 3.4rem; height: 3.4rem; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   background: var(--sc-accent); color: var(--sc-accent-ink);
@@ -498,11 +485,11 @@ h1, h2, h3, h4 { color: #141414; }
 .site-footer {
   background: #111316; color: #f2efe9;
   margin-top: var(--sc-9);
-  /* extra bottom clearance: the floating WhatsApp button is fixed
-     bottom-left and reaches ~5.15rem up from the viewport edge (~8.9rem on
-     the ≤860px layout, where it rides higher to clear mobile chrome), so it
-     sits directly over the footer's bottom row whenever a page is short
-     enough to scroll to its true bottom. */
+  /* extra bottom clearance: the floating chat button is fixed bottom-left
+     and reaches ~5.15rem up from the viewport edge (this page has no
+     bottom worldflight rail bar to clear, so that holds at every width),
+     so it sits directly over the footer's bottom row whenever a page is
+     short enough to scroll to its true bottom. */
   padding-bottom: 6.5rem;
 }
 @media (max-width: 860px) {
