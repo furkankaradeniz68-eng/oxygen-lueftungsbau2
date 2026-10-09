@@ -68,6 +68,21 @@
     });
   })();
 
+  // ------------------------------------------------- team clip, desktop only --
+  // The Team segment's video is a wide group shot; object-fit:cover would crop
+  // roughly a third of its width off at phone viewports (the picture/contain
+  // CSS note in index.html has the math), cutting people out of frame. Rather
+  // than ship a second portrait clip, mobile drops the clip entirely and keeps
+  // the always-visible, letterboxed group still — assets.md's licensed "drop
+  // the clip on phones" path. This has to run BEFORE ScrollCraft.mount() below
+  // sees the segment, since the engine wires up whatever <video> it finds.
+  (function stripTeamClipOnMobile() {
+    if (!window.matchMedia('(max-width: 860px)').matches) return;
+    var seg = document.querySelector('[data-sc-waypoint="Team"]');
+    var clip = seg && seg.querySelector('video');
+    if (clip) clip.remove();
+  })();
+
   // ---------------------------------------------------- resize/font guard --
   // If innerHeight reads 0 at mount (some mobile browsers mid-chrome-resize),
   // the worldflight spacer computes to 0 and the whole flight is unreachable.
