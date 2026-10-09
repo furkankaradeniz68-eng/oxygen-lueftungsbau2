@@ -214,21 +214,6 @@
     });
   })();
 
-  // ------------------------------------------------- team clip, desktop only --
-  // The Team segment's video is a wide group shot; object-fit:cover would crop
-  // roughly a third of its width off at phone viewports (the picture/contain
-  // CSS note in index.html has the math), cutting people out of frame. Rather
-  // than ship a second portrait clip, mobile drops the clip entirely and keeps
-  // the always-visible, letterboxed group still — assets.md's licensed "drop
-  // the clip on phones" path. This has to run BEFORE ScrollCraft.mount() below
-  // sees the segment, since the engine wires up whatever <video> it finds.
-  (function stripTeamClipOnMobile() {
-    if (!window.matchMedia('(max-width: 860px)').matches) return;
-    var seg = document.querySelector('[data-sc-waypoint="Team"]');
-    var clip = seg && seg.querySelector('video');
-    if (clip) clip.remove();
-  })();
-
   // ---------------------------------------------------- resize/font guard --
   // If innerHeight reads 0 at mount (some mobile browsers mid-chrome-resize),
   // the worldflight spacer computes to 0 and the whole flight is unreachable.
@@ -252,59 +237,6 @@
   if (!flightEl) return;
   var spacerEl = flightEl.querySelector('[data-sc-spacer]');
 
-  // ------------------------------------------- Austritt/Team hard cut --
-  // The engine crossfades every segment boundary by opacity, which is the
-  // right call almost everywhere on this page (and the seam is already
-  // tuned short) but is still visible as the team fading into existence
-  // right where Austritt's empty office hands off to the same office with
-  // five people in it — tried twice to make the footage itself match
-  // frame-for-frame so the blend would be invisible on its own (a spliced
-  // tail with a small camera/zoom mismatch, then a regeneration from
-  // Austritt's exact last frame that invented a different group of
-  // people entirely), neither held up. Collapsing the opacity blend
-  // between just these two segments into a single-frame snap sidesteps
-  // the asset problem rather than solving it.
-  //
-  // The outgoing segment in the engine's own crossfade math is a step, not
-  // a ramp: Austritt holds at opacity 1 for virtually the whole seam and
-  // only drops to 0 in the instant the seam ends, while Team (the
-  // incoming segment) is the one that actually ramps continuously —
-  // 0->1 scrolling down, 1->0 scrolling back up. So "mid-crossfade" here
-  // means Team's opacity alone is strictly between 0 and 1 — that only
-  // ever happens during this one boundary (Team is 0 before it and 1
-  // after; Austritt fading in from Deckenhohlraum earlier doesn't touch
-  // Team's opacity at all) — but which way to snap depends on which way
-  // the reader is scrolling: snapping unconditionally toward Team (an
-  // earlier version of this did) looks right scrolling down, but
-  // scrolling back up it fights the engine's own fade-out the entire
-  // time Team is fractional, releasing only once Team's value hits
-  // exactly 0 — which can land a frame or two before Austritt's own step
-  // turns back on, so the reader briefly sees neither segment at all.
-  // Deriving direction from window.scrollY itself, rather than from the
-  // opacity values this same code is about to overwrite, sidesteps that
-  // self-referential trap and fixes both directions the same way.
-  (function hardCutAustrittTeam() {
-    var segAustritt = flightEl.querySelector('[data-sc-waypoint="Austritt"]');
-    var segTeam = flightEl.querySelector('[data-sc-waypoint="Team"]');
-    if (!segAustritt || !segTeam) return;
-    var lastScrollY = window.scrollY;
-    function tick() {
-      var opT = parseFloat(segTeam.style.opacity);
-      var scrollingDown = window.scrollY >= lastScrollY;
-      lastScrollY = window.scrollY;
-      if (!isNaN(opT) && opT > 0 && opT < 1) {
-        if (scrollingDown) {
-          segTeam.style.opacity = '1'; segTeam.style.visibility = 'visible';
-          segAustritt.style.opacity = '0'; segAustritt.style.visibility = 'hidden';
-        } else {
-          segAustritt.style.opacity = '1'; segAustritt.style.visibility = 'visible';
-          segTeam.style.opacity = '0'; segTeam.style.visibility = 'hidden';
-        }
-      }
-      requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-  })();
 
   // Five rail nodes map 1:1 onto the five flight legs. Read weights straight
   // off the markup rather than hard-coding them again, so the rail can never
