@@ -386,15 +386,13 @@
      so it gets its own matching position/size rules here instead of
      relying on the engine's direct-child selector.
 
-     Both this picture AND the Austritt segment's own tail (its clip now
-     ends on this same mobile photo, baked in so the hand-off into this
-     segment is a hard cut rather than a dissolve — see the note on
-     assets/05-m.mp4 below) stay on plain object-fit:cover, deliberately —
-     an earlier version switched this picture alone to object-fit:contain
-     on mobile, and crossfading a letterboxed, uncropped frame against the
-     video's cover-cropped one produced two differently-scaled copies of
-     the same photo ghosting past each other, which read far worse than
-     the ordinary edge-cropping cover alone causes. */
+     This picture stays on plain object-fit:cover deliberately — an
+     earlier version switched it to object-fit:contain on mobile to show
+     the whole group uncropped, letterboxed. Crossfading that letterboxed,
+     differently-scaled frame against the Austritt video's cover-cropped
+     one produced two differently-scaled copies of the same photo
+     ghosting past each other, which read far worse than the ordinary
+     edge-cropping cover alone causes. */
   [data-sc-waypoint="Team"] > picture {
     position: absolute; inset: 0; display: block; width: 100%; height: 100%;
   }
@@ -764,7 +762,14 @@
   </ol>
 </nav>
 
-<div id="flug" role="main" data-sc-mode="worldflight" data-sc-seam="0.16" data-sc-lerp="0.12">
+<!-- data-sc-seam tightened from the engine's 0.16 default down to 0.05 (its
+     floor is 0.02): the Austritt->Team boundary crossfades an empty office
+     into the same office with five people in it, and at the original seam
+     width the blend was visible for long enough to read as the people
+     ghosting into existence rather than a quick cut. A narrow seam turns
+     every boundary on the page into a snappier cut, which reads fine on
+     the other, more different scenes too — checked visually across all six. -->
+<div id="flug" role="main" data-sc-mode="worldflight" data-sc-seam="0.05" data-sc-lerp="0.12">
   <div data-sc-world>
 
     <div data-sc-segment data-sc-w="1.5" data-sc-linger="0.2" data-sc-waypoint="Ansaugung">
@@ -787,30 +792,30 @@
       <video data-sc-src="assets/04.mp4" data-sc-src-mobile="assets/04-m.mp4" muted playsinline preload="none"></video>
     </div>
 
-    <!-- Both 05.mp4 and 05-m.mp4 are the duct-reveal footage with the Team
-         segment's own final photo appended to the tail (05.mp4: the real
-         settle clip generated for that segment; 05-m.mp4: a static hold of
-         06-poster-m.webp). The engine crossfades every segment boundary by
-         opacity regardless of content, and dissolving an empty-office frame
-         into one with five people in it reads as the people materializing
-         out of nowhere — ghostly, not "already standing there". Ending this
-         segment's own clip on the same frame the next segment opens on
-         turns that boundary into a dissolve between two near-identical
-         frames, which is visually silent, so the people simply are there
-         once the duct reveal finishes scrubbing, no fade. -->
-    <div data-sc-segment data-sc-w="2.0" data-sc-linger="0.38" data-sc-waypoint="Austritt">
+    <div data-sc-segment data-sc-w="1.6" data-sc-linger="0.38" data-sc-waypoint="Austritt">
       <img class="sc-world__poster" src="assets/05-poster.webp" alt="">
       <video data-sc-src="assets/05.mp4" data-sc-src-mobile="assets/05-m.mp4" muted playsinline preload="none"></video>
     </div>
 
-    <!-- Desktop gets a real clip for its own dwell here too: a few seconds of
-         idle settle motion, not a camera move, continuing straight on from
-         the matching frame already baked into Austritt's tail above.
-         Mobile drops the clip entirely — assets/site.js's
+    <!-- Desktop gets a real clip for its own dwell here: a few seconds of
+         idle settle motion, not a camera move — the team is already fully
+         present and smiling from the clip's own first frame, so the only
+         fade the reader ever sees is the engine's ordinary cross-segment
+         dissolve from Austritt's empty office into this one. An earlier
+         attempt spliced a matching "people already there" tail onto the
+         end of Austritt's own clip instead, to make that dissolve
+         blend two near-identical frames and hide it entirely — but every
+         generated tail frame came out a little off in camera framing from
+         Austritt's true last frame (close in a still-image comparison,
+         visibly a small zoom/pan jump once actually played), and
+         regenerating a tail from Austritt's *exact* extracted last frame
+         produced a different group of people entirely, since the model had
+         no anchor to this specific cast once the frame had nobody in it.
+         Reverted in favour of the plain, short cross-segment dissolve,
+         which is the same mechanism every other segment boundary on this
+         page already uses. Mobile drops the clip entirely — assets/site.js's
          stripTeamClipOnMobile() removes the <video> below before the engine
-         ever scans for it — and relies on the <picture> below, matching
-         05-m.mp4's own baked-in tail frame, so there is nothing left to
-         crossfade against but a near-identical image. -->
+         ever scans for it — and relies on the <picture> below instead. -->
     <div data-sc-segment data-sc-w="1.2" data-sc-linger="0.4" data-sc-waypoint="Team">
       <picture>
         <source media="(max-width: 860px)" srcset="assets/06-poster-m.webp">
@@ -832,26 +837,26 @@
       </button>
     </div>
 
-    <div class="sc-copy sc-copy--trail sc-stack sc-copy--accent" data-sc-copy data-sc-window="0.1471 0.2941 0.1 0.25">
+    <div class="sc-copy sc-copy--trail sc-stack sc-copy--accent" data-sc-copy data-sc-window="0.1531 0.3061 0.1 0.25">
       <span class="sc-label">Kanal- &amp; Rohrleitungsbau</span>
       <h2 class="sc-display sc-display--md">Kanäle und Rohrleitungen, fachgerecht verlegt.</h2>
       <p class="sc-body">Wir montieren Luft- und Rohrleitungen und bauen Brandschutzklappen normgerecht ein — die Grundlage jeder sicheren RLT-Anlage.</p>
     </div>
 
-    <div class="sc-copy sc-copy--trail sc-copy--chip sc-copy--chip-lg sc-copy--accent" data-sc-copy data-sc-window="0.2941 0.5294 0.08 0.2">
+    <div class="sc-copy sc-copy--trail sc-copy--chip sc-copy--chip-lg sc-copy--accent" data-sc-copy data-sc-window="0.3061 0.5510 0.08 0.2">
       <span class="sc-label">Herstellerunabhängig</span>
       <h2 class="sc-display sc-display--md">Jedes Fabrikat, ein Team.</h2>
       <p class="sc-body">Wir montieren Lüftungs- und Klimageräte aller gängigen Hersteller und Fabrikate — unabhängig von Marke oder Modell.</p>
     </div>
 
-    <div class="sc-copy sc-copy--lead sc-stack sc-copy--accent" data-sc-copy data-sc-window="0.5294 0.6863 0.1 0.2">
+    <div class="sc-copy sc-copy--lead sc-stack sc-copy--accent" data-sc-copy data-sc-window="0.5510 0.7143 0.1 0.2">
       <span class="sc-label">Warum Oxygen</span>
       <h2 class="sc-display sc-display--md">Feste Teams. Flexibel, wenn der Bauablauf es verlangt.</h2>
       <p class="sc-body sc-body--full">Unsere Monteur-Teams übernehmen Ihre Baustelle zuverlässig von Anfang bis Ende. Bei Bedarf arbeiten wir in splitbaren Einsatzteams und reagieren so flexibel auf Planänderungen — mit modernem Werkzeug und gewissenhafter Ausführung. Zusätzlich vermitteln wir Fachpersonal für Heizung, Sanitär, Luft &amp; Klima, Anlagenbau und Isolierung.</p>
       <p class="sc-body sc-body--short">Unsere Monteur-Teams übernehmen Ihre Baustelle zuverlässig von Anfang bis Ende — flexibel, mit modernem Werkzeug. Zusätzlich vermitteln wir Fachpersonal für Heizung, Sanitär, Luft &amp; Klima, Anlagenbau und Isolierung.</p>
     </div>
 
-    <div class="sc-copy sc-copy--team-bar sc-copy--accent" data-sc-copy data-sc-window="0.9 1.0 0.15 0">
+    <div class="sc-copy sc-copy--team-bar sc-copy--accent" data-sc-copy data-sc-window="0.8959 1.0 0.15 0">
       <div class="team-row">
         <div class="team-row__text">
           <span class="sc-label">Das Team dahinter</span>
