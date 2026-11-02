@@ -874,7 +874,7 @@ main > section > .sc-wrap > .sc-label { color: var(--sc-accent); display: block;
 .team-banner { position: relative; isolation: isolate; min-height: clamp(26rem, 70svh, 44rem); display: flex; align-items: flex-end; overflow: hidden; }
 .team-banner picture, .team-banner img { position: absolute; inset: 0; width: 100%; height: 100%; }
 .team-banner picture { z-index: -1; }
-.team-banner img { object-fit: cover; object-position: 50% 30%; }
+.team-banner img { object-fit: cover; object-position: 50% 25%; }
 .team-banner__card {
   display: flex; align-items: center; justify-content: space-between; gap: var(--sc-5); flex-wrap: wrap;
   margin-bottom: clamp(1.5rem, 4vw, 3rem); padding-block: var(--sc-5);
