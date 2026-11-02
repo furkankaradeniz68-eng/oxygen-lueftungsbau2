@@ -1,0 +1,6 @@
+{
+  "redirects": [
+    { "source": "/service.html", "destination": "/leistungen.html", "permanent": true },
+    { "source": "/ueber-uns.html", "destination": "/unternehmen.html", "permanent": true }
+  ]
+}

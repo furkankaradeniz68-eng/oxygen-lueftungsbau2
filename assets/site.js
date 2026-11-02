@@ -79,9 +79,9 @@
         id: 'art',
         label: 'Worum geht es bei Ihrer Anfrage?',
         type: 'choice',
-        options: ['Montage RLT-Anlage', 'Kanal- & Rohrleitungsbau', 'Personaldienstleistung', 'Sonstiges']
+        options: ['Lüftungs- & Klimatechnik', 'Anlagenbau', 'Rohrleitungsbau', 'CAD / TGA-Planung', 'Personaldienstleistung', 'Sonstiges']
       },
-      { id: 'ort', label: 'Wo befindet sich das Projekt bzw. die Baustelle?', placeholder: 'z. B. Edenkoben' },
+      { id: 'ort', label: 'Wo befindet sich das Projekt bzw. die Baustelle?', placeholder: 'z. B. Stuttgart' },
       { id: 'termin', label: 'Wann soll es losgehen?', placeholder: 'z. B. ab sofort, in 4 Wochen …' },
       { id: 'name', label: 'Wie dürfen wir Sie nennen? Name und/oder Firma.', placeholder: 'Ihr Name oder Firma' },
       { id: 'kontakt', label: 'Wie erreichen wir Sie am besten — Telefon oder E-Mail?', placeholder: 'Telefonnummer oder E-Mail' }
@@ -229,6 +229,108 @@
     if (clip) clip.remove();
   })();
 
+  // ------------------------------------------------------------ counters --
+  // [data-count-to] numbers count up from 0 the first time they come into
+  // view. The real value is already in the markup, so without JS, without
+  // IntersectionObserver or under reduced motion the final number simply
+  // stays put.
+  (function wireCounters() {
+    var els = document.querySelectorAll('[data-count-to]');
+    if (!els.length || !('IntersectionObserver' in window)) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    function run(el) {
+      var target = parseInt(el.getAttribute('data-count-to'), 10);
+      var t0 = null, dur = 1400;
+      function step(ts) {
+        if (t0 === null) t0 = ts;
+        var p = Math.min((ts - t0) / dur, 1);
+        el.textContent = String(Math.round(target * (1 - Math.pow(1 - p, 3))));
+        if (p < 1) requestAnimationFrame(step);
+      }
+      el.textContent = '0';
+      requestAnimationFrame(step);
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        io.unobserve(en.target);
+        run(en.target);
+      });
+    }, { threshold: 0.6 });
+    for (var i = 0; i < els.length; i++) io.observe(els[i]);
+  })();
+
+  // ---------------------------------------------------------- mail forms --
+  // Contact and application forms have no backend either: on submit the
+  // filled-in fields become a prepared e-mail in the visitor's own mail
+  // program, the same trade-off as the chat widget. Native validation runs
+  // first (required/type=email), so an incomplete form never opens mail.
+  (function wireMailtoForms() {
+    var forms = document.querySelectorAll('[data-mailto-form]');
+    Array.prototype.forEach.call(forms, function (form) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var subject = form.getAttribute('data-subject') || 'Anfrage';
+        var key = form.getAttribute('data-subject-field');
+        var keyEl = key && form.querySelector('[data-field="' + key + '"]');
+        if (keyEl && keyEl.value.trim()) subject += ' – ' + keyEl.value.trim();
+        var lines = [];
+        Array.prototype.forEach.call(form.elements, function (el) {
+          if (!el.name || !el.value || !el.value.trim()) return;
+          lines.push(el.name + ': ' + el.value.trim());
+        });
+        var body = lines.join('\n') + '\n\n—\nGesendet über oxygen-lueftungsbau.de';
+        window.location.href = 'mailto:info@oxygen-lueftungsbau.de?subject=' +
+          encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        form.classList.remove('is-flash');
+        void form.offsetWidth;
+        form.classList.add('is-flash');
+      });
+    });
+  })();
+
+  // ------------------------------------------------------ career shortcut --
+  // Each profile row preselects its position in the application form and
+  // jumps there, so applying is one click from the list.
+  (function wireApplyPosition() {
+    var select = document.getElementById('b-position');
+    var target = document.getElementById('bewerbung');
+    if (!select || !target) return;
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-apply-position]');
+      if (!btn) return;
+      select.value = btn.getAttribute('data-apply-position');
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+      var first = document.getElementById('b-vorname');
+      if (first) setTimeout(function () { first.focus({ preventScroll: true }); }, reduce ? 0 : 600);
+    });
+  })();
+
+  // ---------------------------------------------------- reference filter --
+  // Sector buttons above the reference grid. Hidden cards use [hidden]; the
+  // live region announces how many references remain.
+  (function wireRefFilter() {
+    var grid = document.querySelector('[data-ref-grid]');
+    if (!grid) return;
+    var btns = document.querySelectorAll('[data-filter]');
+    var status = document.querySelector('[data-ref-status]');
+    var cards = grid.querySelectorAll('[data-cat]');
+    Array.prototype.forEach.call(btns, function (btn) {
+      btn.addEventListener('click', function () {
+        var f = btn.getAttribute('data-filter');
+        Array.prototype.forEach.call(btns, function (b) { b.setAttribute('aria-pressed', String(b === btn)); });
+        var shown = 0;
+        Array.prototype.forEach.call(cards, function (c) {
+          var on = f === '*' || c.getAttribute('data-cat') === f;
+          c.hidden = !on;
+          if (on) shown++;
+        });
+        if (status) status.textContent = shown + ' Referenzen' + (f === '*' ? '' : ' im Bereich ' + f);
+      });
+    });
+  })();
+
   // ---------------------------------------------------- resize/font guard --
   // If innerHeight reads 0 at mount (some mobile browsers mid-chrome-resize),
   // the worldflight spacer computes to 0 and the whole flight is unreachable.
@@ -365,20 +467,29 @@
   var heroUnits = null;
   function splitLines(el) {
     if (el.__split) return el.__split;
-    var text = el.textContent;
-    var words = text.split(/\s+/).filter(Boolean);
+    // A <br> in the markup is a forced line break ("Oxygen / Lüftungsbau");
+    // everything else wraps where the browser wraps it.
+    var words = [];
+    Array.prototype.forEach.call(el.childNodes, function (n) {
+      if (n.nodeName === 'BR') { words.push('\n'); return; }
+      (n.textContent || '').split(/\s+/).filter(Boolean).forEach(function (w) { words.push(w); });
+    });
     el.textContent = '';
-    var probes = words.map(function (w, i) {
+    var probes = [], forceBreak = false;
+    words.forEach(function (w) {
+      if (w === '\n') { forceBreak = true; return; }
+      if (probes.length) el.appendChild(document.createTextNode(' '));
       var s = document.createElement('span');
       s.textContent = w;
+      s.__break = forceBreak;
+      forceBreak = false;
       el.appendChild(s);
-      if (i < words.length - 1) el.appendChild(document.createTextNode(' '));
-      return s;
+      probes.push(s);
     });
     var lines = [], cur = null, lastTop = null;
     probes.forEach(function (s) {
       var t = s.offsetTop;
-      if (lastTop === null || Math.abs(t - lastTop) > 1) { cur = []; lines.push(cur); lastTop = t; }
+      if (lastTop === null || s.__break || Math.abs(t - lastTop) > 1) { cur = []; lines.push(cur); lastTop = t; }
       cur.push(s.textContent);
     });
     el.textContent = '';
