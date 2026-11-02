@@ -682,6 +682,39 @@ main > section > .sc-wrap > .sc-label { color: var(--sc-accent); display: block;
 .benefit h3 { margin: 0 0 var(--sc-2); font-size: var(--sc-t-lg); font-weight: 700; line-height: 1.2; }
 .benefit p { margin: 0; color: var(--sc-ink-soft); font-size: var(--sc-t-sm); line-height: 1.55; }
 
+/* --------------------------------------------------------- scope list --
+   "Leistungsumfang" on the service pages: what exactly is built, one
+   outlined icon + title + one line per item. */
+.scope-list {
+  list-style: none; margin: var(--sc-6) 0 0; padding: 0;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 var(--sc-6);
+  border-top: 1px solid rgba(20, 20, 20, 0.1);
+}
+.scope-list--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.scope-list li {
+  display: flex; gap: var(--sc-4); align-items: flex-start;
+  padding: var(--sc-5) 0; border-bottom: 1px solid rgba(20, 20, 20, 0.1);
+}
+.scope-list li > span:last-child { display: flex; flex-direction: column; gap: 0.25em; color: var(--sc-ink-soft); font-size: var(--sc-t-sm); line-height: 1.5; }
+.scope-list strong { color: #141414; font-size: var(--sc-t-base); }
+
+/* ------------------------------------------------------ urgent help --
+   "Akute Problemlösungen" on the overview: copy + direct phone CTA on the
+   left, the two cases (site / existing plant) as brochure cards right. */
+.urgent { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: var(--sc-6) clamp(2rem, 6vw, 5rem); align-items: center; }
+.urgent__head .sc-label { color: var(--sc-accent); display: block; margin-bottom: var(--sc-3); }
+.urgent__head .sc-body { margin: var(--sc-4) 0 0; color: var(--sc-ink); }
+.urgent__actions { display: flex; flex-wrap: wrap; gap: var(--sc-3); margin-top: var(--sc-5); }
+.urgent__cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sc-4); }
+.urgent__cards li {
+  background: #ffffff; border: 1px solid rgba(20, 20, 20, 0.07); border-top: 3px solid var(--sc-accent);
+  border-radius: 0 0 var(--sc-r-md) var(--sc-r-md); padding: var(--sc-6) var(--sc-5);
+  box-shadow: 0 1px 2px rgba(20, 20, 20, 0.04), 0 12px 32px -18px rgba(20, 20, 20, 0.25);
+}
+.urgent__cards h3 { margin: 0 0 var(--sc-2); font-size: var(--sc-t-lg); font-weight: 700; line-height: 1.25; }
+.urgent__cards p { margin: 0; color: var(--sc-ink-soft); font-size: var(--sc-t-sm); line-height: 1.55; }
+.faq__a a { color: var(--sc-accent); font-weight: 700; text-decoration: none; }
+
 /* ------------------------------------------------------- service tiles -- */
 .service-tiles {
   display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sc-5);
@@ -1014,7 +1047,8 @@ main:has(> .close-cta:last-child, > .apply-band:last-child) + .site-footer { mar
   .contact-list { grid-template-columns: 1fr; }
 }
 @media (max-width: 860px) {
-  .intro-split, .faq-split, .media-split, .media-split--reverse, .apply, .contact-split, .model-grid { grid-template-columns: minmax(0, 1fr); }
+  .intro-split, .faq-split, .media-split, .media-split--reverse, .apply, .contact-split, .model-grid, .urgent { grid-template-columns: minmax(0, 1fr); }
+  .scope-list, .scope-list--2 { grid-template-columns: minmax(0, 1fr); }
   .intro-split__head { position: static; }
   .benefit-grid, .service-tiles--3 { grid-template-columns: 1fr; }
   .media-split--reverse .media-split__media { order: 2; }
@@ -1032,6 +1066,7 @@ main:has(> .close-cta:last-child, > .apply-band:last-child) + .site-footer { mar
   .sub-hero { min-height: clamp(28rem, 82svh, 40rem); }
   .sub-hero__title { font-size: var(--sc-t-2xl); }
   .service-tiles, .benefit-grid--4, .feature-list, .mail-form__row { grid-template-columns: 1fr; }
+  .urgent__cards { grid-template-columns: minmax(0, 1fr); }
   .steps { grid-template-columns: 1fr; }
   .ref-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sc-3); }
   .ref-card { padding: var(--sc-3); }

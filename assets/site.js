@@ -79,7 +79,7 @@
         id: 'art',
         label: 'Worum geht es bei Ihrer Anfrage?',
         type: 'choice',
-        options: ['Lüftungs- & Klimatechnik', 'Anlagenbau', 'Rohrleitungsbau', 'CAD / TGA-Planung', 'Personaldienstleistung', 'Sonstiges']
+        options: ['Lüftungs- & Klimatechnik', 'Anlagenbau', 'Rohrleitungsbau', 'CAD / TGA-Planung', 'Personaldienstleistung', 'Akutes Problem', 'Sonstiges']
       },
       { id: 'ort', label: 'Wo befindet sich das Projekt bzw. die Baustelle?', placeholder: 'z. B. Stuttgart' },
       { id: 'termin', label: 'Wann soll es losgehen?', placeholder: 'z. B. ab sofort, in 4 Wochen …' },
