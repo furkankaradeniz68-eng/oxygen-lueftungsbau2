@@ -591,6 +591,8 @@ h1, h2, h3, h4 { color: #141414; }
 .text-accent { color: var(--sc-accent); }
 .mobile-nav a.mobile-nav__sub[aria-current="page"] { color: var(--sc-accent); }
 .sc-section--tight { padding-block: 0 var(--sc-section); }
+.sc-section--snug { padding-block: 0 clamp(3rem, 6vw, 5rem); }
+.sc-section--pull { padding-bottom: clamp(2rem, 4vw, 3.5rem); }
 main > .sc-section .sc-label,
 main > section > .sc-wrap > .sc-label { color: var(--sc-accent); display: block; margin-bottom: var(--sc-3); }
 .sc-section > .sc-label { color: var(--sc-accent); display: block; margin-bottom: var(--sc-3); }
@@ -695,7 +697,9 @@ main > section > .sc-wrap > .sc-label { color: var(--sc-accent); display: block;
 .service-tile__media { display: block; aspect-ratio: 4 / 3; overflow: hidden; background: #e9e7e4; }
 .service-tile__media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.8s var(--sc-ease-out); }
 .service-tile:hover .service-tile__media img, .service-tile:focus-visible .service-tile__media img { transform: scale(1.06); }
-.service-tile__body { display: flex; flex-direction: column; gap: var(--sc-2); padding: var(--sc-5); flex: 1 1 auto; }
+.service-tile__body { position: relative; z-index: 1; display: flex; flex-direction: column; gap: var(--sc-2); padding: var(--sc-5); flex: 1 1 auto; }
+/* z-index: the image scales on hover, which gives it its own stacking
+   layer; without this the overlapping icon slipped underneath it. */
 .service-tile__body .icon-box { margin-top: calc(-1 * (var(--sc-5) + 1.2rem)); background: #ffffff; margin-bottom: var(--sc-2); }
 .service-tile:hover .icon-box, .service-tile:focus-visible .icon-box { background: var(--sc-accent); color: #fff; border-color: var(--sc-accent); }
 .service-tile__body strong { color: #141414; font-size: var(--sc-t-lg); line-height: 1.2; }
