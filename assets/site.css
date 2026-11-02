@@ -814,6 +814,31 @@ main > section > .sc-wrap > .sc-label { color: var(--sc-accent); display: block;
 .step h3 { margin: var(--sc-4) 0 var(--sc-2); font-size: var(--sc-t-lg); font-weight: 700; }
 .step p { margin: 0; color: var(--sc-ink-soft); font-size: var(--sc-t-sm); line-height: 1.55; }
 
+/* ------------------------------------------------------------ logo row --
+   Static counterpart to the logo marquee: four headline clients plus a
+   "30+ weitere" chip that leads to the full reference page. */
+.logo-row {
+  list-style: none; margin: var(--sc-5) 0 0; padding: 0;
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--sc-3);
+}
+.logo-row li {
+  height: 5rem; padding: 0.9rem 1.4rem; border-radius: var(--sc-r-sm); background: #f4f3f2;
+  display: flex; align-items: center; justify-content: center;
+}
+.logo-row img { max-width: 100%; max-height: 100%; object-fit: contain; filter: grayscale(1); opacity: 0.7; mix-blend-mode: multiply; }
+.logo-row__more a {
+  display: flex; align-items: baseline; gap: 0.35em; text-decoration: none;
+  font-family: var(--sc-font-mono); font-size: var(--sc-t-xs); font-weight: 700;
+  letter-spacing: var(--sc-track-wide); text-transform: uppercase; color: #6f6d6a;
+}
+.logo-row__more strong { font-family: var(--sc-font-display); font-size: var(--sc-t-xl); font-weight: 800; letter-spacing: 0; color: #141414; }
+.logo-row__more a:hover strong, .logo-row__more a:focus-visible strong { color: var(--sc-accent); }
+@media (max-width: 640px) {
+  .logo-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .logo-row li { height: 4.25rem; padding: 0.7rem 1rem; }
+  .logo-row__more { grid-column: 1 / -1; }
+}
+
 /* ---------------------------------------------------------- media split -- */
 .media-split {
   display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
