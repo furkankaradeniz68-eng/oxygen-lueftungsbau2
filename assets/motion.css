@@ -1,0 +1,88 @@
+/* ============================================================================
+   OXYGEN Lüftungsbau — subpage motion layer (pairs with assets/motion.js)
+   Every rule hangs off html.js-motion, which is only ever set when the
+   visitor has not asked for reduced motion. Without it, nothing here applies
+   and the page renders fully static.
+   ========================================================================== */
+
+:root { --m-ease: cubic-bezier(0.2, 0.7, 0.2, 1); }
+
+/* ------------------------------------------------------- word-rise heads -- */
+.js-motion .mw {
+  display: inline-block; overflow: hidden; vertical-align: top;
+  /* room for descenders inside the mask */
+  padding-bottom: 0.1em; margin-bottom: -0.1em;
+}
+.js-motion .mw__i {
+  display: inline-block; transform: translate3d(0, 105%, 0);
+  transition: transform 0.9s var(--m-ease);
+  transition-delay: calc(var(--w, 0) * 55ms);
+}
+.js-motion [data-m="words"].is-in .mw__i { transform: none; }
+.js-motion .sub-hero [data-m="words"] .mw__i { transition-delay: calc(0.12s + var(--w, 0) * 60ms); }
+
+/* ------------------------------------------------------------- fade up -- */
+/* :not(.is-done) — once an element has finished entering, these rules drop
+   away so its own hover/transition styles take over again. */
+.js-motion [data-m="up"]:not(.is-done),
+.js-motion [data-m="hero"]:not(.is-done) {
+  opacity: 0; transform: translate3d(0, 22px, 0);
+  transition: opacity 0.8s var(--m-ease), transform 0.8s var(--m-ease);
+}
+.js-motion [data-m="up"].is-in:not(.is-done),
+.js-motion [data-m="hero"].is-in:not(.is-done) { opacity: 1; transform: none; }
+.js-motion .sub-hero [data-m="hero"] { transition-delay: calc(var(--h, 0) * 0.14s + 0.1s); }
+.js-motion .sub-hero .sc-label[data-m="hero"] { transition-delay: 0s; }
+.js-motion .media-split__media[data-m="up"] { transform: translate3d(0, 40px, 0) scale(0.97); transition-duration: 1.1s; }
+
+/* ---------------------------------------------------- staggered groups -- */
+.js-motion [data-m="group"]:not(.is-done) > * {
+  opacity: 0; transform: translate3d(0, 28px, 0);
+  transition: opacity 0.75s var(--m-ease), transform 0.75s var(--m-ease);
+  transition-delay: calc(var(--i, 0) * 90ms);
+}
+.js-motion [data-m="group"].is-in:not(.is-done) > * { opacity: 1; transform: none; }
+
+/* benefit cards: the red top rule draws in, then the icon pops */
+.js-motion .benefit-grid[data-m="group"] > .benefit { border-top-color: transparent; position: relative; }
+.js-motion .benefit-grid[data-m="group"] > .benefit::before {
+  content: ""; position: absolute; left: -1px; right: -1px; top: -3px; height: 3px;
+  background: var(--sc-accent); transform: scaleX(0); transform-origin: left;
+  transition: transform 0.9s var(--m-ease); transition-delay: calc(var(--i, 0) * 90ms + 0.2s);
+}
+.js-motion .benefit-grid.is-in > .benefit::before { transform: scaleX(1); }
+.js-motion .benefit-grid[data-m="group"] .benefit__icon {
+  transform: scale(0.4); opacity: 0;
+  transition: transform 0.6s cubic-bezier(0.3, 1.5, 0.5, 1), opacity 0.4s ease;
+  transition-delay: calc(var(--i, 0) * 90ms + 0.35s);
+}
+.js-motion .benefit-grid.is-in .benefit__icon { transform: none; opacity: 1; }
+
+/* scope list: the hairlines draw across, the items rise in on top */
+.js-motion .scope-list[data-m="group"] { border-top-color: transparent; position: relative; }
+.js-motion .scope-list[data-m="group"]::before {
+  content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 1px; background: rgba(20, 20, 20, 0.1);
+  transform: scaleX(0); transform-origin: left; transition: transform 1.2s var(--m-ease);
+}
+.js-motion .scope-list.is-in::before { transform: scaleX(1); }
+.js-motion .scope-list[data-m="group"] > li { border-bottom-color: transparent; position: relative; }
+.js-motion .scope-list[data-m="group"] > li::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: rgba(20, 20, 20, 0.1);
+  transform: scaleX(0); transform-origin: left; transition: transform 1s var(--m-ease);
+  transition-delay: calc(var(--i, 0) * 90ms + 0.15s);
+}
+.js-motion .scope-list.is-in > li::after { transform: scaleX(1); }
+
+/* service tiles: the photo settles from a slight zoom as the card rises */
+.js-motion .service-tiles[data-m="group"]:not(.is-done) .service-tile__media img { transform: scale(1.14); transition: transform 1.4s var(--m-ease); }
+.js-motion .service-tiles.is-in:not(.is-done) .service-tile__media img { transform: none; }
+
+/* ------------------------------------------------------- scroll progress -- */
+.m-progress {
+  position: fixed; left: 0; right: 0; top: 0; height: 3px; z-index: 65;
+  background: var(--sc-accent); transform: scaleX(0); transform-origin: left;
+  pointer-events: none;
+}
+
+/* ------------------------------------------------------------------- FAQ -- */
+.js-motion .faq__a { overflow: hidden; }
