@@ -1030,60 +1030,52 @@
 </nav>
 
 <!-- data-sc-seam tightened from the engine's 0.16 default down to 0.05 (its
-     floor is 0.02): the Austritt->Team boundary crossfades an empty office
-     into the same office with five people in it, and at the original seam
-     width the blend was visible for long enough to read as the people
-     ghosting into existence rather than a quick cut. A narrow seam turns
-     every boundary on the page into a snappier cut, which reads fine on
-     the other, more different scenes too — checked visually across all six. -->
+     floor is 0.02). Every leg now ends on the exact first frame of the next
+     one, so a narrow seam is all the hand-off needs.
+     No data-sc-linger on the legs: the clips themselves are retimed (the
+     source renders live in out/, the retime scripts in lab/) so the camera
+     speed is continuous across every seam and eases down mid-leg where the
+     copy sits. A linger on top would speed the camera up at each seam again,
+     which is exactly the jolt the retime removed. -->
 <div id="flug" role="main" data-sc-mode="worldflight" data-sc-seam="0.05" data-sc-lerp="0.12">
   <div data-sc-world>
 
-    <div data-sc-segment data-sc-w="1.5" data-sc-linger="0.2" data-sc-waypoint="Ansaugung">
+    <div data-sc-segment data-sc-w="1.5" data-sc-waypoint="Ansaugung">
       <img class="sc-world__poster" src="assets/00-still.webp" alt="Außenansicht eines modernen Gewerbegebäudes mit Lüftungs-Ansauggitter an der Fassade">
       <video data-sc-src="assets/01.mp4" data-sc-src-mobile="assets/01-m.mp4" muted playsinline preload="none"></video>
     </div>
 
-    <div data-sc-segment data-sc-w="1.5" data-sc-linger="0.35" data-sc-waypoint="Kanal">
+    <div data-sc-segment data-sc-w="1.5" data-sc-waypoint="Kanal">
       <img class="sc-world__poster" src="assets/02-poster.webp" alt="">
       <video data-sc-src="assets/02.mp4" data-sc-src-mobile="assets/02-m.mp4" muted playsinline preload="none"></video>
     </div>
 
-    <div data-sc-segment data-sc-w="2.4" data-sc-linger="0.5" data-sc-waypoint="Technikzentrale">
+    <div data-sc-segment data-sc-w="2.4" data-sc-waypoint="Technikzentrale">
       <img class="sc-world__poster" src="assets/03-poster.webp" alt="">
       <video data-sc-src="assets/03.mp4" data-sc-src-mobile="assets/03-m.mp4" muted playsinline preload="none"></video>
     </div>
 
-    <div data-sc-segment data-sc-w="1.6" data-sc-linger="0.3" data-sc-waypoint="Deckenhohlraum">
+    <div data-sc-segment data-sc-w="1.6" data-sc-waypoint="Deckenhohlraum">
       <img class="sc-world__poster" src="assets/04-poster.webp" alt="">
       <video data-sc-src="assets/04.mp4" data-sc-src-mobile="assets/04-m.mp4" muted playsinline preload="none"></video>
     </div>
 
-    <div data-sc-segment data-sc-w="1.6" data-sc-linger="0.38" data-sc-waypoint="Austritt">
+    <div data-sc-segment data-sc-w="1.6" data-sc-waypoint="Austritt">
       <img class="sc-world__poster" src="assets/05-poster.webp" alt="">
       <video data-sc-src="assets/05.mp4" data-sc-src-mobile="assets/05-m.mp4" muted playsinline preload="none"></video>
     </div>
 
-    <!-- Desktop gets a real clip for its own dwell here: a few seconds of
-         idle settle motion, not a camera move — the team is already fully
-         present and smiling from the clip's own first frame, so the only
-         fade the reader ever sees is the engine's ordinary cross-segment
-         dissolve from Austritt's empty office into this one. An earlier
-         attempt spliced a matching "people already there" tail onto the
-         end of Austritt's own clip instead, to make that dissolve
-         blend two near-identical frames and hide it entirely — but every
-         generated tail frame came out a little off in camera framing from
-         Austritt's true last frame (close in a still-image comparison,
-         visibly a small zoom/pan jump once actually played), and
-         regenerating a tail from Austritt's *exact* extracted last frame
-         produced a different group of people entirely, since the model had
-         no anchor to this specific cast once the frame had nobody in it.
-         Reverted in favour of the plain, short cross-segment dissolve,
-         which is the same mechanism every other segment boundary on this
-         page already uses. Mobile drops the clip entirely — assets/site.js's
+    <!-- Austritt's clip was generated with Team's first frame as its pinned
+         last frame, so the five people are already standing in the office
+         from the moment it comes into view and the hand-off into this leg
+         is frame-identical. Desktop then gets a real clip here for its own
+         dwell: a few seconds of idle settle motion, not a camera move.
+         Mobile drops the clip entirely (assets/site.js's
          stripTeamClipOnMobile() removes the <video> below before the engine
-         ever scans for it — and relies on the <picture> below instead. -->
-    <div data-sc-segment data-sc-w="1.2" data-sc-linger="0.4" data-sc-waypoint="Team">
+         ever scans for it) and relies on the portrait <picture> below; the
+         mobile Austritt clip is its own portrait generation that lands on
+         exactly that poster. -->
+    <div data-sc-segment data-sc-w="1.2" data-sc-waypoint="Team">
       <picture>
         <source media="(max-width: 860px)" srcset="assets/06-poster-m.webp">
         <img class="sc-world__poster" id="team-poster" src="assets/06-poster.webp" alt="Fünfköpfiges OXYGEN-Team — zwei Frauen und drei Männer in Büro- und Arbeitskleidung — steht lächelnd im selben Büro, in das die Lüftungskanäle münden">
