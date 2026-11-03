@@ -989,8 +989,9 @@ main > section > .sc-wrap > .sc-label { color: var(--sc-accent); display: block;
 .apply-steps strong { color: #141414; font-size: var(--sc-t-base); }
 
 /* ------------------------------------------------------------ mail forms --
-   No backend: [data-mailto-form] (assets/site.js) turns the fields into a
-   prepared e-mail in the visitor's own mail program. */
+   [data-mail-form] (assets/site.js) posts to /api/send (Resend); until that
+   is configured it falls back to a prepared e-mail in the visitor's own
+   mail program. */
 .mail-form {
   display: flex; flex-direction: column; gap: var(--sc-4);
   background: #ffffff; border-radius: var(--sc-r-lg); padding: clamp(1.25rem, 3vw, 2.25rem);
@@ -1007,8 +1008,19 @@ main > section > .sc-wrap > .sc-label { color: var(--sc-accent); display: block;
 .mail-form .form-field input:focus-visible, .mail-form .form-field textarea:focus-visible, .mail-form .form-field select:focus-visible { outline: 2px solid var(--sc-accent); outline-offset: 1px; }
 .mail-form .btn { align-self: flex-start; }
 .mail-form__note { margin: 0; font-size: var(--sc-t-xs); color: var(--sc-ink-soft); line-height: 1.5; }
-.mail-form.is-flash { animation: mail-flash 1.2s var(--sc-ease-out); }
-@keyframes mail-flash { 0% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--sc-accent) 45%, transparent); } 100% { box-shadow: 0 0 0 18px transparent; } }
+.mail-form__note a { color: inherit; text-decoration: underline; }
+.mail-form .form-field input[type="file"] { padding: 0.65em 0.8em; font-size: var(--sc-t-sm); cursor: pointer; }
+.mail-form .form-field input[type="file"]::file-selector-button {
+  font: inherit; font-weight: 600; margin-right: 0.9em; padding: 0.45em 1em; cursor: pointer;
+  border: 0; border-radius: 999px; background: #141414; color: #fff;
+}
+.form-field__hint { font-weight: 400; color: var(--sc-ink-soft); text-transform: none; letter-spacing: 0; }
+/* honeypot: off-screen for people, still a normal field for bots */
+.mail-form__hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.mail-form__status { margin: 0; font-size: var(--sc-t-sm); line-height: 1.5; }
+.mail-form__status:empty { display: none; }
+.mail-form__status.is-ok { color: #1f7a3a; font-weight: 600; }
+.mail-form__status.is-error { color: var(--sc-accent); font-weight: 600; }
 
 /* -------------------------------------------------------------- contact -- */
 .contact-split { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: var(--sc-7) clamp(2rem, 6vw, 5rem); align-items: start; }

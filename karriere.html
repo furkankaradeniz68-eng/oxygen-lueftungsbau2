@@ -387,7 +387,7 @@
         </ol>
         <p class="sc-body">Lieber direkt sprechen? Rufen Sie uns an: <a href="tel:+4963239129790">06323 9129790</a></p>
       </div>
-      <form class="mail-form" data-mailto-form data-subject="Initiativbewerbung" data-subject-field="position" aria-label="Initiativbewerbung">
+      <form class="mail-form" data-mail-form="bewerbung" data-subject="Initiativbewerbung" data-subject-field="position" aria-label="Initiativbewerbung">
         <div class="mail-form__row">
           <div class="form-field"><label for="b-vorname">Vorname *</label><input id="b-vorname" name="Vorname" type="text" autocomplete="given-name" required></div>
           <div class="form-field"><label for="b-nachname">Nachname *</label><input id="b-nachname" name="Nachname" type="text" autocomplete="family-name" required></div>
@@ -419,8 +419,11 @@
           </div>
         </div>
         <div class="form-field"><label for="b-nachricht">Kurz zu Ihnen</label><textarea id="b-nachricht" name="Nachricht" rows="4" placeholder="Ausbildung, bisherige Projekte, ab wann Sie verfügbar sind …"></textarea></div>
-        <button class="btn btn--accent" type="submit"><svg aria-hidden="true"><use href="#ic-send"></use></svg>Bewerbung vorbereiten</button>
-        <p class="mail-form__note">Ihr E-Mail-Programm öffnet sich mit der vorbereiteten Bewerbung an info@oxygen-lueftungsbau.de. Lebenslauf und Zeugnisse hängen Sie dort einfach an.</p>
+        <div class="form-field"><label for="b-dateien">Lebenslauf &amp; Zeugnisse <span class="form-field__hint">(optional · PDF, Word oder Bild · bis 3 Dateien, zusammen max. 3 MB)</span></label><input id="b-dateien" name="Unterlagen" type="file" multiple accept=".pdf,.doc,.docx,.odt,.jpg,.jpeg,.png"></div>
+        <div class="mail-form__hp" aria-hidden="true"><label for="b-website">Website</label><input id="b-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+        <button class="btn btn--accent" type="submit"><svg aria-hidden="true"><use href="#ic-send"></use></svg>Bewerbung absenden</button>
+        <p class="mail-form__status" role="status" aria-live="polite"></p>
+        <p class="mail-form__note">Mit dem Absenden werden Ihre Angaben zur Bearbeitung an uns übermittelt – mehr dazu in der <a href="/datenschutz">Datenschutzerklärung</a>.</p>
       </form>
     </div>
   </section>
@@ -448,6 +451,7 @@
       <nav aria-label="Rechtliches">
         <a href="/impressum">Impressum</a>
         <a href="/datenschutz">Datenschutz</a>
+        <button type="button" data-consent-open hidden>Cookie-Einstellungen</button>
       </nav>
     </div>
     <div class="site-footer__col">
@@ -469,6 +473,7 @@
   </div>
 </footer>
 
+<script src="assets/consent.js"></script>
 <script src="assets/site.js"></script>
 <script src="assets/motion.js"></script>
 </body>

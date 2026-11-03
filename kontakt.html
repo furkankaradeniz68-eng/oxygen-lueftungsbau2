@@ -347,7 +347,7 @@
     </ul>
       <p class="sc-body contact-split__address"><strong>Oxygen Lüftungsbau GmbH &amp; Co. KG</strong><br>In den Seewiesen 6, 67480 Edenkoben</p>
     </div>
-    <form class="mail-form mail-form--card" data-mailto-form data-subject="Anfrage über die Website" data-subject-field="firma" aria-label="Kontaktformular">
+    <form class="mail-form mail-form--card" data-mail-form="kontakt" data-subject="Anfrage über die Website" data-subject-field="firma" aria-label="Kontaktformular">
       <div class="mail-form__row">
         <div class="form-field"><label for="k-vorname">Vorname *</label><input id="k-vorname" name="Vorname" type="text" autocomplete="given-name" placeholder="Max" required></div>
         <div class="form-field"><label for="k-nachname">Nachname *</label><input id="k-nachname" name="Nachname" type="text" autocomplete="family-name" placeholder="Mustermann" required></div>
@@ -357,8 +357,10 @@
         <div class="form-field"><label for="k-firma">Ihr Unternehmen *</label><input id="k-firma" name="Unternehmen" type="text" autocomplete="organization" data-field="firma" required></div>
       </div>
       <div class="form-field"><label for="k-nachricht">Ihre Nachricht *</label><textarea id="k-nachricht" name="Nachricht" rows="6" placeholder="Beschreiben Sie kurz Ihr Projekt oder Ihre Anfrage …" required></textarea></div>
+      <div class="mail-form__hp" aria-hidden="true"><label for="k-website">Website</label><input id="k-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
       <button class="btn btn--accent" type="submit"><svg aria-hidden="true"><use href="#ic-send"></use></svg>Anfrage absenden</button>
-      <p class="mail-form__note">Ihr E-Mail-Programm öffnet sich mit der vorbereiteten Anfrage – Sie müssen sie dort nur noch absenden.</p>
+      <p class="mail-form__status" role="status" aria-live="polite"></p>
+      <p class="mail-form__note">Mit dem Absenden werden Ihre Angaben zur Bearbeitung an uns übermittelt – mehr dazu in der <a href="/datenschutz">Datenschutzerklärung</a>.</p>
     </form>
   </section>
 
@@ -385,6 +387,7 @@
       <nav aria-label="Rechtliches">
         <a href="/impressum">Impressum</a>
         <a href="/datenschutz">Datenschutz</a>
+        <button type="button" data-consent-open hidden>Cookie-Einstellungen</button>
       </nav>
     </div>
     <div class="site-footer__col">
@@ -406,6 +409,7 @@
   </div>
 </footer>
 
+<script src="assets/consent.js"></script>
 <script src="assets/site.js"></script>
 <script src="assets/motion.js"></script>
 </body>

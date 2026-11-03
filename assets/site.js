@@ -6,7 +6,7 @@
      2. The signature move: the filling strand-drawing rail + the hero's
         kinetic line reveal, both driven by the same scroll read.
      3. The lead-capture chat widget (wireChatWidget) — a few questions,
-        then a mailto: summary. No backend, see its own comment below.
+        then the summary is sent through /api/send (Resend).
         Every [data-chat-trigger] button on the page (hero/CTA buttons,
         not just the floating one) opens the same chat.
    ========================================================================== */
@@ -57,13 +57,37 @@
     });
   })();
 
+  // ------------------------------------------------------------ form send --
+  // Chat, Kontakt and Bewerbung all post to /api/send, which mails the
+  // enquiry through Resend and sends the visitor a receipt. Until Resend is
+  // configured (503 not_configured), or when the network fails, the caller
+  // falls back to a prepared e-mail in the visitor's own mail program, so
+  // no enquiry is ever lost. Resolves to 'sent', 'fallback' or 'error'.
+  var MAIL_TO = 'info@oxygen-lueftungsbau.de';
+  function sendEnquiry(payload) {
+    return fetch('/api/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function (r) {
+      if (r.ok) {
+        if (window.gtag) window.gtag('event', 'generate_lead', { form_type: payload.kind });
+        return 'sent';
+      }
+      if (r.status === 503 || r.status === 404) return 'fallback';
+      return 'error';
+    }, function () { return 'fallback'; });
+  }
+  function mailtoHref(subject, body) {
+    return 'mailto:' + MAIL_TO + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  }
+  var EMAIL_RE = /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]{2,}$/;
+
   // --------------------------------------------------------- chat widget --
-  // A handful of qualifying questions, then a mailto: summary — no backend,
-  // no third-party chat service, nothing that can break or cost money. The
-  // trade-off is explicit: the visitor's own mail client opens with the
-  // message drafted, and they still have to hit send themselves. Present on
-  // every page (worldflight + static subpages), so — like wireMobileNav
-  // above — it is wired here, ahead of the worldflight-only early return.
+  // A handful of qualifying questions, then the summary goes out through
+  // sendEnquiry() above — no third-party chat service. Present on every page
+  // (worldflight + static subpages), so — like wireMobileNav above — it is
+  // wired here, ahead of the worldflight-only early return.
   (function wireChatWidget() {
     var toggle = document.getElementById('chat-toggle');
     var panel = document.getElementById('chat-panel');
@@ -73,7 +97,6 @@
     var input = document.getElementById('chat-text-input');
     if (!toggle || !panel || !messagesEl || !form || !input) return;
 
-    var RECIPIENT = 'info@oxygen-lueftungsbau.de';
     var QUESTIONS = [
       {
         id: 'art',
@@ -88,6 +111,7 @@
     ];
 
     var started = false;
+    var startedAt = 0;
     var step = 0;
     var answers = {};
 
@@ -122,18 +146,13 @@
       scrollToEnd();
     }
 
-    function buildMailto() {
-      var subject = 'Neue Anfrage über die Website';
-      var lines = QUESTIONS.map(function (q) {
-        return q.label + '\n' + (answers[q.id] || '-');
-      });
-      var body = lines.join('\n\n');
-      return 'mailto:' + RECIPIENT + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    function summaryText() {
+      return QUESTIONS.map(function (q) { return q.label + '\n' + (answers[q.id] || '-'); }).join('\n\n');
     }
 
     function showSummary() {
       form.hidden = true;
-      addMessage('Danke! Hier die Zusammenfassung — einmal auf „Per E-Mail senden" tippen, kurz prüfen und abschicken.', 'bot');
+      addMessage('Danke! Hier ist Ihre Anfrage – bitte kurz prüfen und absenden.', 'bot');
       var box = document.createElement('div');
       box.className = 'chat-msg chat-msg--bot chat-summary';
       var dl = document.createElement('dl');
@@ -146,10 +165,40 @@
         dl.appendChild(dd);
       });
       box.appendChild(dl);
-      var send = document.createElement('a');
+      var send = document.createElement('button');
+      send.type = 'button';
       send.className = 'btn btn--accent';
-      send.href = buildMailto();
-      send.textContent = 'Per E-Mail senden';
+      send.textContent = 'Anfrage absenden';
+      send.addEventListener('click', function () {
+        send.disabled = true;
+        send.textContent = 'Wird gesendet …';
+        var contact = (answers.kontakt || '').trim();
+        sendEnquiry({
+          kind: 'chat',
+          topic: answers.art,
+          fields: QUESTIONS.map(function (q) { return [q.label, answers[q.id] || '-']; }),
+          replyTo: EMAIL_RE.test(contact) ? contact : '',
+          website: '',
+          elapsed: Date.now() - startedAt
+        }).then(function (result) {
+          if (result === 'sent') {
+            send.remove();
+            addMessage('Vielen Dank, Ihre Anfrage ist bei uns angekommen. Wir melden uns zeitnah bei Ihnen.', 'bot');
+          } else if (result === 'fallback') {
+            var mail = document.createElement('a');
+            mail.className = 'btn btn--accent';
+            mail.href = mailtoHref('Neue Anfrage über die Website', summaryText());
+            mail.textContent = 'Per E-Mail senden';
+            send.replaceWith(mail);
+            addMessage('Der direkte Versand ist gerade nicht möglich – tippen Sie auf „Per E-Mail senden“, Ihr E-Mail-Programm öffnet sich mit der fertigen Anfrage.', 'bot');
+          } else {
+            send.disabled = false;
+            send.textContent = 'Erneut versuchen';
+            addMessage('Das hat leider nicht geklappt. Bitte versuchen Sie es noch einmal oder rufen Sie uns an: 06323 9129790.', 'bot');
+          }
+          scrollToEnd();
+        });
+      });
       box.appendChild(send);
       messagesEl.appendChild(box);
       scrollToEnd();
@@ -180,7 +229,8 @@
     function startConversation() {
       if (started) return;
       started = true;
-      addMessage('Hallo! Ein paar kurze Fragen, dann haben Sie eine fertige Anfrage, die Sie uns direkt per E-Mail schicken können.', 'bot');
+      startedAt = Date.now();
+      addMessage('Hallo! Ein paar kurze Fragen, dann ist Ihre Anfrage fertig und Sie können sie uns direkt senden.', 'bot');
       askStep();
     }
 
@@ -261,30 +311,76 @@
   })();
 
   // ---------------------------------------------------------- mail forms --
-  // Contact and application forms have no backend either: on submit the
-  // filled-in fields become a prepared e-mail in the visitor's own mail
-  // program, the same trade-off as the chat widget. Native validation runs
-  // first (required/type=email), so an incomplete form never opens mail.
-  (function wireMailtoForms() {
-    var forms = document.querySelectorAll('[data-mailto-form]');
+  // Kontakt and Bewerbung post through sendEnquiry(). Native validation runs
+  // first (required/type=email), so an incomplete form never sends. The
+  // hidden "website" field is a honeypot; files (CV, certificates) travel as
+  // base64 attachments, capped well under Vercel's 4.5 MB request limit.
+  (function wireMailForms() {
+    var MAX_BYTES = 3 * 1024 * 1024;
+    function readFile(file) {
+      return new Promise(function (resolve, reject) {
+        var r = new FileReader();
+        r.onload = function () { resolve({ filename: file.name, content: String(r.result).split(',')[1] || '' }); };
+        r.onerror = reject;
+        r.readAsDataURL(file);
+      });
+    }
+    var forms = document.querySelectorAll('[data-mail-form]');
     Array.prototype.forEach.call(forms, function (form) {
+      var shownAt = Date.now();
+      var status = form.querySelector('.mail-form__status');
+      var submit = form.querySelector('[type="submit"]');
+      var label = submit ? submit.innerHTML : '';
+      function say(text, kind) {
+        if (!status) return;
+        status.textContent = text;
+        status.className = 'mail-form__status' + (kind ? ' is-' + kind : '');
+      }
       form.addEventListener('submit', function (e) {
         e.preventDefault();
+        var kind = form.getAttribute('data-mail-form');
         var subject = form.getAttribute('data-subject') || 'Anfrage';
         var key = form.getAttribute('data-subject-field');
         var keyEl = key && form.querySelector('[data-field="' + key + '"]');
-        if (keyEl && keyEl.value.trim()) subject += ' – ' + keyEl.value.trim();
-        var lines = [];
+        var topic = keyEl && keyEl.value.trim();
+        var fields = [], files = [], replyTo = '', honey = '';
         Array.prototype.forEach.call(form.elements, function (el) {
-          if (!el.name || !el.value || !el.value.trim()) return;
-          lines.push(el.name + ': ' + el.value.trim());
+          if (!el.name) return;
+          if (el.name === 'website') { honey = el.value; return; }
+          if (el.type === 'file') { Array.prototype.push.apply(files, el.files); return; }
+          if (!el.value || !el.value.trim()) return;
+          if (el.type === 'email') replyTo = el.value.trim();
+          fields.push([el.name, el.value.trim()]);
         });
-        var body = lines.join('\n') + '\n\n—\nGesendet über oxygen-lueftungsbau.de';
-        window.location.href = 'mailto:info@oxygen-lueftungsbau.de?subject=' +
-          encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-        form.classList.remove('is-flash');
-        void form.offsetWidth;
-        form.classList.add('is-flash');
+        var bytes = files.reduce(function (n, f) { return n + f.size; }, 0);
+        if (files.length > 3 || bytes > MAX_BYTES) {
+          say('Bitte höchstens 3 Dateien mit zusammen 3 MB anhängen – größere Unterlagen gern per E-Mail an ' + MAIL_TO + '.', 'error');
+          return;
+        }
+        if (submit) { submit.disabled = true; submit.textContent = 'Wird gesendet …'; }
+        say('');
+        Promise.all(files.map(readFile)).then(function (attachments) {
+          return sendEnquiry({ kind: kind, topic: topic, fields: fields, replyTo: replyTo, attachments: attachments, website: honey, elapsed: Date.now() - shownAt });
+        }).then(function (result) {
+          if (submit) { submit.disabled = false; submit.innerHTML = label; }
+          if (result === 'sent') {
+            form.reset();
+            say(kind === 'bewerbung'
+              ? 'Vielen Dank für Ihre Bewerbung! Sie ist bei uns eingegangen, eine Bestätigung ist unterwegs in Ihr Postfach.'
+              : 'Vielen Dank! Ihre Anfrage ist bei uns eingegangen, eine Bestätigung ist unterwegs in Ihr Postfach.', 'ok');
+          } else if (result === 'fallback') {
+            var body = fields.map(function (f) { return f[0] + ': ' + f[1]; }).join('\n') + '\n\n—\nGesendet über oxygen-lueftungsbau.de';
+            window.location.href = mailtoHref(subject + (topic ? ' – ' + topic : ''), body);
+            say(files.length
+              ? 'Ihr E-Mail-Programm öffnet sich mit der vorbereiteten Nachricht – bitte hängen Sie Ihre Unterlagen dort an und senden Sie sie ab.'
+              : 'Ihr E-Mail-Programm öffnet sich mit der vorbereiteten Nachricht – Sie müssen sie dort nur noch absenden.', 'ok');
+          } else {
+            say('Das hat leider nicht geklappt. Bitte versuchen Sie es erneut oder schreiben Sie uns direkt an ' + MAIL_TO + '.', 'error');
+          }
+        }, function () {
+          if (submit) { submit.disabled = false; submit.innerHTML = label; }
+          say('Eine Datei konnte nicht gelesen werden. Bitte wählen Sie sie erneut aus.', 'error');
+        });
       });
     });
   })();
