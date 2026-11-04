@@ -60,7 +60,7 @@
     });
   }
   // staggered groups: the children enter one after another
-  var groups = '.benefit-grid, .scope-list, .service-tiles, .steps, .faq, .feature-list, .logo-row, .ref-grid, .urgent__cards, .model-grid, .stats-band__row, .job-list, .contact-list, .apply-steps';
+  var groups = '.role-grid, .benefit-grid, .scope-list, .service-tiles, .steps, .faq, .feature-list, .logo-row, .ref-grid, .urgent__cards, .model-grid, .stats-band__row, .job-list, .contact-list, .apply-steps';
   Array.prototype.forEach.call(document.querySelectorAll('main ' + groups.split(', ').join(', main ')), function (g) {
     g.setAttribute('data-m', 'group');
     // capped so long lists (36 reference cards) don't trail on for seconds

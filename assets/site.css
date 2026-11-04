@@ -143,7 +143,7 @@ h1, h2, h3, h4 { color: #141414; }
    Same pattern as index.html's inline copy (that page carries its own
    tokens/topbar block and cannot reach this stylesheet) — kept in sync by
    hand since the two pages are deliberately separate stylesheets. Below
-   900px the five top-level links plus the Leistungen dropdown no longer fit
+   960px the six top-level links plus the Leistungen dropdown no longer fit
    one row; this swaps the link row for a burger button that drops the full
    link list (service pages indented under Leistungen) onto a second row
    inside the same sticky .topbar. */
@@ -158,7 +158,7 @@ h1, h2, h3, h4 { color: #141414; }
 .nav-burger[aria-expanded="true"] .nav-burger__bars { display: none; }
 .nav-burger[aria-expanded="true"] .nav-burger__cross { display: block; }
 .mobile-nav { display: none; }
-@media (max-width: 900px) {
+@media (max-width: 960px) {
   .topbar { flex-wrap: wrap; justify-content: space-between; }
   .topnav { display: none; }
   .nav-burger { display: flex; }
@@ -842,12 +842,45 @@ main > section > .sc-wrap > .sc-label { color: var(--sc-accent); display: block;
 .model-band .values-row span { color: #f2efe9; border-color: rgba(255, 255, 255, 0.22); }
 .model-band__note { margin-top: var(--sc-6); color: #b9bcc4; max-width: 70ch; }
 
+.model-band__cta { margin-top: var(--sc-6); }
+.team-trades .sc-body { margin: var(--sc-4) 0 0; max-width: 60ch; }
+
+/* ---------------------------------------------------------- role cards --
+   The three roles the Einsatzmodelle page leads with. */
+.role-grid {
+  list-style: none; margin: var(--sc-6) 0 0; padding: 0;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sc-5);
+}
+.role-card {
+  background: #ffffff; border: 1px solid rgba(20, 20, 20, 0.07); border-top: 3px solid var(--sc-accent);
+  border-radius: 0 0 var(--sc-r-md) var(--sc-r-md); padding: var(--sc-6) var(--sc-5);
+  box-shadow: 0 1px 2px rgba(20, 20, 20, 0.04), 0 12px 32px -18px rgba(20, 20, 20, 0.25);
+}
+.role-card h3 { margin: 0 0 var(--sc-3); font-size: var(--sc-t-xl); font-weight: 800; line-height: 1.15; }
+.role-card p { margin: 0; color: var(--sc-ink-soft); line-height: 1.6; }
+.role-card__list {
+  list-style: none; margin: var(--sc-5) 0 0; padding: var(--sc-4) 0 0;
+  border-top: 1px solid rgba(20, 20, 20, 0.1); display: flex; flex-direction: column; gap: 0.5em;
+}
+.role-card__list li { display: flex; align-items: baseline; gap: 0.6em; font-weight: 600; font-size: var(--sc-t-sm); }
+.role-card__list li::before { content: ""; flex: none; width: 0.45em; height: 0.45em; border-radius: 50%; background: var(--sc-accent); transform: translateY(-0.1em); }
+
+/* ------------------------------------------------------ model comparison -- */
+.compare { margin-top: var(--sc-6); overflow-x: auto; }
+.compare table { width: 100%; min-width: 34rem; border-collapse: collapse; text-align: left; }
+.compare th, .compare td { padding: var(--sc-4); vertical-align: top; border-bottom: 1px solid rgba(20, 20, 20, 0.1); line-height: 1.5; }
+.compare thead th { font-size: var(--sc-t-lg); font-weight: 800; border-bottom: 2px solid var(--sc-accent); }
+.compare tbody th { font-weight: 700; width: 22%; }
+.compare td { color: var(--sc-ink-soft); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
 /* --------------------------------------------------------------- steps -- */
 .steps {
   list-style: none; margin: var(--sc-6) 0 0; padding: 0;
   display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sc-5);
   counter-reset: none;
 }
+.steps--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .step { position: relative; padding-top: var(--sc-5); border-top: 2px solid rgba(20, 20, 20, 0.1); }
 .step::before {
   content: ""; position: absolute; left: 0; top: -2px; width: 3rem; height: 2px; background: var(--sc-accent);
@@ -1090,7 +1123,7 @@ main:has(> .close-cta:last-child, > .apply-band:last-child) + .site-footer { mar
 @media (max-width: 640px) {
   .sub-hero { min-height: clamp(28rem, 82svh, 40rem); }
   .sub-hero__title { font-size: var(--sc-t-2xl); }
-  .service-tiles, .benefit-grid--4, .feature-list, .mail-form__row { grid-template-columns: 1fr; }
+  .service-tiles, .benefit-grid--4, .feature-list, .mail-form__row, .role-grid, .steps--3 { grid-template-columns: 1fr; }
   .urgent__cards { grid-template-columns: minmax(0, 1fr); }
   .steps { grid-template-columns: 1fr; }
   .ref-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sc-3); }
