@@ -9,6 +9,11 @@
 //                   e.g. "OXYGEN Lüftungsbau <website@oxygen-lueftungsbau.de>"
 //   MAIL_TO         inbox for enquiries (default info@oxygen-lueftungsbau.de)
 //
+// Testing before the domain is verified: MAIL_FROM=onboarding@resend.dev and
+// MAIL_TO=the Resend account's own address. Resend allows nothing else from
+// that sender, so the visitor's receipt is refused and only logged. Remove
+// both variables once the domain is verified, or enquiries miss info@.
+//
 // The visitor gets a short receipt that never repeats what they typed, so
 // the form cannot be used to send arbitrary text to a third party's address.
 

@@ -60,9 +60,10 @@
   // ------------------------------------------------------------ form send --
   // Chat, Kontakt and Bewerbung all post to /api/send, which mails the
   // enquiry through Resend and sends the visitor a receipt. Until Resend is
-  // configured (503 not_configured), or when the network fails, the caller
-  // falls back to a prepared e-mail in the visitor's own mail program, so
-  // no enquiry is ever lost. Resolves to 'sent', 'fallback' or 'error'.
+  // configured (503 not_configured), while it refuses to send (502, e.g. the
+  // domain is not verified yet), or when the network fails, the caller falls
+  // back to a prepared e-mail in the visitor's own mail program, so no enquiry
+  // is ever lost. Resolves to 'sent', 'fallback' or 'error'.
   var MAIL_TO = 'info@oxygen-lueftungsbau.de';
   function sendEnquiry(payload) {
     return fetch('/api/send', {
@@ -74,7 +75,7 @@
         if (window.gtag) window.gtag('event', 'generate_lead', { form_type: payload.kind });
         return 'sent';
       }
-      if (r.status === 503 || r.status === 404) return 'fallback';
+      if (r.status === 502 || r.status === 503 || r.status === 404) return 'fallback';
       return 'error';
     }, function () { return 'fallback'; });
   }
