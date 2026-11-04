@@ -214,6 +214,19 @@ h1, h2, h3, h4 { color: #141414; }
 .chat-float svg { width: 1.6rem; height: 1.6rem; }
 .chat-float[aria-expanded="true"] { display: none; }
 
+/* WhatsApp: a plain wa.me link, stacked directly above the chat button */
+.wa-float {
+  position: fixed; z-index: var(--sc-z-chrome);
+  left: clamp(1rem, 4vw, 1.75rem); bottom: calc(clamp(1rem, 4vw, 1.75rem) + 4.15rem);
+  width: 3.4rem; height: 3.4rem; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: #25d366; color: #ffffff;
+  box-shadow: var(--sc-e2);
+  transition: transform var(--sc-d-fast) var(--sc-ease-out);
+}
+.wa-float:hover, .wa-float:focus-visible { transform: translateY(-2px) scale(1.05); }
+.wa-float svg { width: 1.8rem; height: 1.8rem; }
+
 .chat-panel {
   /* above --sc-z-chrome (60, the highest tier the engine defines), so it
      always sits above sticky chrome like the topbar/mobile-nav. */
