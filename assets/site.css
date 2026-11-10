@@ -865,6 +865,21 @@ main > section > .sc-wrap > .sc-label { color: var(--sc-accent); display: block;
 .role-card__list li { display: flex; align-items: baseline; gap: 0.6em; font-weight: 600; font-size: var(--sc-t-sm); }
 .role-card__list li::before { content: ""; flex: none; width: 0.45em; height: 0.45em; border-radius: 50%; background: var(--sc-accent); transform: translateY(-0.1em); }
 
+/* four roles: two by two, so the long Bau- & Projektleiter list has room */
+.role-grid--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.role-card .text-link { margin-top: var(--sc-5); }
+
+/* ---------------------------------------------------------- network band -- */
+.network-band { background: #111316; color: #d9d6d0; }
+.network-band__row { display: flex; align-items: center; gap: var(--sc-5); padding-block: clamp(1.75rem, 4vw, 2.75rem); }
+.network-band__row p { margin: 0; font-size: var(--sc-t-lg); line-height: 1.5; max-width: 62ch; }
+.network-band__row strong { color: #ffffff; }
+.network-band__icon {
+  flex: none; display: inline-flex; align-items: center; justify-content: center;
+  width: 3.4rem; height: 3.4rem; border-radius: 50%; background: var(--sc-accent); color: #ffffff;
+}
+.network-band__icon svg { width: 1.7rem; height: 1.7rem; }
+
 /* ------------------------------------------------------ model comparison -- */
 .compare { margin-top: var(--sc-6); overflow-x: auto; }
 .compare table { width: 100%; min-width: 34rem; border-collapse: collapse; text-align: left; }
@@ -873,6 +888,44 @@ main > section > .sc-wrap > .sc-label { color: var(--sc-accent); display: block;
 .compare tbody th { font-weight: 700; width: 22%; }
 .compare td { color: var(--sc-ink-soft); }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* comparison CTAs sit under their own column: WhatsApp with a prefilled
+   message, or the chat opened straight at its second question */
+.compare__cta { display: grid; grid-template-columns: 22% 1fr 1fr; margin-top: var(--sc-5); }
+.compare__cta-col { display: flex; flex-wrap: wrap; gap: var(--sc-3); padding-inline: var(--sc-4); }
+.compare__cta-label { display: none; }
+.btn--whatsapp { background: #25d366; color: #ffffff; border-color: #25d366; }
+.btn--whatsapp:hover, .btn--whatsapp:focus-visible { background: #1ebe5b; border-color: #1ebe5b; color: #ffffff; }
+.btn--whatsapp svg { width: 1.15em; height: 1.15em; }
+
+/* ---------------------------------------------------------- trade icons --
+   Montageteams: one round icon per trade; hovering, focusing or tapping one
+   swaps the info card underneath, whose arrow follows the active icon. */
+.trades { margin-top: var(--sc-6); max-width: 40rem; }
+.trades__icons { display: flex; flex-wrap: wrap; gap: var(--sc-4); }
+.trades__btn {
+  width: 4rem; height: 4rem; border-radius: 50%; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: #ffffff; color: var(--sc-accent); border: 1.5px solid rgba(207, 47, 37, 0.35);
+  box-shadow: 0 8px 22px -14px rgba(20, 20, 20, 0.45);
+  transition: background var(--sc-d-fast) var(--sc-ease-out), color var(--sc-d-fast) var(--sc-ease-out), transform var(--sc-d-fast) var(--sc-ease-out);
+}
+.trades__btn .icon-box { background: none; border: 0; width: auto; height: auto; color: inherit; }
+.trades__btn svg { width: 1.7rem; height: 1.7rem; }
+.trades__btn:hover, .trades__btn:focus-visible { transform: translateY(-2px); }
+.trades__btn.is-open { background: var(--sc-accent); color: #ffffff; border-color: var(--sc-accent); }
+.trades__card {
+  position: relative; margin-top: var(--sc-4); padding: var(--sc-4) var(--sc-5);
+  background: #ffffff; border-radius: var(--sc-r-md); border: 1px solid rgba(20, 20, 20, 0.08);
+  box-shadow: 0 1px 2px rgba(20, 20, 20, 0.04), 0 14px 34px -20px rgba(20, 20, 20, 0.35);
+}
+.trades__card::before {
+  content: ""; position: absolute; top: -7px; left: var(--arrow-x, 2rem); width: 12px; height: 12px;
+  background: #ffffff; border-left: 1px solid rgba(20, 20, 20, 0.08); border-top: 1px solid rgba(20, 20, 20, 0.08);
+  transform: translateX(-50%) rotate(45deg); transition: left var(--sc-d-fast) var(--sc-ease-out);
+}
+.trades__card strong { display: block; font-size: var(--sc-t-lg); margin-bottom: 0.2em; }
+.trades__card p { margin: 0; color: var(--sc-ink-soft); line-height: 1.55; }
 
 /* --------------------------------------------------------------- steps -- */
 .steps {
@@ -1124,6 +1177,14 @@ main:has(> .close-cta:last-child, > .apply-band:last-child) + .site-footer { mar
   .sub-hero { min-height: clamp(28rem, 82svh, 40rem); }
   .sub-hero__title { font-size: var(--sc-t-2xl); }
   .service-tiles, .benefit-grid--4, .feature-list, .mail-form__row, .role-grid, .steps--3 { grid-template-columns: 1fr; }
+  .compare__cta { grid-template-columns: 1fr; gap: var(--sc-5); }
+  .compare__cta-spacer { display: none; }
+  .compare__cta-col { padding-inline: 0; }
+  .compare__cta-label { display: block; flex-basis: 100%; font-weight: 700; }
+  .network-band__row { align-items: flex-start; }
+  .trades__icons { gap: 0.7rem; }
+  .trades__btn { width: 3.4rem; height: 3.4rem; }
+  .trades__btn svg { width: 1.45rem; height: 1.45rem; }
   .urgent__cards { grid-template-columns: minmax(0, 1fr); }
   .steps { grid-template-columns: 1fr; }
   .ref-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sc-3); }

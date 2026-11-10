@@ -103,7 +103,7 @@
         id: 'art',
         label: 'Worum geht es bei Ihrer Anfrage?',
         type: 'choice',
-        options: ['Lüftungs- & Klimatechnik', 'Anlagenbau', 'Rohrleitungsbau', 'CAD / TGA-Planung', 'Personaldienstleistung', 'Akutes Problem', 'Sonstiges']
+        options: ['Lüftungstechnik', 'Anlagenbau', 'Rohrleitungsbau', 'CAD & Systemplanung', 'Bau- & Projektleitung', 'Personaldienstleistung', 'Akutes Problem', 'Sonstiges']
       },
       { id: 'ort', label: 'Wo befindet sich das Projekt bzw. die Baustelle?', placeholder: 'z. B. Stuttgart' },
       { id: 'termin', label: 'Wann soll es losgehen?', placeholder: 'z. B. ab sofort, in 4 Wochen …' },
@@ -227,18 +227,28 @@
       askStep();
     }
 
-    function startConversation() {
-      if (started) return;
+    // A trigger can carry data-chat-topic (e.g. "Werkvertrag"): that answers
+    // the first question for the visitor, so the chat opens at question two.
+    function answerTopic(topic) {
+      if (!topic || step !== 0) return;
+      var pending = messagesEl.querySelector('.chat-choices');
+      if (pending) pending.remove();
+      handleAnswer(topic);
+    }
+
+    function startConversation(topic) {
+      if (started) { answerTopic(topic); return; }
       started = true;
       startedAt = Date.now();
       addMessage('Hallo! Ein paar kurze Fragen, dann ist Ihre Anfrage fertig und Sie können sie uns direkt senden.', 'bot');
       askStep();
+      answerTopic(topic);
     }
 
-    function openChat() {
+    function openChat(topic) {
       panel.hidden = false;
       toggle.setAttribute('aria-expanded', 'true');
-      startConversation();
+      startConversation(typeof topic === 'string' ? topic : '');
       scrollToEnd();
     }
     function closeChat() {
@@ -247,13 +257,15 @@
       toggle.focus();
     }
 
-    toggle.addEventListener('click', openChat);
+    toggle.addEventListener('click', function () { openChat(); });
     if (closeBtn) closeBtn.addEventListener('click', closeChat);
     // Every CTA on the page that used to be a wa.me link (hero, close-cta,
     // kontakt actions, ...) is now a [data-chat-trigger] button instead,
     // opening the same chat the floating button does.
     var triggers = document.querySelectorAll('[data-chat-trigger]');
-    for (var t = 0; t < triggers.length; t++) triggers[t].addEventListener('click', openChat);
+    Array.prototype.forEach.call(triggers, function (el) {
+      el.addEventListener('click', function () { openChat(el.getAttribute('data-chat-topic') || ''); });
+    });
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && !panel.hidden) closeChat();
     });
@@ -263,6 +275,29 @@
       if (!val) return;
       handleAnswer(val);
     });
+  })();
+
+  // ----------------------------------------------- clip variant by shape --
+  // The engine serves the portrait -m clips to any touch device without a
+  // mouse, whatever its shape. A Surface in tablet mode, an iPad or a phone
+  // held sideways then stretches a 406x720 portrait clip across a landscape
+  // screen: hugely zoomed and blurred. The portrait clips are only right on
+  // portrait screens, so elsewhere the -m sources are removed before
+  // ScrollCraft.mount() reads them and the engine falls back to the 1080p
+  // clips. The engine never swaps a source once loaded, so turning the device
+  // to the other shape reloads the page when the loaded variant no longer fits.
+  (function pickClipVariantByShape() {
+    if (!document.querySelector('[data-sc-mode="worldflight"]')) return;
+    var portraitMQ = window.matchMedia('(orientation: portrait) and (max-width: 860px)');
+    var portraitAtLoad = portraitMQ.matches;
+    if (!portraitAtLoad) {
+      Array.prototype.forEach.call(document.querySelectorAll('video[data-sc-src-mobile]'), function (v) {
+        v.removeAttribute('data-sc-src-mobile');
+      });
+    }
+    var onChange = function () { if (portraitMQ.matches !== portraitAtLoad) location.reload(); };
+    if (portraitMQ.addEventListener) portraitMQ.addEventListener('change', onChange);
+    else if (portraitMQ.addListener) portraitMQ.addListener(onChange);
   })();
 
   // ------------------------------------------------- team clip, desktop only --
@@ -384,6 +419,126 @@
         });
       });
     });
+  })();
+
+  // ---------------------------------------------------------- trade icons --
+  // Montageteams on /einsatzmodelle: hovering, focusing or tapping a trade
+  // icon shows its card underneath; one card is always open, starting with
+  // the first, so it is obvious there is something to discover.
+  (function wireTrades() {
+    var root = document.querySelector('[data-trades]');
+    if (!root) return;
+    var data = JSON.parse(root.querySelector('[data-trades-json]').textContent);
+    var btns = root.querySelectorAll('[data-trade]');
+    var card = root.querySelector('.trades__card');
+    var title = root.querySelector('[data-trade-title]');
+    var text = root.querySelector('[data-trade-text]');
+    function activate(i) {
+      Array.prototype.forEach.call(btns, function (b, k) {
+        b.classList.toggle('is-open', k === i);
+        b.setAttribute('aria-selected', String(k === i));
+      });
+      title.innerHTML = data[i].name;
+      text.innerHTML = data[i].text;
+      card.setAttribute('aria-labelledby', 'trade-' + i);
+      var br = btns[i].getBoundingClientRect(), cr = card.getBoundingClientRect();
+      card.style.setProperty('--arrow-x', Math.round(br.left + br.width / 2 - cr.left) + 'px');
+    }
+    Array.prototype.forEach.call(btns, function (b, i) {
+      b.addEventListener('mouseenter', function () { activate(i); });
+      b.addEventListener('focus', function () { activate(i); });
+      b.addEventListener('click', function () { activate(i); });
+    });
+    activate(0);
+    window.addEventListener('resize', function () {
+      var open = root.querySelector('.trades__btn.is-open');
+      activate(Math.max(0, Array.prototype.indexOf.call(btns, open)));
+    });
+  })();
+
+  // ------------------------------------------------------- contact hints --
+  // Two speech bubbles introduce the floating buttons: first WhatsApp, then
+  // the chat, each with a short bounce. Once per visit (sessionStorage), never
+  // while the cookie banner or the chat is open, gone as soon as either
+  // button is used. A click on a bubble does what its button does.
+  (function contactHints() {
+    var wa = document.querySelector('.wa-float');
+    var chat = document.getElementById('chat-toggle');
+    var panel = document.getElementById('chat-panel');
+    if (!wa || !chat) return;
+    var KEY = 'oxy-contact-hints';
+    try { if (sessionStorage.getItem(KEY)) return; } catch (e) {}
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var style = document.createElement('style');
+    style.textContent =
+      '.float-hint{position:fixed;z-index:61;display:flex;align-items:center;gap:.5rem;max-width:min(17rem,calc(100vw - 6.5rem));' +
+        'padding:.6rem .55rem .6rem .9rem;background:#fff;color:#141414;border-radius:12px;font-size:.9rem;font-weight:600;line-height:1.3;' +
+        'box-shadow:0 12px 30px -10px rgba(0,0,0,.35);opacity:0;pointer-events:none;transform:translateX(-6px);transition:opacity .25s,transform .25s;cursor:pointer}' +
+      '.float-hint.is-in{opacity:1;pointer-events:auto;transform:none}' +
+      '.float-hint::before{content:"";position:absolute;left:-6px;top:50%;width:12px;height:12px;background:#fff;transform:translateY(-50%) rotate(45deg);border-radius:2px}' +
+      '.float-hint__x{flex:none;border:0;background:none;color:#8a8a88;font-size:1.1rem;line-height:1;padding:.15rem .3rem;cursor:pointer}' +
+      '.float-hint.is-bounce,.is-hint-bounce{animation:hint-bounce .9s cubic-bezier(.3,1.6,.5,1)}' +
+      '@keyframes hint-bounce{0%{translate:0 0}30%{translate:0 -10px}55%{translate:0 0}75%{translate:0 -4px}100%{translate:0 0}}' +
+      '@media (prefers-reduced-motion:reduce){.float-hint.is-bounce,.is-hint-bounce{animation:none}}';
+    document.head.appendChild(style);
+    var bubble = document.createElement('div');
+    bubble.className = 'float-hint';
+    bubble.setAttribute('role', 'status');
+    bubble.innerHTML = '<span class="float-hint__text"></span><button type="button" class="float-hint__x" aria-label="Hinweis schließen">×</button>';
+    document.body.appendChild(bubble);
+    var label = bubble.querySelector('.float-hint__text');
+    var steps = [
+      { el: wa, text: 'Direkt mit unserem Büro schreiben' },
+      { el: chat, text: 'Hier Ihre Anfrage senden' }
+    ];
+    var current = null, timers = [], done = false;
+    function place() {
+      if (!current) return;
+      var r = current.el.getBoundingClientRect();
+      bubble.style.left = Math.round(r.right + 14) + 'px';
+      bubble.style.top = Math.round(r.top + r.height / 2 - bubble.offsetHeight / 2) + 'px';
+    }
+    function bounce(el) {
+      if (reduce) return;
+      el.classList.remove(el === bubble ? 'is-bounce' : 'is-hint-bounce');
+      void el.offsetWidth;
+      el.classList.add(el === bubble ? 'is-bounce' : 'is-hint-bounce');
+    }
+    function show(i) {
+      if (done) return;
+      current = steps[i];
+      label.textContent = current.text;
+      place();
+      bubble.classList.add('is-in');
+      bounce(bubble); bounce(current.el);
+    }
+    function finish() {
+      if (done) return;
+      done = true;
+      timers.forEach(clearTimeout);
+      bubble.classList.remove('is-in');
+      try { sessionStorage.setItem(KEY, '1'); } catch (e) {}
+    }
+    function blocked() {
+      var cc = document.querySelector('.cc');
+      return (cc && !cc.hidden) || (panel && !panel.hidden) || getComputedStyle(wa).display === 'none';
+    }
+    function run() {
+      if (done) return;
+      if (blocked()) { timers.push(setTimeout(run, 1500)); return; }
+      show(0);
+      timers.push(setTimeout(function () { show(1); }, 5000));
+      timers.push(setTimeout(finish, 10500));
+    }
+    bubble.addEventListener('click', function (e) {
+      var target = current && current.el;
+      finish();
+      if (target && !e.target.closest('.float-hint__x')) target.click();
+    });
+    wa.addEventListener('click', finish);
+    chat.addEventListener('click', finish);
+    window.addEventListener('resize', place);
+    timers.push(setTimeout(run, 2500));
   })();
 
   // ------------------------------------------------------ career shortcut --
