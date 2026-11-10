@@ -580,6 +580,9 @@ h1, h2, h3, h4 { color: #141414; }
   padding-block: clamp(1.1rem, 2.5vw, 1.5rem);
 }
 .site-footer__bottom small { color: #8a8f99; font-size: var(--sc-t-xs); letter-spacing: var(--sc-track-wide); }
+.site-footer__legal { display: flex; flex-direction: column; gap: 0.35rem; }
+.site-footer__credit a { color: #c9ccd3; text-decoration: none; border-bottom: 1px solid rgba(201, 204, 211, 0.35); transition: color var(--sc-d-fast) var(--sc-ease-out), border-color var(--sc-d-fast) var(--sc-ease-out); }
+.site-footer__credit a:hover, .site-footer__credit a:focus-visible { color: var(--sc-accent); border-color: var(--sc-accent); }
 .site-footer__top-btn {
   all: unset; cursor: pointer;
   width: 2.25rem; height: 2.25rem; border-radius: 50%;

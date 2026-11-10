@@ -497,6 +497,16 @@
   .feature-grid strong, .feature-grid li > span:last-child { grid-column: 2; }
   .feature-grid strong { color: var(--sc-ink); font-weight: 700; font-size: var(--sc-t-base); line-height: 1.3; }
   .feature-grid li > span:last-child { color: var(--sc-ink-soft); font-size: var(--sc-t-sm); line-height: 1.45; }
+  /* Short windows: the company card tightens, and below 680px of height the
+     feature descriptions go, so the card stays between header and bottom. */
+  @media (min-width: 861px) and (max-height: 780px) {
+    .sc-copy--company h2 { font-size: var(--sc-t-xl); }
+    .feature-grid { margin-top: var(--sc-4); gap: var(--sc-3) var(--sc-5); }
+  }
+  @media (min-width: 861px) and (max-height: 680px) {
+    .feature-grid li > span:last-child { display: none; }
+    .feature-grid .icon-box { grid-row: auto; }
+  }
 
   /* Unsere Leistungen — Technikzentrale leg, bottom-right; each row links
      to that service's own page. */
@@ -509,16 +519,26 @@
     color: var(--sc-ink); text-decoration: none;
   }
   .service-row:last-child { border-bottom: 1px solid var(--sc-hairline); }
-  /* Short laptop windows (1366x768, 1280x720): the services card with its
-     claims would run up under the header, so the rows tighten and, below
-     740px of height, drop their sublines. */
-  @media (min-width: 861px) and (max-height: 820px) {
+  /* The services card is the tallest copy block on the page. It sits closer
+     to the bottom edge than the engine's default trail offset, and on
+     mid-height laptop windows (1512x860, 1440x780) its rows tighten; below
+     760px of height the sublines go, so it never runs up under the header. */
+  @media (min-width: 861px) {
+    .sc-copy--services { bottom: clamp(1.25rem, 4vh, 2.5rem); }
+  }
+  @media (min-width: 861px) and (max-height: 920px) {
     .service-list { margin-top: var(--sc-3); }
     .service-row { padding: 0.5rem 0; }
     .sc-copy--services h2 { font-size: var(--sc-t-lg); }
   }
-  @media (min-width: 861px) and (max-height: 740px) {
+  @media (min-width: 861px) and (max-height: 760px) {
     .service-row__text span { display: none; }
+  }
+  @media (min-width: 861px) and (max-height: 680px) {
+    .sc-copy--services .sc-label { display: none; }
+    .service-row { padding: 0.4rem 0; }
+    .service-claims { margin-top: var(--sc-3); }
+    .service-claims li { padding-block: 0.25em; }
   }
   /* claims under the service rows: what the client wants every visitor to know */
   .service-claims { list-style: none; margin: var(--sc-4) 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--sc-2) var(--sc-3); }
@@ -816,6 +836,9 @@
     padding-block: clamp(1.1rem, 2.5vw, 1.5rem);
   }
   .site-footer__bottom small { color: #8a8f99; font-size: var(--sc-t-xs); letter-spacing: var(--sc-track-wide); }
+  .site-footer__legal { display: flex; flex-direction: column; gap: 0.35rem; }
+  .site-footer__credit a { color: #c9ccd3; text-decoration: none; border-bottom: 1px solid rgba(201, 204, 211, 0.35); transition: color var(--sc-d-fast) var(--sc-ease-out), border-color var(--sc-d-fast) var(--sc-ease-out); }
+  .site-footer__credit a:hover, .site-footer__credit a:focus-visible { color: var(--sc-accent); border-color: var(--sc-accent); }
   .site-footer__top-btn {
     all: unset; cursor: pointer;
     width: 2.25rem; height: 2.25rem; border-radius: 50%;
@@ -1421,7 +1444,10 @@
     </div>
   </div>
   <div class="sc-wrap site-footer__bottom">
-    <small>© 2026 OXYGEN Lüftungsbau GmbH &amp; Co. KG</small>
+    <div class="site-footer__legal">
+      <small>© 2026 OXYGEN Lüftungsbau GmbH &amp; Co. KG</small>
+      <small class="site-footer__credit">Made by <a href="https://portfolio-fk-nine.vercel.app/" target="_blank" rel="noopener">Furkan.</a></small>
+    </div>
     <button type="button" class="site-footer__top-btn" data-scroll-top aria-label="Nach oben scrollen">
       <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
     </button>
