@@ -897,7 +897,7 @@ main > section > .sc-wrap > .sc-label { color: var(--sc-accent); display: block;
 .compare__cta { display: grid; grid-template-columns: 22% 1fr 1fr; margin-top: var(--sc-5); }
 .compare__cta-col { display: flex; flex-wrap: wrap; gap: var(--sc-3); padding-inline: var(--sc-4); }
 .compare__cta-label { display: none; }
-.btn--whatsapp { background: #25d366; color: #ffffff; border-color: #25d366; }
+.btn--whatsapp { background: #25d366; color: #ffffff; border-color: #25d366; box-shadow: 0 10px 24px -14px rgba(37, 211, 102, 0.9); }
 .btn--whatsapp:hover, .btn--whatsapp:focus-visible { background: #1ebe5b; border-color: #1ebe5b; color: #ffffff; }
 .btn--whatsapp svg { width: 1.15em; height: 1.15em; }
 
@@ -1140,7 +1140,7 @@ main:has(> .close-cta:last-child, > .apply-band:last-child) + .site-footer { mar
 .close-cta__text { flex: 1 1 20rem; min-width: 0; }
 .close-cta__text .sc-label { color: var(--sc-accent); display: block; margin-bottom: 0.5em; }
 .close-cta__text .sc-lede { margin-top: 0.4em; }
-.close-cta__text .btn { margin-top: var(--sc-5); }
+.close-cta__actions { display: flex; flex-wrap: wrap; gap: var(--sc-3); margin-top: var(--sc-5); }
 .contact-list {
   list-style: none; margin: 0; padding: 0; flex: 1.4 1 30rem;
   display: grid; grid-template-columns: repeat(2, max-content); gap: var(--sc-5) var(--sc-7);

@@ -284,6 +284,7 @@
     <rect x="3" y="11" width="22" height="6" rx="0.5"/>
     <path d="M3 14h22"/>
   </symbol>
+  <symbol id="ic-whatsapp" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.868-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.01 2C6.486 2 2 6.486 2 12.01c0 1.98.57 3.828 1.555 5.39L2 22l4.72-1.527A9.95 9.95 0 0 0 12.01 22C17.534 22 22 17.514 22 11.99 22 6.486 17.534 2 12.01 2zm0 18.2a8.16 8.16 0 0 1-4.17-1.14l-.3-.178-3.096 1.002 1.017-3.02-.197-.31a8.17 8.17 0 0 1-1.254-4.364c0-4.52 3.68-8.2 8.2-8.2 4.52 0 8.19 3.68 8.19 8.2 0 4.52-3.67 8.01-8.19 8.01z"/></symbol>
   <symbol id="ic-drop" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3.5c3.6 5 7.5 9.1 7.5 13.7A7.5 7.5 0 0 1 14 24.7a7.5 7.5 0 0 1-7.5-7.5c0-4.6 3.9-8.7 7.5-13.7z"/><path d="M10.2 17.6a3.9 3.9 0 0 0 3.8 3.4"/></symbol>
   <symbol id="ic-insulation" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5h22M3 17.5h22"/><rect x="8" y="7.5" width="12" height="13" rx="2"/><path d="M11 7.5v13M14 7.5v13M17 7.5v13"/></symbol>
   <symbol id="ic-globe" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="14" r="10.5"/><path d="M3.5 14h21M14 3.5c2.8 2.9 4.2 6.4 4.2 10.5S16.8 21.6 14 24.5M14 3.5c-2.8 2.9-4.2 6.4-4.2 10.5s1.4 7.6 4.2 10.5"/></symbol>
@@ -405,7 +406,7 @@
     <span class="sc-label">Unsere Leistungen</span>
     <h1 class="sc-display sub-hero__title">Rohrleitungsbau, sauber in Ihren <span class="text-accent">Bauablauf</span> integriert</h1>
     <p class="sc-lede">In Projekten bis hin zu Pressleitungen – strukturiert abgestimmt und präzise ausgeführt.</p>
-    <div class="sub-hero__actions"><button type="button" class="btn btn--accent" data-chat-trigger><svg aria-hidden="true"><use href="#ic-chat"></use></svg>Kurzanfrage starten</button><a class="btn btn--ghost" href="/referenzen">Referenzen ansehen</a></div>
+    <div class="sub-hero__actions"><button type="button" class="btn btn--accent" data-chat-trigger><svg aria-hidden="true"><use href="#ic-chat"></use></svg>Kurzanfrage starten</button><a class="btn btn--whatsapp" href="https://wa.me/491725255842?text=Hallo%20OXYGEN%20L%C3%BCftungsbau%2C%20ich%20interessiere%20mich%20f%C3%BCr%20..." target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#ic-whatsapp"></use></svg>WhatsApp</a><a class="btn btn--ghost" href="/referenzen">Referenzen ansehen</a></div>
   </div>
 </section>
 
@@ -525,10 +526,13 @@
       <span class="sc-label">Kontakt</span>
       <h2 class="sc-display sc-display--lg">Wir beantworten gern Ihre <span class="text-accent">Fragen</span></h2>
       <p class="sc-lede">Rufen Sie uns an oder starten Sie eine Kurzanfrage – wir melden uns zeitnah zurück.</p>
-      <button type="button" class="btn btn--accent" data-chat-trigger>
-        <svg aria-hidden="true"><use href="#ic-chat"></use></svg>
-        Kurzanfrage starten
-      </button>
+      <div class="close-cta__actions">
+        <button type="button" class="btn btn--accent" data-chat-trigger>
+          <svg aria-hidden="true"><use href="#ic-chat"></use></svg>
+          Kurzanfrage starten
+        </button>
+        <a class="btn btn--whatsapp" href="https://wa.me/491725255842?text=Hallo%20OXYGEN%20L%C3%BCftungsbau%2C%20ich%20interessiere%20mich%20f%C3%BCr%20..." target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#ic-whatsapp"></use></svg>WhatsApp</a>
+      </div>
     </div>
     <ul class="contact-list">
       <li><span class="icon-box"><svg aria-hidden="true"><use href="#ic-phone"></use></svg></span><span><strong>Telefon</strong><a href="tel:+4963239129790">06323 9129790</a></span></li>

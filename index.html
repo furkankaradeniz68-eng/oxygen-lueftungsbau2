@@ -310,6 +310,8 @@
     background: color-mix(in oklab, var(--sc-accent) 88%, white);
   }
   .btn--ghost { background: color-mix(in oklab, var(--sc-canvas) 40%, transparent); }
+  .btn--whatsapp { background: #25d366; color: #ffffff; border-color: transparent; box-shadow: var(--sc-e2); }
+  .btn--whatsapp:hover, .btn--whatsapp:focus-visible { background: #1ebe5b; border-color: transparent; color: #ffffff; }
   .btn svg { width: 1.1em; height: 1.1em; flex: none; }
 
   /* -------------------------------------------------------- chat widget --
@@ -766,7 +768,7 @@
   .close-cta__text { flex: 1 1 20rem; min-width: 0; }
   .close-cta__text .sc-label { color: var(--sc-accent); display: block; margin-bottom: 0.5em; }
   .close-cta__text .sc-lede { margin-top: 0.4em; }
-  .close-cta__text .btn { margin-top: var(--sc-5); }
+  .close-cta__actions { display: flex; flex-wrap: wrap; gap: var(--sc-3); margin-top: var(--sc-5); }
   .contact-list {
     list-style: none; margin: 0; padding: 0; flex: 1.4 1 30rem;
     display: grid; grid-template-columns: repeat(2, max-content); gap: var(--sc-5) var(--sc-7);
@@ -997,6 +999,7 @@
     <rect x="3" y="5" width="18" height="14" rx="2"/>
     <path d="M4 7l8 6 8-6"/>
   </symbol>
+  <symbol id="ic-whatsapp" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.868-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.01 2C6.486 2 2 6.486 2 12.01c0 1.98.57 3.828 1.555 5.39L2 22l4.72-1.527A9.95 9.95 0 0 0 12.01 22C17.534 22 22 17.514 22 11.99 22 6.486 17.534 2 12.01 2zm0 18.2a8.16 8.16 0 0 1-4.17-1.14l-.3-.178-3.096 1.002 1.017-3.02-.197-.31a8.17 8.17 0 0 1-1.254-4.364c0-4.52 3.68-8.2 8.2-8.2 4.52 0 8.19 3.68 8.19 8.2 0 4.52-3.67 8.01-8.19 8.01z"/></symbol>
   <symbol id="ic-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
     <path d="M4 5h16v11H9l-4 3v-3H4z"/>
     <path d="M8 9h8M8 12.3h5"/>
@@ -1259,6 +1262,7 @@
           <svg aria-hidden="true"><use href="#ic-chat"></use></svg>
           Kurzanfrage starten
         </button>
+        <a class="btn btn--whatsapp" href="https://wa.me/491725255842?text=Hallo%20OXYGEN%20L%C3%BCftungsbau%2C%20ich%20interessiere%20mich%20f%C3%BCr%20..." target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#ic-whatsapp"></use></svg>WhatsApp</a>
         <a class="btn btn--ghost hero-actions__secondary" href="/referenzen">Unsere Referenzen</a>
       </div>
       <dl class="hero-stats">
@@ -1393,10 +1397,13 @@
       <span class="sc-label">Kontakt</span>
       <h2 class="sc-display sc-display--lg">Wir beantworten gern Ihre <span class="text-accent">Fragen</span></h2>
       <p class="sc-lede">Rufen Sie uns an oder starten Sie eine Kurzanfrage – wir melden uns zeitnah zurück.</p>
-      <button type="button" class="btn btn--accent" data-chat-trigger>
-        <svg aria-hidden="true"><use href="#ic-chat"></use></svg>
-        Kurzanfrage starten
-      </button>
+      <div class="close-cta__actions">
+        <button type="button" class="btn btn--accent" data-chat-trigger>
+          <svg aria-hidden="true"><use href="#ic-chat"></use></svg>
+          Kurzanfrage starten
+        </button>
+        <a class="btn btn--whatsapp" href="https://wa.me/491725255842?text=Hallo%20OXYGEN%20L%C3%BCftungsbau%2C%20ich%20interessiere%20mich%20f%C3%BCr%20..." target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#ic-whatsapp"></use></svg>WhatsApp</a>
+      </div>
     </div>
     <ul class="contact-list">
       <li><span class="icon-box"><svg aria-hidden="true"><use href="#ic-phone"></use></svg></span><span><strong>Telefon</strong><a href="tel:+4963239129790">06323 9129790</a></span></li>
