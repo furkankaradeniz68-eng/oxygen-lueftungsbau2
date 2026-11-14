@@ -839,8 +839,15 @@
   }
   .site-footer__bottom small { color: #8a8f99; font-size: var(--sc-t-xs); letter-spacing: var(--sc-track-wide); }
   .site-footer__legal { display: flex; flex-direction: column; gap: 0.35rem; }
-  .site-footer__credit a { color: #c9ccd3; text-decoration: none; border-bottom: 1px solid rgba(201, 204, 211, 0.35); transition: color var(--sc-d-fast) var(--sc-ease-out), border-color var(--sc-d-fast) var(--sc-ease-out); }
-  .site-footer__credit a:hover, .site-footer__credit a:focus-visible { color: var(--sc-accent); border-color: var(--sc-accent); }
+  .site-footer__credit a {
+    display: inline-flex; align-items: center; gap: 3px;
+    color: #f4f2ef; font-weight: 600; letter-spacing: 0.02em;
+    text-decoration: underline 1px var(--sc-accent); text-underline-offset: 3px;
+    transition: color var(--sc-d-fast) var(--sc-ease-out), text-decoration-thickness var(--sc-d-fast) var(--sc-ease-out);
+  }
+  .site-footer__credit a:hover, .site-footer__credit a:focus-visible { color: #ff6a5f; text-decoration-thickness: 2px; }
+  .site-footer__credit svg { width: 11px; height: 11px; flex: none; color: var(--sc-accent); }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .site-footer__top-btn {
     all: unset; cursor: pointer;
     width: 2.25rem; height: 2.25rem; border-radius: 50%;
@@ -1453,7 +1460,7 @@
   <div class="sc-wrap site-footer__bottom">
     <div class="site-footer__legal">
       <small>© 2026 OXYGEN Lüftungsbau GmbH &amp; Co. KG</small>
-      <small class="site-footer__credit">Made by <a href="https://portfolio-fk-nine.vercel.app/" target="_blank" rel="noopener">Furkan.</a></small>
+      <small class="site-footer__credit">Made by <a href="https://portfolio-fk-nine.vercel.app/" target="_blank" rel="noopener">Furkan.<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 8.5 8.5 3.5M4.5 3.5h4v4"/></svg><span class="sr-only"> (öffnet in neuem Tab)</span></a></small>
     </div>
     <button type="button" class="site-footer__top-btn" data-scroll-top aria-label="Nach oben scrollen">
       <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
